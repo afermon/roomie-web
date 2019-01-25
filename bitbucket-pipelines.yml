@@ -1,0 +1,56 @@
+image: atlassian/default-image:2
+clone:
+  depth: full
+pipelines:
+  default:
+    - step:
+        name: Build test
+        caches:
+          - maven
+          - node
+        script:
+          - mvn dependency:go-offline
+          - mvn integration-test
+  branches:
+     master: 
+       - step:
+           name: Test
+           caches:
+             - maven
+             - node
+           script:
+             - mvn dependency:go-offline
+             - mvn integration-test
+       - step:
+           name: Deploy to Heroku - Production
+           deployment: production
+           script:
+             - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+     staging: 
+       - step:
+           name: Test
+           caches:
+             - maven
+             - node
+           script:
+             - mvn dependency:go-offline
+             - mvn integration-test
+       - step:
+           name: Deploy to Heroku - Staging
+           deployment: staging
+           script:
+             - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+     dev: 
+       - step:
+           name: Test
+           caches:
+             - maven
+             - node
+           script:
+             - mvn dependency:go-offline
+             - mvn integration-test
+       - step:
+           name: Deploy to Heroku - Dev
+           deployment: test
+           script:
+             - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
