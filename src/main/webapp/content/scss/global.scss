@@ -34,54 +34,54 @@ Browser Upgrade Prompt
     padding: 0.2em 0;
 }
 
-// /* ==========================================================================
-// Generic styles
-// ========================================================================== */
+/* ==========================================================================
+Generic styles
+========================================================================== */
 
-// /* Error highlight on input fields */
-// .ng-valid[required],
-// .ng-valid.required {
-//     border-left: 5px solid green;
-// }
+/* Error highlight on input fields */
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid green;
+}
 
-// .ng-invalid:not(form) {
-//     border-left: 5px solid red;
-// }
+.ng-invalid:not(form) {
+    border-left: 5px solid red;
+}
 
-// /* other generic styles */
+/* other generic styles */
 
-// .jh-card {
-//     padding: 1.5%;
-//     margin-top: 20px;
-//     border: none;
-// }
+.jh-card {
+    padding: 1.5%;
+    margin-top: 20px;
+    border: none;
+}
 
-// .error {
-//     color: white;
-//     background-color: red;
-// }
+.error {
+    color: white;
+    background-color: red;
+}
 
-// .pad {
-//     padding: 10px;
-// }
+.pad {
+    padding: 10px;
+}
 
-// .w-40 {
-//     width: 40% !important;
-// }
+.w-40 {
+    width: 40% !important;
+}
 
-// .w-60 {
-//     width: 60% !important;
-// }
+.w-60 {
+    width: 60% !important;
+}
 
-// .break {
-//     white-space: normal;
-//     word-break: break-all;
-// }
+.break {
+    white-space: normal;
+    word-break: break-all;
+}
 
-// .readonly {
-//     background-color: #eee;
-//     opacity: 1;
-// }
+.readonly {
+    background-color: #eee;
+    opacity: 1;
+}
 
 // .footer {
 //     border-top: 1px solid rgba(0, 0, 0, 0.125);
@@ -221,6 +221,10 @@ ui bootstrap tweaks
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+main > .container {
+    padding: 70px 15px 0;
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
