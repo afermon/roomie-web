@@ -42,6 +42,8 @@ import {
     faHome
 } from '@fortawesome/free-solid-svg-icons';
 
+import { faTwitter, faFacebook, faBitbucket } from '@fortawesome/free-brands-svg-icons';
+
 // Adds the SVG icon to the library so you can use it in your page
 library.add(faUser);
 library.add(faSort);
@@ -77,5 +79,10 @@ library.add(faCalendarAlt);
 library.add(faSearch);
 library.add(faTrashAlt);
 library.add(faAsterisk);
+
+// Brand
+library.add(faTwitter);
+library.add(faFacebook);
+library.add(faBitbucket);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
