@@ -3,7 +3,9 @@
     <router-outlet name="navbar"></router-outlet>
 </header>
 <main>
-    <router-outlet></router-outlet> 
-    <router-outlet name="popup"></router-outlet>
+    <div [ngClass]="{'container': this.router.url !== '/'}">
+        <router-outlet></router-outlet> 
+        <router-outlet name="popup"></router-outlet>
+    </div>
 </main>
 <jhi-footer></jhi-footer>
