@@ -1,8 +1,8 @@
-<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg" [ngClass]="{'navbar-transparent navbar-light headroom': this.router.url === '/', 'navbar-dark bg-default fixed-top':  this.router.url !== '/'}">
+<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg" [ngClass]="{'navbar-transparent navbar-light headroom': this.router.url === '/', 'navbar-dark bg-orange fixed-top':  this.router.url !== '/'}">
     <div class="container">
         <a class="navbar-brand mr-lg-5" routerLink="/" (click)="collapseNavbar()">
             <span class="logo-img"></span>
-            <span jhiTranslate="global.title" class="navbar-title">Roomie</span> <span class="navbar-version">{{version}}</span>
+            <span jhiTranslate="global.title" class="navbar-title">Roomie</span>
         </a>
         <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
             <fa-icon icon="bars"></fa-icon>
