@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { VERSION } from 'app/app.constants';
+import { LoginService } from 'app/core';
 
 @Component({
     selector: 'jhi-footer',
@@ -7,7 +8,11 @@ import { VERSION } from 'app/app.constants';
 })
 export class FooterComponent {
     version: string;
-    constructor() {
+    constructor(private loginService: LoginService) {
         this.version = VERSION ? 'v' + VERSION : '';
+    }
+
+    login() {
+        this.loginService.login();
     }
 }

@@ -42,7 +42,7 @@ import {
     faHome
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faTwitter, faFacebook, faBitbucket } from '@fortawesome/free-brands-svg-icons';
+import { faTwitter, faFacebook, faBitbucket, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
 library.add(faUser);
@@ -84,5 +84,6 @@ library.add(faAsterisk);
 library.add(faTwitter);
 library.add(faFacebook);
 library.add(faBitbucket);
+library.add(faInstagram);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
