@@ -307,11 +307,13 @@
         // shape color variations
         &.shape-primary {
             background: linear-gradient(
-                150deg,
-                shapes-primary-color('step-1-gradient-bg') 15%,
-                shapes-primary-color('step-2-gradient-bg') 70%,
-                shapes-primary-color('step-3-gradient-bg') 94%
-            );
+                    150deg,
+                    rgba(shapes-primary-color('step-1-gradient-bg'), 0.45) 15%,
+                    rgba(shapes-primary-color('step-2-gradient-bg'), 0.45) 70%,
+                    rgba(shapes-primary-color('step-3-gradient-bg'), 0.45) 94%
+                ),
+                url(../images/landing/landing-background-room.jpg);
+            background-size: cover;
         }
 
         &.shape-default {
