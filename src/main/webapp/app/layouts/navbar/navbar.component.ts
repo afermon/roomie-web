@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
     languages: any[];
     swaggerEnabled: boolean;
     version: string;
+    router: Router;
 
     constructor(
         private loginService: LoginService,
@@ -26,10 +27,11 @@ export class NavbarComponent implements OnInit {
         private sessionStorage: SessionStorageService,
         private accountService: AccountService,
         private profileService: ProfileService,
-        private router: Router
+        private _router: Router
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
+        this.router = _router;
     }
 
     ngOnInit() {
