@@ -17,25 +17,9 @@ Navbar
 
 .navbar {
     padding: 0.2rem 1rem;
-    .dropdown-item.active,
-    .dropdown-item.active:focus,
-    .dropdown-item.active:hover {
-        background-color: $dark;
-    }
-
     ul.navbar-nav {
         .nav-item {
             margin-left: 0.5em;
-        }
-    }
-
-    a.nav-link {
-        font-weight: 400;
-    }
-
-    .navbar-toggler {
-        &:hover {
-            color: $navbar-dark-hover-color;
         }
     }
 }
@@ -44,10 +28,10 @@ Navbar
 Logo styles
 ========================================================================== */
 .logo-img {
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 180px;
     display: inline-block;
     vertical-align: middle;
-    background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
+    background: url('../../../content/images/roomie-logo-white.png') no-repeat center center;
     background-size: contain;
 }
