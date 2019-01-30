@@ -21,6 +21,7 @@ pipelines:
            script:
              - mvn dependency:go-offline
              - mvn integration-test
+             - npm run webpack:prod
        - step:
            name: Deploy to Heroku - Production
            deployment: production

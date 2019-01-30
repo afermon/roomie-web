@@ -8,7 +8,11 @@ import { JhiLanguageHelper } from 'app/core';
     templateUrl: './main.component.html'
 })
 export class JhiMainComponent implements OnInit {
-    constructor(private jhiLanguageHelper: JhiLanguageHelper, private router: Router) {}
+    router: Router;
+
+    constructor(private jhiLanguageHelper: JhiLanguageHelper, private _router: Router) {
+        this.router = _router;
+    }
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
         let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'roomieApp';
