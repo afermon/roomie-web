@@ -1,28 +1,28 @@
-@import 'bootstrap-variables';
+// @import 'bootstrap-variables';
 
-/* ==============================================================
-Bootstrap tweaks
-===============================================================*/
+// /* ==============================================================
+// Bootstrap tweaks
+// ===============================================================*/
 
-body,
-h1,
-h2,
-h3,
-h4 {
-    font-weight: 300;
-}
+// body,
+// h1,
+// h2,
+// h3,
+// h4 {
+//     font-weight: 300;
+// }
 
-a {
-    color: #533f03;
-    font-weight: bold;
-}
+// a {
+//     color: #533f03;
+//     font-weight: bold;
+// }
 
-a:hover {
-    color: #533f03;
-    font-weight: bold;
-    /* make sure browsers use the pointer cursor for anchors, even with no href */
-    cursor: pointer;
-}
+// a:hover {
+//     color: #533f03;
+//     font-weight: bold;
+//     /* make sure browsers use the pointer cursor for anchors, even with no href */
+//     cursor: pointer;
+// }
 
 /* ==========================================================================
 Browser Upgrade Prompt
@@ -83,9 +83,9 @@ Generic styles
     opacity: 1;
 }
 
-.footer {
-    border-top: 1px solid rgba(0, 0, 0, 0.125);
-}
+// .footer {
+//     border-top: 1px solid rgba(0, 0, 0, 0.125);
+// }
 
 .hand,
 [jhisortby] {
@@ -221,6 +221,10 @@ ui bootstrap tweaks
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+main > .container {
+    padding: 70px 15px 0;
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
