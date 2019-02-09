@@ -2,13 +2,14 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbDateMomentAdapter } from './util/datepicker-adapter';
-import { RoomieSharedLibsModule, RoomieSharedCommonModule, HasAnyAuthorityDirective } from './';
+import { RoomieSharedLibsModule, RoomieSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
 
 @NgModule({
     imports: [RoomieSharedLibsModule, RoomieSharedCommonModule],
-    declarations: [HasAnyAuthorityDirective],
+    declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective],
     providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }],
-    exports: [RoomieSharedCommonModule, HasAnyAuthorityDirective],
+    entryComponents: [JhiLoginModalComponent],
+    exports: [RoomieSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RoomieSharedModule {

@@ -6,8 +6,9 @@ import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.repository.search.UserSearchRepository;
 import com.cosmicode.roomie.repository.UserRepository;
 import com.cosmicode.roomie.service.dto.UserDTO;
-import com.cosmicode.roomie.security.AuthoritiesConstants;
+import com.cosmicode.roomie.service.util.RandomUtil;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,22 +19,14 @@ import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
@@ -76,6 +69,7 @@ public class UserServiceIntTest {
     public void init() {
         user = new User();
         user.setLogin("johndoe");
+        user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
         user.setEmail("johndoe@localhost");
         user.setFirstName("john");
@@ -89,8 +83,100 @@ public class UserServiceIntTest {
 
     @Test
     @Transactional
+    public void assertThatUserMustExistToResetPassword() {
+        userRepository.saveAndFlush(user);
+        Optional<User> maybeUser = userService.requestPasswordReset("invalid.login@localhost");
+        assertThat(maybeUser).isNotPresent();
+
+        maybeUser = userService.requestPasswordReset(user.getEmail());
+        assertThat(maybeUser).isPresent();
+        assertThat(maybeUser.orElse(null).getEmail()).isEqualTo(user.getEmail());
+        assertThat(maybeUser.orElse(null).getResetDate()).isNotNull();
+        assertThat(maybeUser.orElse(null).getResetKey()).isNotNull();
+    }
+
+    @Test
+    @Transactional
+    public void assertThatOnlyActivatedUserCanRequestPasswordReset() {
+        user.setActivated(false);
+        userRepository.saveAndFlush(user);
+
+        Optional<User> maybeUser = userService.requestPasswordReset(user.getLogin());
+        assertThat(maybeUser).isNotPresent();
+        userRepository.delete(user);
+    }
+
+    @Test
+    @Transactional
+    public void assertThatResetKeyMustNotBeOlderThan24Hours() {
+        Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
+        String resetKey = RandomUtil.generateResetKey();
+        user.setActivated(true);
+        user.setResetDate(daysAgo);
+        user.setResetKey(resetKey);
+        userRepository.saveAndFlush(user);
+
+        Optional<User> maybeUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        assertThat(maybeUser).isNotPresent();
+        userRepository.delete(user);
+    }
+
+    @Test
+    @Transactional
+    public void assertThatResetKeyMustBeValid() {
+        Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
+        user.setActivated(true);
+        user.setResetDate(daysAgo);
+        user.setResetKey("1234");
+        userRepository.saveAndFlush(user);
+
+        Optional<User> maybeUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        assertThat(maybeUser).isNotPresent();
+        userRepository.delete(user);
+    }
+
+    @Test
+    @Transactional
+    public void assertThatUserCanResetPassword() {
+        String oldPassword = user.getPassword();
+        Instant daysAgo = Instant.now().minus(2, ChronoUnit.HOURS);
+        String resetKey = RandomUtil.generateResetKey();
+        user.setActivated(true);
+        user.setResetDate(daysAgo);
+        user.setResetKey(resetKey);
+        userRepository.saveAndFlush(user);
+
+        Optional<User> maybeUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        assertThat(maybeUser).isPresent();
+        assertThat(maybeUser.orElse(null).getResetDate()).isNull();
+        assertThat(maybeUser.orElse(null).getResetKey()).isNull();
+        assertThat(maybeUser.orElse(null).getPassword()).isNotEqualTo(oldPassword);
+
+        userRepository.delete(user);
+    }
+
+    @Test
+    @Transactional
+    public void testFindNotActivatedUsersByCreationDateBefore() {
+        Instant now = Instant.now();
+        when(dateTimeProvider.getNow()).thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
+        user.setActivated(false);
+        User dbUser = userRepository.saveAndFlush(user);
+        dbUser.setCreatedDate(now.minus(4, ChronoUnit.DAYS));
+        userRepository.saveAndFlush(user);
+        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
+        assertThat(users).isNotEmpty();
+        userService.removeNotActivatedUsers();
+        users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
+        assertThat(users).isEmpty();
+
+        // Verify Elasticsearch mock
+        verify(mockUserSearchRepository, times(1)).delete(user);
+    }
+
+    @Test
+    @Transactional
     public void assertThatAnonymousUserIsNotGet() {
-        user.setId(Constants.ANONYMOUS_USER);
         user.setLogin(Constants.ANONYMOUS_USER);
         if (!userRepository.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()) {
             userRepository.saveAndFlush(user);
@@ -105,43 +191,19 @@ public class UserServiceIntTest {
 
     @Test
     @Transactional
-    public void assertThatUserLocaleIsCorrectlySetFromAuthenticationDetails() {
-        user.setId(Constants.ANONYMOUS_USER);
-        user.setLogin(Constants.ANONYMOUS_USER);
+    public void testRemoveNotActivatedUsers() {
+        // custom "now" for audit to use as creation date
+        when(dateTimeProvider.getNow()).thenReturn(Optional.of(Instant.now().minus(30, ChronoUnit.DAYS)));
 
-        Map<String, Object> userDetails = new HashMap<>();
-        userDetails.put("sub", user.getId());
-        userDetails.put("preferred_username", user.getLogin());
-        userDetails.put("given_name", user.getFirstName());
-        userDetails.put("family_name", user.getLastName());
-        userDetails.put("email", user.getEmail());
-        userDetails.put("picture", user.getImageUrl());
-        userDetails.put("locale", "en_US");
+        user.setActivated(false);
+        userRepository.saveAndFlush(user);
 
-        OAuth2Authentication authentication = createMockOAuth2AuthenticationWithDetails(userDetails);
+        assertThat(userRepository.findOneByLogin("johndoe")).isPresent();
+        userService.removeNotActivatedUsers();
+        assertThat(userRepository.findOneByLogin("johndoe")).isNotPresent();
 
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
-
-        assertThat(userDTO.getLangKey()).isEqualTo("en");
-
-        userDetails.put("locale", "it-IT");
-        authentication = createMockOAuth2AuthenticationWithDetails(userDetails);
-
-        userDTO = userService.getUserFromAuthentication(authentication);
-
-        assertThat(userDTO.getLangKey()).isEqualTo("it");
+        // Verify Elasticsearch mock
+        verify(mockUserSearchRepository, times(1)).delete(user);
     }
 
-    private OAuth2Authentication createMockOAuth2AuthenticationWithDetails(Map<String, Object> userDetails) {
-        Set<String> scopes = new HashSet<String>();
-
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(Constants.ANONYMOUS_USER, Constants.ANONYMOUS_USER, authorities);
-        usernamePasswordAuthenticationToken.setDetails(userDetails);
-
-        OAuth2Request authRequest = new OAuth2Request(null, "testClient", null, true, scopes, null, null, null, null);
-
-        return new OAuth2Authentication(authRequest, usernamePasswordAuthenticationToken);
-    }
 }

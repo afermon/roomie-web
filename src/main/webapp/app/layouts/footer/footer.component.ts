@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { VERSION } from 'app/app.constants';
-import { LoginService } from 'app/core';
+import { LoginModalService } from 'app/core';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'jhi-footer',
@@ -8,11 +9,13 @@ import { LoginService } from 'app/core';
 })
 export class FooterComponent {
     version: string;
-    constructor(private loginService: LoginService) {
+    modalRef: NgbModalRef;
+
+    constructor(private loginModalService: LoginModalService) {
         this.version = VERSION ? 'v' + VERSION : '';
     }
 
     login() {
-        this.loginService.login();
+        this.modalRef = this.loginModalService.open();
     }
 }

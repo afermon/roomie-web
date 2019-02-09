@@ -7,6 +7,7 @@ import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Ng2Webstorage } from 'ngx-webstorage';
 import { NgJhipsterModule } from 'ng-jhipster';
 
+import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
@@ -14,6 +15,7 @@ import { RoomieSharedModule } from 'app/shared';
 import { RoomieCoreModule } from 'app/core';
 import { RoomieAppRoutingModule } from './app-routing.module';
 import { RoomieHomeModule } from './home/home.module';
+import { RoomieAccountModule } from './account/account.module';
 import { RoomieEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
@@ -34,11 +36,17 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         RoomieSharedModule.forRoot(),
         RoomieCoreModule,
         RoomieHomeModule,
+        RoomieAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         RoomieEntityModule
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
     providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthExpiredInterceptor,
