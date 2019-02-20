@@ -46,7 +46,7 @@ public class SocialLoginResource {
     }
 
 
-    @PostMapping("/authenticate/appFacebook")
+    @PostMapping("/authenticate/facebook")
     @Timed
     public ResponseEntity authorizeClientFromFacebook(@RequestBody String token, HttpServletResponse response) throws IOException {
 
@@ -118,7 +118,7 @@ public class SocialLoginResource {
         return ret;
     }
 
-    @PostMapping("/authenticate/appGoogle")
+    @PostMapping("/authenticate/google")
     @Timed
     public ResponseEntity authorizeClientFromGoogle(@RequestBody String token, HttpServletResponse response) throws IOException {
 
