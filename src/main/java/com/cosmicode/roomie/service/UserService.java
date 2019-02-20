@@ -291,6 +291,11 @@ public class UserService {
             });
     }
 
+    @Transactional(readOnly = true)
+    public Optional<User> getUserWithAuthoritiesByEmail(String email) {
+        return userRepository.findOneWithAuthoritiesByEmail(email);
+    }
+
     /**
      * @return a list of all the authorities
      */
