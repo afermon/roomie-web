@@ -8,6 +8,10 @@ import { RoomieSharedModule } from 'app/shared';
 import {
     adminState,
     AuditsComponent,
+    UserMgmtComponent,
+    UserMgmtDetailComponent,
+    UserMgmtUpdateComponent,
+    UserMgmtDeleteDialogComponent,
     LogsComponent,
     JhiMetricsMonitoringModalComponent,
     JhiMetricsMonitoringComponent,
@@ -25,6 +29,10 @@ import {
     ],
     declarations: [
         AuditsComponent,
+        UserMgmtComponent,
+        UserMgmtDetailComponent,
+        UserMgmtUpdateComponent,
+        UserMgmtDeleteDialogComponent,
         LogsComponent,
         JhiConfigurationComponent,
         JhiHealthCheckComponent,
@@ -34,7 +42,7 @@ import {
         JhiMetricsMonitoringModalComponent
     ],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-    entryComponents: [JhiHealthModalComponent, JhiMetricsMonitoringModalComponent],
+    entryComponents: [UserMgmtDeleteDialogComponent, JhiHealthModalComponent, JhiMetricsMonitoringModalComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RoomieAdminModule {

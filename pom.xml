@@ -72,7 +72,7 @@
         <!-- Sonar properties -->
         <sonar.host.url>http://localhost:9001</sonar.host.url>
         <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*</sonar.exclusions>
-        <sonar.issue.ignore.multicriteria>S3437,S4684,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>S3437,S4502,S4684,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
         <!-- Rule https://sonarcloud.io/coding_rules?open=Web%3ABoldAndItalicTagsCheck&rule_key=Web%3ABoldAndItalicTagsCheck is ignored. Even if we agree that using the "i" tag is an awful practice, this is what is recommended by http://fontawesome.io/examples/ -->
         <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>src/main/webapp/app/**/*.*</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>
         <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>Web:BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>
@@ -82,6 +82,9 @@
         <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AUndocumentedApi&rule_key=squid%3AUndocumentedApi is ignored, as we want to follow "clean code" guidelines and classes, methods and arguments names should be self-explanatory -->
         <sonar.issue.ignore.multicriteria.UndocumentedApi.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.UndocumentedApi.resourceKey>
         <sonar.issue.ignore.multicriteria.UndocumentedApi.ruleKey>squid:UndocumentedApi</sonar.issue.ignore.multicriteria.UndocumentedApi.ruleKey>
+        <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS4502&rule_key=squid%3AS4502 is ignored, as for JWT tokens we are not subject to CSRF attack -->
+        <sonar.issue.ignore.multicriteria.S4502.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.S4502.resourceKey>
+        <sonar.issue.ignore.multicriteria.S4502.ruleKey>squid:S4502</sonar.issue.ignore.multicriteria.S4502.ruleKey>
         <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS4684&rule_key=squid%3AS4684 -->
         <sonar.issue.ignore.multicriteria.S4684.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.S4684.resourceKey>
         <sonar.issue.ignore.multicriteria.S4684.ruleKey>squid:S4684</sonar.issue.ignore.multicriteria.S4684.ruleKey>
@@ -353,18 +356,20 @@
             <artifactId>problem-spring-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- Spring Cloud -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-security</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cloud-connectors</artifactId>
@@ -381,6 +386,21 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-heroku-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.28.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.facebook.business.sdk</groupId>
+            <artifactId>facebook-java-business-sdk</artifactId>
+            <version>3.2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
@@ -567,7 +587,6 @@
                         <referenceUrl>hibernate:spring:com.cosmicode.roomie.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>
-                        <diffExcludeObjects>oauth_access_token, oauth_approvals, oauth_client_details, oauth_client_token, oauth_code, oauth_refresh_token</diffExcludeObjects>
                     </configuration>
                     <dependencies>
                         <dependency>
