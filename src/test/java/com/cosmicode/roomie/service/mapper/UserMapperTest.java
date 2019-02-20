@@ -4,6 +4,7 @@ package com.cosmicode.roomie.service.mapper;
 import com.cosmicode.roomie.RoomieApp;
 import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.service.dto.UserDTO;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,12 +36,13 @@ public class UserMapperTest {
     private User user;
     private UserDTO userDto;
 
-    private static final String DEFAULT_ID = "id1";
+    private static final Long DEFAULT_ID = 1L;
 
     @Before
     public void init() {
         user = new User();
         user.setLogin(DEFAULT_LOGIN);
+        user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
         user.setEmail("johndoe@localhost");
         user.setFirstName("john");

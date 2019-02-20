@@ -59,36 +59,6 @@ spring:
     thymeleaf:
         mode: HTML
 
-# ===================================================================
-# OpenID Connect Settings. Default settings are for Keycloak in Docker.
-# Start Keycloak using `docker-compose -f src/main/docker/keycloak.yml up`.
-#
-# To use Okta, your settings should resemble the following:
-#
-# accessTokenUri: https://{yourOktaDomain}.com/oauth2/default/v1/token
-# userAuthorizationUri: https://{yourOktaDomain}.com/oauth2/default/v1/authorize
-# clientId: {copy after creating an OIDC app}
-# clientSecret: {copy after creating an OIDC app}
-# userInfoUri: https://{yourOktaDomain}.com/oauth2/default/v1/userinfo
-# tokenInfoUri: https://{yourOktaDomain}.com/oauth2/default/v1/introspect
-#
-# You can also override these properties using environment variables.
-# For example:
-#
-# export SECURITY_OAUTH2_CLIENT_CLIENT_ID="jhipster"
-# export SECURITY_OAUTH2_CLIENT_CLIENT_SECRET="38561a05"
-# ===================================================================
-security:
-    oauth2:
-        client:
-            access-token-uri: ${SECURITY_OAUTH2_ACCESS_TOKEN_URI}
-            user-authorization-uri: ${SECURITY_OAUTH2_USER_AUTHORIZATION_URI}
-            client-id: ${SECURITY_OAUTH2_CLIENT_CLIENT_ID}
-            client-secret: ${SECURITY_OAUTH2_CLIENT_CLIENT_SECRET}
-            scope: openid profile email
-        resource:
-            user-info-uri: ${SECURITY_OAUTH2_USER_INFO_URI}
-
 server:
     servlet:
         session:
