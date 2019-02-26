@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.*;
 
 @RestController
@@ -122,13 +123,21 @@ public class SocialLoginResource {
     @Timed
     public ResponseEntity authorizeClientFromGoogle(@RequestBody String token, HttpServletResponse response) throws IOException {
 
-        File file = new File(getClass().getResource("/googlecredentials.json").getFile());
+        Reader fileReader = null;
+
+        if(System.getenv("GOOGLE_OATH2_CREDENTIALS") != null) {
+            log.debug("Using env google credentials");
+            InputStream in = new FileInputStream(new File(System.getenv("GOOGLE_OATH2_CREDENTIALS")));
+            fileReader = new InputStreamReader(in, Charset.defaultCharset());
+        } else {
+            log.debug("Using file google credentials");
+            File file = new File(getClass().getResource("/googlecredentials.json").getFile());
+            fileReader = new FileReader(file);
+        }
+
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), fileReader);
 
         token=token.replace("\"","");
-
-        GoogleClientSecrets clientSecrets =
-            GoogleClientSecrets.load(
-                JacksonFactory.getDefaultInstance(), new FileReader(file));
 
         GoogleTokenResponse tokenResponse =
             new GoogleAuthorizationCodeTokenRequest(
