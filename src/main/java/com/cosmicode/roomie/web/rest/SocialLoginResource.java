@@ -127,8 +127,7 @@ public class SocialLoginResource {
 
         if(System.getenv("GOOGLE_OATH2_CREDENTIALS") != null) {
             log.debug("Using env google credentials");
-            InputStream in = new FileInputStream(new File(System.getenv("GOOGLE_OATH2_CREDENTIALS")));
-            fileReader = new InputStreamReader(in, Charset.defaultCharset());
+            fileReader = new StringReader(System.getenv("GOOGLE_OATH2_CREDENTIALS"));
         } else {
             log.debug("Using file google credentials");
             File file = new File(getClass().getResource("/googlecredentials.json").getFile());
