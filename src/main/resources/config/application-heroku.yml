@@ -10,12 +10,6 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-    instance:
-        hostname: roomie-web.herokuapp.com
-        non-secure-port: 80
-        prefer-ip-address: false
-
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource

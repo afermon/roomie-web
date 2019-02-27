@@ -153,6 +153,8 @@ public class AccountResource {
     @PostMapping(path = "/account/reset-password/init")
     @Timed
     public void requestPasswordReset(@RequestBody String mail) {
+       log.info("Reset password for: ->" + mail + "<-");
+       mail = mail.replace("\"", "");
        mailService.sendPasswordResetMail(
            userService.requestPasswordReset(mail)
                .orElseThrow(EmailNotFoundException::new)
