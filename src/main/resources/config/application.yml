@@ -90,7 +90,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: roomie@localhost
+        from: noreply@prod-roomie-web.herokuapp.com
     swagger:
         default-include-pattern: /api/.*
         title: Roomie API
