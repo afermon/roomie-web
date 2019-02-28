@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-roomie-state-heading" jhiTranslate="roomieApp.roomieState.home.createOrEditLabel">Create or edit a Roomie State</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!roomieState.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="roomieState.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomieState.state" for="field_state">State</label>
+                    <select class="form-control" name="state" [(ngModel)]="roomieState.state" id="field_state"  required>
+                        <option value="ACTIVE">{{'roomieApp.AccountState.ACTIVE' | translate}}</option>
+                        <option value="SUSPENDED">{{'roomieApp.AccountState.SUSPENDED' | translate}}</option>
+                        <option value="BANNED">{{'roomieApp.AccountState.BANNED' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.state?.dirty && editForm.controls.state?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.state?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomieState.suspendedDate" for="field_suspendedDate">Suspended Date</label>
+                    <div class="input-group">
+                        <input id="field_suspendedDate" type="text" class="form-control" name="suspendedDate" ngbDatepicker  #suspendedDateDp="ngbDatepicker" [(ngModel)]="roomieState.suspendedDate"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="suspendedDateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

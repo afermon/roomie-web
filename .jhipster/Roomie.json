@@ -1,0 +1,130 @@
+{
+    "name": "Roomie",
+    "fields": [
+        {
+            "fieldName": "birthDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "biography",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 4,
+            "fieldValidateRulesMaxlength": 750
+        },
+        {
+            "fieldName": "picture",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "Gender",
+            "fieldValues": "MALE,FEMALE,OTHER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "phone",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength",
+                "pattern"
+            ],
+            "fieldValidateRulesMinlength": 4,
+            "fieldValidateRulesMaxlength": 25,
+            "fieldValidateRulesPattern": "^(1[ \\-\\+]{0,3}|\\+1[ -\\+]{0,3}|\\+1|\\+)?((\\(\\+?1-[2-9][0-9]{1,2}\\))|(\\(\\+?[2-8][0-9][0-9]\\))|(\\(\\+?[1-9][0-9]\\))|(\\(\\+?[17]\\))|(\\([2-9][2-9]\\))|([ \\-\\.]{0,3}[0-9]{2,4}))?([ \\-\\.][0-9])?([ \\-\\.]{0,3}[0-9]{2,4}){2,3}$"
+        },
+        {
+            "fieldName": "mobileDeviceID",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 0,
+            "fieldValidateRulesMaxlength": 200
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "roomie"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "state",
+            "otherEntityName": "roomieState",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "roomie"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "address",
+            "otherEntityName": "address",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "roomie"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "configuration",
+            "otherEntityName": "userPreferences",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "roomie"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "roomExpenseSplit",
+            "otherEntityName": "roomExpenseSplit",
+            "otherEntityRelationshipName": "roomie"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "room",
+            "otherEntityName": "room",
+            "otherEntityRelationshipName": "owner"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "roomEvent",
+            "otherEntityName": "roomEvent",
+            "otherEntityRelationshipName": "organizer"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "lifestyle",
+            "otherEntityName": "roomFeature",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20190228025444",
+    "entityTableName": "roomie",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

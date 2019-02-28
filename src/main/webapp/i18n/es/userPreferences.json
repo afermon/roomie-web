@@ -1,0 +1,26 @@
+{
+    "roomieApp": {
+        "userPreferences": {
+            "home": {
+                "title": "User Preferences",
+                "createLabel": "Crear nuevo User Preferences",
+                "createOrEditLabel": "Crear o editar User Preferences",
+                "search": "Search for User Preferences"
+            },
+            "created": "Un nuevo User Preferences ha sido creado con el identificador {{ param }}",
+            "updated": "Un User Preferences ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un User Preferences ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar User Preferences {{ id }}?"
+            },
+            "detail": {
+                "title": "User Preferences"
+            },
+            "currency": "Currency",
+            "todoListNotifications": "Todo List Notifications",
+            "calendarNotifications": "Calendar Notifications",
+            "paymentsNotifications": "Payments Notifications",
+            "appointmentsNotifications": "Appointments Notifications"
+        }
+    }
+}

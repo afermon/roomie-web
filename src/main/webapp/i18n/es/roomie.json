@@ -1,0 +1,35 @@
+{
+    "roomieApp": {
+        "roomie": {
+            "home": {
+                "title": "Roomies",
+                "createLabel": "Crear nuevo Roomie",
+                "createOrEditLabel": "Crear o editar Roomie",
+                "search": "Search for Roomie"
+            },
+            "created": "Un nuevo Roomie ha sido creado con el identificador {{ param }}",
+            "updated": "Un Roomie ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Roomie ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Roomie {{ id }}?"
+            },
+            "detail": {
+                "title": "Roomie"
+            },
+            "birthDate": "Birth Date",
+            "biography": "Biography",
+            "picture": "Picture",
+            "gender": "Gender",
+            "phone": "Phone",
+            "mobileDeviceID": "Mobile Device ID",
+            "user": "User",
+            "state": "State",
+            "address": "Address",
+            "configuration": "Configuration",
+            "roomExpenseSplit": "Room Expense Split",
+            "room": "Room",
+            "roomEvent": "Room Event",
+            "lifestyle": "Lifestyle"
+        }
+    }
+}

@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-room-picture-heading" jhiTranslate="roomieApp.roomPicture.home.createOrEditLabel">Create or edit a Room Picture</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!roomPicture.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="roomPicture.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomPicture.url" for="field_url">Url</label>
+                    <input type="text" class="form-control" name="url" id="field_url"
+                        [(ngModel)]="roomPicture.url" required/>
+                    <div [hidden]="!(editForm.controls.url?.dirty && editForm.controls.url?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.url?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomPicture.isMain" for="field_isMain">Is Main</label>
+                    <input type="checkbox" class="form-control" name="isMain" id="field_isMain"
+                        [(ngModel)]="roomPicture.isMain" />
+                    <div [hidden]="!(editForm.controls.isMain?.dirty && editForm.controls.isMain?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.isMain?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomPicture.room" for="field_room">Room</label>
+                    <select class="form-control" id="field_room" name="room" [(ngModel)]="roomPicture.roomId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="roomOption.id" *ngFor="let roomOption of rooms; trackBy: trackRoomById">{{roomOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

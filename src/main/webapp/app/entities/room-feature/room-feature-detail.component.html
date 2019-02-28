@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomFeature">
+            <h2><span jhiTranslate="roomieApp.roomFeature.detail.title">Room Feature</span> {{roomFeature.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomFeature.lang">Lang</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.Lang.' + roomFeature.lang}}">{{roomFeature.lang}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomFeature.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.FeatureType.' + roomFeature.type}}">{{roomFeature.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomFeature.name">Name</span></dt>
+                <dd>
+                    <span>{{roomFeature.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomFeature.icon">Icon</span></dt>
+                <dd>
+                    <span>{{roomFeature.icon}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomFeature.description">Description</span></dt>
+                <dd>
+                    <span>{{roomFeature.description}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room-feature', roomFeature.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

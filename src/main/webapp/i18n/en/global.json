@@ -7,6 +7,22 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "roomie": "Roomie",
+                "roomieState": "Roomie State",
+                "address": "Address",
+                "userPreferences": "User Preferences",
+                "room": "Room",
+                "roomPicture": "Room Picture",
+                "roomFeature": "Room Feature",
+                "roomExpense": "Room Expense",
+                "roomExpenseSplit": "Room Expense Split",
+                "roomExpenseSplitRecord": "Room Expense Split Record",
+                "appointment": "Appointment",
+                "roomTask": "Room Task",
+                "roomEvent": "Room Event",
+                "userReport": "User Report",
+                "company": "Company",
+                "notification": "Notification",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

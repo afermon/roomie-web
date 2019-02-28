@@ -1,0 +1,243 @@
+
+enum Gender{
+    MALE, FEMALE, OTHER
+}
+
+enum AccountState{
+    ACTIVE, SUSPENDED, BANNED
+}
+
+enum RoomState{
+    SEARCH, PREMIUM
+}
+
+enum RoomType{
+    ROOM, APARTMENT, HOUSE
+}
+
+enum FeatureType{
+    AMENITIES, RESTRICTIONS, LIFESTYLE
+}
+
+enum Lang{
+    ESP, ENG
+}
+
+enum CurrencyType{
+    COLON, DOLLAR
+}
+
+enum AppointmentState{
+    ACCEPTED, DECLINED, PENDING
+}
+
+enum RoomTaskState{
+    PENDING, COMPLETED, LATE
+}
+
+enum ReportType{
+    USER, ROOM, APP
+}
+
+enum NotificationType{
+    APPOINTMENT, EXPENSE, TODO, EVENT
+}
+
+entity Roomie {
+    birthDate LocalDate required,
+    biography String minlength(4) maxlength(750)
+    picture String required,
+    gender Gender required,
+    phone String minlength(4) maxlength(25) pattern(/^(1[ \-\+]{0,3}|\+1[ -\+]{0,3}|\+1|\+)?((\(\+?1-[2-9][0-9]{1,2}\))|(\(\+?[2-8][0-9][0-9]\))|(\(\+?[1-9][0-9]\))|(\(\+?[17]\))|(\([2-9][2-9]\))|([ \-\.]{0,3}[0-9]{2,4}))?([ \-\.][0-9])?([ \-\.]{0,3}[0-9]{2,4}){2,3}$/), 
+    mobileDeviceID String required minlength(0) maxlength(200)
+}
+
+entity RoomieState{
+    state AccountState required
+    suspendedDate LocalDate
+}
+
+entity Address {
+    latitude BigDecimal required,
+    longitude BigDecimal required,
+    city String minlength(2) maxlength(50) required,
+    state String minlength(4) maxlength(50) required,
+    description String minlength(4) maxlength(500)
+}
+
+entity UserPreferences {
+    currency CurrencyType,
+    todoListNotifications Boolean,
+    calendarNotifications Boolean,
+    paymentsNotifications Boolean,
+    appointmentsNotifications Boolean
+}
+
+
+entity Room {
+    state RoomState required,
+    created Instant required,
+    published Instant required,
+    title String minlength(4) maxlength(100) required,
+    description String minlength(4) maxlength(2000), 
+    rooms Integer required,
+    roomType RoomType required,
+    apoinmentsNotes String minlength(4) maxlength(200), 
+	lookingForRoomie Boolean required,
+	availableFrom LocalDate required,
+	isPremium Boolean required
+}
+
+entity RoomPicture {
+    url String required,
+    isMain Boolean required
+}
+
+entity RoomFeature {
+    lang Lang required,
+    type FeatureType required
+    name String minlength(4) maxlength(50) required,
+    icon String required,
+    description String minlength(4) maxlength(100) 
+}
+
+entity RoomExpense {
+    name String minlength(4) maxlength(100)  required,
+    description String minlength(4) maxlength(500),
+    currency CurrencyType required,
+    amount Double required,
+    periodicity Integer required,
+    monthDay Integer required,
+    startDate LocalDate,
+    finishDate LocalDate
+}
+
+entity RoomExpenseSplit {
+    amount Double required
+}
+
+entity RoomExpenseSplitRecord {
+    date LocalDate required,
+    state String minlength(4) maxlength(25) required
+}
+
+entity Appointment {
+    description String required minlength(4) maxlength(500),
+    dateTime Instant required
+    state AppointmentState required
+}
+
+entity RoomTask {
+    created Instant required,
+    title String minlength(4) maxlength(50) required,
+    description String minlength(4) maxlength(500),
+    deadline Instant,
+    state RoomTaskState required
+}
+
+
+entity RoomEvent {
+    title String required minlength(4) maxlength(50),
+    description String minlength(4) maxlength(500),
+    isPrivate Boolean required,
+    startTime Instant required,
+    endTime Instant required
+}
+
+entity UserReport {
+    date LocalDate required
+    description String minlength(4) maxlength(500) required
+    type ReportType
+}
+
+entity Company{
+    name String required minlength(4) maxlength(50)
+    email String required minlength(4) maxlength(50)
+    address String required minlength(4) maxlength(100)
+    phone String required minlength(4) maxlength(50)
+    premiumCost Double required
+}
+
+entity Notification{
+    title String required minlength(4) maxlength(50)
+    body String required minlength(4) maxlength(200)
+    type NotificationType required
+    entityId Long required
+}
+
+relationship OneToMany {
+    RoomExpense{splits} to RoomExpenseSplit{expense}
+}
+
+relationship OneToMany {
+    Roomie to RoomExpenseSplit{roomie}
+}
+
+relationship OneToMany {
+    RoomExpenseSplit{records} to RoomExpenseSplitRecord{split}
+}
+
+relationship ManyToMany {
+    Room{roomies} to Roomie
+}
+
+relationship OneToMany {
+    Room to RoomExpense{room}
+}
+
+relationship OneToMany {
+    Roomie to Room{owner}
+}
+
+relationship OneToMany {
+    Room{picutres} to RoomPicture{room}
+}
+
+relationship OneToOne {
+    Room{address} to Address
+}
+
+relationship ManyToMany {
+    Room{features} to RoomFeature
+}
+
+relationship OneToMany {
+    Room{appointment} to Appointment{room}
+}
+
+relationship ManyToOne {
+    Appointment{petitioner} to Roomie
+}
+
+relationship OneToMany {
+    Room to RoomTask{room}
+    Room to RoomEvent{room}
+    Roomie to RoomEvent{organizer}
+}
+
+relationship OneToOne {
+    UserReport{roomie} to Roomie
+}
+
+relationship OneToOne {
+    UserReport{room} to Room
+}
+
+relationship OneToOne {
+    Roomie{user} to User
+    Roomie{state} to RoomieState
+    Roomie{address} to Address
+    Roomie{configuration} to UserPreferences
+}
+
+relationship ManyToMany {
+    Roomie{lifestyle} to RoomFeature
+}
+
+search Room, Address, Roomie, RoomFeature  with elasticsearch
+
+paginate all with pagination
+
+dto * with mapstruct
+
+service all with serviceClass

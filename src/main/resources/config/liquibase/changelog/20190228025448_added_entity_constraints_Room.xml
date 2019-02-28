@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Room.
+    -->
+    <changeSet id="20190228025448-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="address_id"
+                                 baseTableName="room"
+                                 constraintName="fk_room_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="rooms_id"
+                                 baseTableName="room_roomies"
+                                 constraintName="fk_room_roomies_rooms_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room"/>
+        <addForeignKeyConstraint baseColumnNames="roomies_id"
+                                 baseTableName="room_roomies"
+                                 constraintName="fk_room_roomies_roomies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roomie"/>
+        
+        <addForeignKeyConstraint baseColumnNames="rooms_id"
+                                 baseTableName="room_features"
+                                 constraintName="fk_room_features_rooms_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room"/>
+        <addForeignKeyConstraint baseColumnNames="features_id"
+                                 baseTableName="room_features"
+                                 constraintName="fk_room_features_features_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room_feature"/>
+        
+        <addForeignKeyConstraint baseColumnNames="owner_id"
+                                 baseTableName="room"
+                                 constraintName="fk_room_owner_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roomie"/>
+
+    </changeSet>
+</databaseChangeLog>
