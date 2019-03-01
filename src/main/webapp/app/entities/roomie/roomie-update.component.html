@@ -1,0 +1,152 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-roomie-heading" jhiTranslate="roomieApp.roomie.home.createOrEditLabel">Create or edit a Roomie</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!roomie.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="roomie.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.birthDate" for="field_birthDate">Birth Date</label>
+                    <div class="input-group">
+                        <input id="field_birthDate" type="text" class="form-control" name="birthDate" ngbDatepicker  #birthDateDp="ngbDatepicker" [(ngModel)]="roomie.birthDate"
+                        required/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="birthDateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div [hidden]="!(editForm.controls.birthDate?.dirty && editForm.controls.birthDate?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.birthDate?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.biography" for="field_biography">Biography</label>
+                    <input type="text" class="form-control" name="biography" id="field_biography"
+                        [(ngModel)]="roomie.biography" minlength="4" maxlength="750"/>
+                    <div [hidden]="!(editForm.controls.biography?.dirty && editForm.controls.biography?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.biography?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 4 }">
+                        This field is required to be at least 4 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.biography?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 750 }">
+                        This field cannot be longer than 750 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.picture" for="field_picture">Picture</label>
+                    <input type="text" class="form-control" name="picture" id="field_picture"
+                        [(ngModel)]="roomie.picture" required/>
+                    <div [hidden]="!(editForm.controls.picture?.dirty && editForm.controls.picture?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.picture?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.gender" for="field_gender">Gender</label>
+                    <select class="form-control" name="gender" [(ngModel)]="roomie.gender" id="field_gender"  required>
+                        <option value="MALE">{{'roomieApp.Gender.MALE' | translate}}</option>
+                        <option value="FEMALE">{{'roomieApp.Gender.FEMALE' | translate}}</option>
+                        <option value="OTHER">{{'roomieApp.Gender.OTHER' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.gender?.dirty && editForm.controls.gender?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.gender?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.phone" for="field_phone">Phone</label>
+                    <input type="text" class="form-control" name="phone" id="field_phone"
+                        [(ngModel)]="roomie.phone" minlength="4" maxlength="25" pattern="^(1[ \-\+]{0,3}|\+1[ -\+]{0,3}|\+1|\+)?((\(\+?1-[2-9][0-9]{1,2}\))|(\(\+?[2-8][0-9][0-9]\))|(\(\+?[1-9][0-9]\))|(\(\+?[17]\))|(\([2-9][2-9]\))|([ \-\.]{0,3}[0-9]{2,4}))?([ \-\.][0-9])?([ \-\.]{0,3}[0-9]{2,4}){2,3}$"/>
+                    <div [hidden]="!(editForm.controls.phone?.dirty && editForm.controls.phone?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.phone?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 4 }">
+                        This field is required to be at least 4 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.phone?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 25 }">
+                        This field cannot be longer than 25 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.phone?.errors?.pattern" jhiTranslate="entity.validation.pattern" translateValues="{ pattern: 'Phone' }">
+                            This field should follow pattern for "Phone".
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.mobileDeviceID" for="field_mobileDeviceID">Mobile Device ID</label>
+                    <input type="text" class="form-control" name="mobileDeviceID" id="field_mobileDeviceID"
+                        [(ngModel)]="roomie.mobileDeviceID" required minlength="0" maxlength="200"/>
+                    <div [hidden]="!(editForm.controls.mobileDeviceID?.dirty && editForm.controls.mobileDeviceID?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 0 }">
+                        This field is required to be at least 0 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 200 }">
+                        This field cannot be longer than 200 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.user" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" [(ngModel)]="roomie.userId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.state" for="field_state">State</label>
+                    <select class="form-control" id="field_state" name="state" [(ngModel)]="roomie.stateId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="roomieStateOption.id" *ngFor="let roomieStateOption of states; trackBy: trackRoomieStateById">{{roomieStateOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.address" for="field_address">Address</label>
+                    <select class="form-control" id="field_address" name="address" [(ngModel)]="roomie.addressId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomie.configuration" for="field_configuration">Configuration</label>
+                    <select class="form-control" id="field_configuration" name="configuration" [(ngModel)]="roomie.configurationId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userPreferencesOption.id" *ngFor="let userPreferencesOption of configurations; trackBy: trackUserPreferencesById">{{userPreferencesOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="roomieApp.roomie.lifestyle" for="field_lifestyle">Lifestyle</label>
+                    <select class="form-control" id="field_lifestyle" multiple name="lifestyle" [(ngModel)]="roomie.lifestyles">
+                        <option [ngValue]="getSelected(roomie.lifestyles, roomFeatureOption)" *ngFor="let roomFeatureOption of roomfeatures; trackBy: trackRoomFeatureById">{{roomFeatureOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

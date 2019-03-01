@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomEvent">
+            <h2><span jhiTranslate="roomieApp.roomEvent.detail.title">Room Event</span> {{roomEvent.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomEvent.title">Title</span></dt>
+                <dd>
+                    <span>{{roomEvent.title}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomEvent.description">Description</span></dt>
+                <dd>
+                    <span>{{roomEvent.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomEvent.isPrivate">Is Private</span></dt>
+                <dd>
+                    <span>{{roomEvent.isPrivate}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomEvent.startTime">Start Time</span></dt>
+                <dd>
+                    <span>{{roomEvent.startTime}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomEvent.endTime">End Time</span></dt>
+                <dd>
+                    <span>{{roomEvent.endTime}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomEvent.room">Room</span></dt>
+                <dd>
+                    <div *ngIf="roomEvent.roomId">
+                        <a [routerLink]="['/room', roomEvent.roomId, 'view']">{{roomEvent.roomId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomEvent.organizer">Organizer</span></dt>
+                <dd>
+                    <div *ngIf="roomEvent.organizerId">
+                        <a [routerLink]="['/roomie', roomEvent.organizerId, 'view']">{{roomEvent.organizerId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room-event', roomEvent.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

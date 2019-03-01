@@ -1,0 +1,9 @@
+{
+    "roomieApp": {
+        "RoomState": {
+            "null": "",
+            "SEARCH": "SEARCH",
+            "PREMIUM": "PREMIUM"
+        }
+    }
+}

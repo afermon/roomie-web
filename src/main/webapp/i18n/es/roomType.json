@@ -1,0 +1,10 @@
+{
+    "roomieApp": {
+        "RoomType": {
+            "null": "",
+            "ROOM": "ROOM",
+            "APARTMENT": "APARTMENT",
+            "HOUSE": "HOUSE"
+        }
+    }
+}

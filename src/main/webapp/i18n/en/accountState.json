@@ -1,0 +1,10 @@
+{
+    "roomieApp": {
+        "AccountState": {
+            "null": "",
+            "ACTIVE": "ACTIVE",
+            "SUSPENDED": "SUSPENDED",
+            "BANNED": "BANNED"
+        }
+    }
+}

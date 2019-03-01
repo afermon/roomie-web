@@ -1,0 +1,41 @@
+{
+    "name": "RoomExpenseSplit",
+    "fields": [
+        {
+            "fieldName": "amount",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "records",
+            "otherEntityName": "roomExpenseSplitRecord",
+            "otherEntityRelationshipName": "split"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "expense",
+            "otherEntityName": "roomExpense",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "roomie",
+            "otherEntityName": "roomie",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190228025452",
+    "entityTableName": "room_expense_split",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
