@@ -27,11 +27,11 @@ public class Address implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "latitude", precision = 10, scale = 2, nullable = false)
+    @Column(name = "latitude", precision = 15, scale = 13, nullable = false)
     private BigDecimal latitude;
 
     @NotNull
-    @Column(name = "longitude", precision = 10, scale = 2, nullable = false)
+    @Column(name = "longitude", precision = 16, scale = 13, nullable = false)
     private BigDecimal longitude;
 
     @NotNull
