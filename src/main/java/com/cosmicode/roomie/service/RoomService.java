@@ -75,7 +75,7 @@ public class RoomService {
     public Page<RoomDTO> findAllWithEagerRelationships(Pageable pageable) {
         return roomRepository.findAllWithEagerRelationships(pageable).map(roomMapper::toDto);
     }
-    
+
 
     /**
      * Get one room by id.
@@ -114,4 +114,6 @@ public class RoomService {
         return roomSearchRepository.search(queryStringQuery(query), pageable)
             .map(roomMapper::toDto);
     }
+
+
 }
