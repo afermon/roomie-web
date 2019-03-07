@@ -75,7 +75,7 @@ public class RoomieService {
     public Page<RoomieDTO> findAllWithEagerRelationships(Pageable pageable) {
         return roomieRepository.findAllWithEagerRelationships(pageable).map(roomieMapper::toDto);
     }
-    
+
 
     /**
      * Get one roomie by id.
@@ -113,5 +113,10 @@ public class RoomieService {
         log.debug("Request to search for a page of Roomies for query {}", query);
         return roomieSearchRepository.search(queryStringQuery(query), pageable)
             .map(roomieMapper::toDto);
+    }
+
+    public RoomieDTO findCurrentLoggedRoomie(){
+        log.debug("Request to get currently logged Roomie");
+        return  roomieMapper.toDto(roomieRepository.findCurrentlyLoggedRoomie());
     }
 }

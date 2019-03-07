@@ -145,4 +145,9 @@ public class RoomTaskResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/tasksByRoom/{id}")
+    public List<RoomTaskDTO> getRoomTasksByRoomId(@PathVariable Long id){
+        return roomTaskService.findAllByRoom(id);
+    }
+
 }

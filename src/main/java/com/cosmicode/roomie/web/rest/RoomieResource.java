@@ -151,4 +151,10 @@ public class RoomieResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/currentRoomie")
+    public RoomieDTO getCurrentLoggedRoomue(){
+        log.debug("REST request to get currently logged roomie");
+        return roomieService.findCurrentLoggedRoomie();
+    }
+
 }
