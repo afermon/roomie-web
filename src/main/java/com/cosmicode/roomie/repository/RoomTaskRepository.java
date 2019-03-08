@@ -15,5 +15,5 @@ import java.util.List;
 @Repository
 public interface RoomTaskRepository extends JpaRepository<RoomTask, Long> {
 
-    List<RoomTask> findAllByRoom(Long id);
+    List<RoomTask> findByRoomId(long id);
 }
