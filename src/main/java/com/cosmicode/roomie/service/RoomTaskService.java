@@ -110,6 +110,6 @@ public class RoomTaskService {
     @Transactional(readOnly = true)
     public List<RoomTaskDTO> findAllByRoom(Long id) {
         log.debug("Request to get all RoomTasks by room id");
-        return roomTaskMapper.toDto(roomTaskRepository.findAllByRoom(id));
+        return roomTaskMapper.toDto(roomTaskRepository.findByRoomId(id));
     }
 }
