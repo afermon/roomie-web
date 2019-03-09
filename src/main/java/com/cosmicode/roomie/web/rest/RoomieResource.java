@@ -1,11 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.roomie.domain.RoomFeature;
+import com.cosmicode.roomie.domain.Roomie;
+import com.cosmicode.roomie.domain.RoomieState;
+import com.cosmicode.roomie.domain.enumeration.AccountState;
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
+import com.cosmicode.roomie.service.AddressService;
 import com.cosmicode.roomie.service.RoomieService;
+import com.cosmicode.roomie.service.RoomieStateService;
+import com.cosmicode.roomie.service.UserPreferencesService;
+import com.cosmicode.roomie.service.dto.*;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
-import com.cosmicode.roomie.service.dto.RoomieDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +25,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -38,9 +49,15 @@ public class RoomieResource {
     private static final String ENTITY_NAME = "roomie";
 
     private final RoomieService roomieService;
+    private final RoomieStateService roomieStateService;
+    private final AddressService  addressService;
+    private final UserPreferencesService userPreferencesService;
 
-    public RoomieResource(RoomieService roomieService) {
+    public RoomieResource(RoomieService roomieService, RoomieStateService roomieStateService, AddressService addressService, UserPreferencesService userPreferencesService) {
         this.roomieService = roomieService;
+        this.roomieStateService = roomieStateService;
+        this.addressService = addressService;
+        this.userPreferencesService = userPreferencesService;
     }
 
     /**
@@ -57,6 +74,32 @@ public class RoomieResource {
         if (roomieDTO.getId() != null) {
             throw new BadRequestAlertException("A new roomie cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        BigDecimal latlong = new BigDecimal(0);
+        RoomieStateDTO state = new RoomieStateDTO();
+        state.setState(AccountState.ACTIVE);
+        state = roomieStateService.save(state);
+
+        AddressDTO address = new AddressDTO();
+        address.setLatitude(latlong);
+        address.setLongitude(latlong);
+        address.setCity("Default");
+        address.setState("Default");
+        address = addressService.save(address);
+
+        UserPreferencesDTO pref = new UserPreferencesDTO();
+        pref.setAppointmentsNotifications(true);
+        pref.setCalendarNotifications(true);
+        pref.setPaymentsNotifications(true);
+        pref.setTodoListNotifications(true);
+        pref.setCurrency(CurrencyType.COLON);
+        pref = userPreferencesService.save(pref);
+
+        roomieDTO.setAddressId(address.getId());
+        roomieDTO.setConfigurationId(pref.getId());
+        roomieDTO.setStateId(state.getId());
+        Set<RoomFeatureDTO> roomFeatures = new HashSet<RoomFeatureDTO>();
+        roomieDTO.setLifestyles(roomFeatures);
+
         RoomieDTO result = roomieService.save(roomieDTO);
         return ResponseEntity.created(new URI("/api/roomies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
