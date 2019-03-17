@@ -15,7 +15,7 @@ public interface RoomMapper extends EntityMapper<RoomDTO, Room> {
     @Mapping(source = "owner.id", target = "ownerId")
     RoomDTO toDto(Room room);
 
-    @Mapping(source = "addressId", target = "address")
+    @Mapping(target = "address")
     @Mapping(target = "roomExpenses", ignore = true)
     @Mapping(target = "picutres", ignore = true)
     @Mapping(target = "appointments", ignore = true)

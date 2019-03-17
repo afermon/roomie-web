@@ -53,6 +53,8 @@ public class RoomDTO implements Serializable {
 
     private Long addressId;
 
+    private AddressDTO address;
+
     private Set<RoomieDTO> roomies = new HashSet<>();
 
     private Set<RoomFeatureDTO> features = new HashSet<>();
@@ -161,6 +163,18 @@ public class RoomDTO implements Serializable {
 
     public void setAddressId(Long addressId) {
         this.addressId = addressId;
+    }
+
+    public Boolean getLookingForRoomie() {
+        return lookingForRoomie;
+    }
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
     }
 
     public Set<RoomieDTO> getRoomies() {
