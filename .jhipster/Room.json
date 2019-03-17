@@ -102,18 +102,6 @@
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "roomExpense",
-            "otherEntityName": "roomExpense",
-            "otherEntityRelationshipName": "room"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "picutres",
-            "otherEntityName": "roomPicture",
-            "otherEntityRelationshipName": "room"
-        },
-        {
-            "relationshipType": "one-to-many",
             "relationshipName": "appointment",
             "otherEntityName": "appointment",
             "otherEntityRelationshipName": "room"
@@ -151,6 +139,18 @@
             "relationshipName": "owner",
             "otherEntityName": "roomie",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "expenses",
+            "otherEntityName": "roomExpense",
+            "otherEntityRelationshipName": "room"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pictures",
+            "otherEntityName": "roomPicture",
+            "otherEntityRelationshipName": "room"
         }
     ],
     "changelogDate": "20190228025448",

@@ -102,6 +102,7 @@ entity RoomFeature {
 }
 
 entity RoomExpense {
+    isRent Boolean,
     name String minlength(4) maxlength(100)  required,
     description String minlength(4) maxlength(500),
     currency CurrencyType required,
@@ -181,16 +182,16 @@ relationship ManyToMany {
     Room{roomies} to Roomie
 }
 
-relationship OneToMany {
-    Room to RoomExpense{room}
+relationship ManyToOne {
+    RoomExpense{room} to Room{expenses}
 }
 
 relationship OneToMany {
     Roomie to Room{owner}
 }
 
-relationship OneToMany {
-    Room{picutres} to RoomPicture{room}
+relationship ManyToOne {
+    RoomPicture{room} to Room{pictures}
 }
 
 relationship OneToOne {

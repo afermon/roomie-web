@@ -16,6 +16,7 @@
             "detail": {
                 "title": "Room Expense"
             },
+            "isRent": "Is Rent",
             "name": "Name",
             "description": "Description",
             "currency": "Currency",

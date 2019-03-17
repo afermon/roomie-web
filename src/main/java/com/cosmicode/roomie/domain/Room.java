@@ -87,12 +87,6 @@ public class Room implements Serializable {
 
     @OneToMany(mappedBy = "room")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<RoomExpense> roomExpenses = new HashSet<>();
-    @OneToMany(mappedBy = "room")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<RoomPicture> picutres = new HashSet<>();
-    @OneToMany(mappedBy = "room")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Appointment> appointments = new HashSet<>();
     @OneToMany(mappedBy = "room")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -118,6 +112,12 @@ public class Room implements Serializable {
     @JsonIgnoreProperties("rooms")
     private Roomie owner;
 
+    @OneToMany(mappedBy = "room")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<RoomExpense> expenses = new HashSet<>();
+    @OneToMany(mappedBy = "room")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<RoomPicture> pictures = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -283,56 +283,6 @@ public class Room implements Serializable {
         this.address = address;
     }
 
-    public Set<RoomExpense> getRoomExpenses() {
-        return roomExpenses;
-    }
-
-    public Room roomExpenses(Set<RoomExpense> roomExpenses) {
-        this.roomExpenses = roomExpenses;
-        return this;
-    }
-
-    public Room addRoomExpense(RoomExpense roomExpense) {
-        this.roomExpenses.add(roomExpense);
-        roomExpense.setRoom(this);
-        return this;
-    }
-
-    public Room removeRoomExpense(RoomExpense roomExpense) {
-        this.roomExpenses.remove(roomExpense);
-        roomExpense.setRoom(null);
-        return this;
-    }
-
-    public void setRoomExpenses(Set<RoomExpense> roomExpenses) {
-        this.roomExpenses = roomExpenses;
-    }
-
-    public Set<RoomPicture> getPicutres() {
-        return picutres;
-    }
-
-    public Room picutres(Set<RoomPicture> roomPictures) {
-        this.picutres = roomPictures;
-        return this;
-    }
-
-    public Room addPicutres(RoomPicture roomPicture) {
-        this.picutres.add(roomPicture);
-        roomPicture.setRoom(this);
-        return this;
-    }
-
-    public Room removePicutres(RoomPicture roomPicture) {
-        this.picutres.remove(roomPicture);
-        roomPicture.setRoom(null);
-        return this;
-    }
-
-    public void setPicutres(Set<RoomPicture> roomPictures) {
-        this.picutres = roomPictures;
-    }
-
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -465,6 +415,56 @@ public class Room implements Serializable {
 
     public void setOwner(Roomie roomie) {
         this.owner = roomie;
+    }
+
+    public Set<RoomExpense> getExpenses() {
+        return expenses;
+    }
+
+    public Room expenses(Set<RoomExpense> roomExpenses) {
+        this.expenses = roomExpenses;
+        return this;
+    }
+
+    public Room addExpenses(RoomExpense roomExpense) {
+        this.expenses.add(roomExpense);
+        roomExpense.setRoom(this);
+        return this;
+    }
+
+    public Room removeExpenses(RoomExpense roomExpense) {
+        this.expenses.remove(roomExpense);
+        roomExpense.setRoom(null);
+        return this;
+    }
+
+    public void setExpenses(Set<RoomExpense> roomExpenses) {
+        this.expenses = roomExpenses;
+    }
+
+    public Set<RoomPicture> getPictures() {
+        return pictures;
+    }
+
+    public Room pictures(Set<RoomPicture> roomPictures) {
+        this.pictures = roomPictures;
+        return this;
+    }
+
+    public Room addPictures(RoomPicture roomPicture) {
+        this.pictures.add(roomPicture);
+        roomPicture.setRoom(this);
+        return this;
+    }
+
+    public Room removePictures(RoomPicture roomPicture) {
+        this.pictures.remove(roomPicture);
+        roomPicture.setRoom(null);
+        return this;
+    }
+
+    public void setPictures(Set<RoomPicture> roomPictures) {
+        this.pictures = roomPictures;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
