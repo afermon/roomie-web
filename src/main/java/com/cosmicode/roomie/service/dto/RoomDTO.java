@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import com.cosmicode.roomie.domain.RoomPicture;
 import com.cosmicode.roomie.domain.enumeration.RoomState;
 import com.cosmicode.roomie.domain.enumeration.RoomType;
 
@@ -57,11 +59,15 @@ public class RoomDTO implements Serializable {
 
     private Long priceId;
 
+    private RoomExpenseDTO price;
+
     private Set<RoomieDTO> roomies = new HashSet<>();
 
     private Set<RoomFeatureDTO> features = new HashSet<>();
 
     private Long ownerId;
+
+    private Set<RoomPictureDTO> pictures = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -205,6 +211,22 @@ public class RoomDTO implements Serializable {
 
     public void setAddress(AddressDTO address) {
         this.address = address;
+    }
+
+    public RoomExpenseDTO getPrice() {
+        return price;
+    }
+
+    public void setPrice(RoomExpenseDTO price) {
+        this.price = price;
+    }
+
+    public Set<RoomPictureDTO> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<RoomPictureDTO> pictures) {
+        this.pictures = pictures;
     }
 
     @Override

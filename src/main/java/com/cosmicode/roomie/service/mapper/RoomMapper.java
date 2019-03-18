@@ -23,7 +23,7 @@ public interface RoomMapper extends EntityMapper<RoomDTO, Room> {
     @Mapping(target = "roomEvents", ignore = true)
     @Mapping(source = "ownerId", target = "owner")
     @Mapping(target = "expenses", ignore = true)
-    @Mapping(target = "pictures", ignore = true)
+    @Mapping(target = "pictures")
     Room toEntity(RoomDTO roomDTO);
 
     default Room fromId(Long id) {
