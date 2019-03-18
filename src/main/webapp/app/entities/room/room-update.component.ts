@@ -10,6 +10,8 @@ import { IRoom } from 'app/shared/model/room.model';
 import { RoomService } from './room.service';
 import { IAddress } from 'app/shared/model/address.model';
 import { AddressService } from 'app/entities/address';
+import { IRoomExpense } from 'app/shared/model/room-expense.model';
+import { RoomExpenseService } from 'app/entities/room-expense';
 import { IRoomie } from 'app/shared/model/roomie.model';
 import { RoomieService } from 'app/entities/roomie';
 import { IRoomFeature } from 'app/shared/model/room-feature.model';
@@ -25,6 +27,8 @@ export class RoomUpdateComponent implements OnInit {
 
     addresses: IAddress[];
 
+    prices: IRoomExpense[];
+
     roomies: IRoomie[];
 
     roomfeatures: IRoomFeature[];
@@ -36,6 +40,7 @@ export class RoomUpdateComponent implements OnInit {
         protected jhiAlertService: JhiAlertService,
         protected roomService: RoomService,
         protected addressService: AddressService,
+        protected roomExpenseService: RoomExpenseService,
         protected roomieService: RoomieService,
         protected roomFeatureService: RoomFeatureService,
         protected activatedRoute: ActivatedRoute
@@ -56,6 +61,21 @@ export class RoomUpdateComponent implements OnInit {
                     this.addressService.find(this.room.addressId).subscribe(
                         (subRes: HttpResponse<IAddress>) => {
                             this.addresses = [subRes.body].concat(res.body);
+                        },
+                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                    );
+                }
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.roomExpenseService.query({ filter: 'room-is-null' }).subscribe(
+            (res: HttpResponse<IRoomExpense[]>) => {
+                if (!this.room.priceId) {
+                    this.prices = res.body;
+                } else {
+                    this.roomExpenseService.find(this.room.priceId).subscribe(
+                        (subRes: HttpResponse<IRoomExpense>) => {
+                            this.prices = [subRes.body].concat(res.body);
                         },
                         (subRes: HttpErrorResponse) => this.onError(subRes.message)
                     );
@@ -110,6 +130,10 @@ export class RoomUpdateComponent implements OnInit {
     }
 
     trackAddressById(index: number, item: IAddress) {
+        return item.id;
+    }
+
+    trackRoomExpenseById(index: number, item: IRoomExpense) {
         return item.id;
     }
 

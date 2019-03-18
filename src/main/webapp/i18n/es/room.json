@@ -28,14 +28,15 @@
             "availableFrom": "Available From",
             "isPremium": "Is Premium",
             "address": "Address",
-            "roomExpense": "Room Expense",
-            "picutres": "Picutres",
+            "price": "Price",
             "appointment": "Appointment",
             "roomTask": "Room Task",
             "roomEvent": "Room Event",
             "roomies": "Roomies",
             "features": "Features",
-            "owner": "Owner"
+            "owner": "Owner",
+            "expenses": "Expenses",
+            "pictures": "Pictures"
         }
     }
 }

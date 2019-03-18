@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import com.cosmicode.roomie.domain.RoomPicture;
 import com.cosmicode.roomie.domain.enumeration.RoomState;
 import com.cosmicode.roomie.domain.enumeration.RoomType;
 
@@ -53,11 +55,19 @@ public class RoomDTO implements Serializable {
 
     private Long addressId;
 
+    private AddressDTO address;
+
+    private Long priceId;
+
+    private RoomExpenseDTO price;
+
     private Set<RoomieDTO> roomies = new HashSet<>();
 
     private Set<RoomFeatureDTO> features = new HashSet<>();
 
     private Long ownerId;
+
+    private Set<RoomPictureDTO> pictures = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -163,6 +173,14 @@ public class RoomDTO implements Serializable {
         this.addressId = addressId;
     }
 
+    public Long getPriceId() {
+        return priceId;
+    }
+
+    public void setPriceId(Long roomExpenseId) {
+        this.priceId = roomExpenseId;
+    }
+
     public Set<RoomieDTO> getRoomies() {
         return roomies;
     }
@@ -185,6 +203,30 @@ public class RoomDTO implements Serializable {
 
     public void setOwnerId(Long roomieId) {
         this.ownerId = roomieId;
+    }
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
+    }
+
+    public RoomExpenseDTO getPrice() {
+        return price;
+    }
+
+    public void setPrice(RoomExpenseDTO price) {
+        this.price = price;
+    }
+
+    public Set<RoomPictureDTO> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<RoomPictureDTO> pictures) {
+        this.pictures = pictures;
     }
 
     @Override
@@ -224,6 +266,7 @@ public class RoomDTO implements Serializable {
             ", availableFrom='" + getAvailableFrom() + "'" +
             ", isPremium='" + isIsPremium() + "'" +
             ", address=" + getAddressId() +
+            ", price=" + getPriceId() +
             ", owner=" + getOwnerId() +
             "}";
     }

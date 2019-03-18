@@ -35,7 +35,7 @@ public class RoomPicture implements Serializable {
     private Boolean isMain;
 
     @ManyToOne
-    @JsonIgnoreProperties("picutres")
+    @JsonIgnoreProperties("pictures")
     private Room room;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

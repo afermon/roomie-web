@@ -181,20 +181,21 @@ relationship ManyToMany {
     Room{roomies} to Roomie
 }
 
-relationship OneToMany {
-    Room to RoomExpense{room}
+relationship ManyToOne {
+    RoomExpense{room} to Room{expenses}
 }
 
 relationship OneToMany {
     Roomie to Room{owner}
 }
 
-relationship OneToMany {
-    Room{picutres} to RoomPicture{room}
+relationship ManyToOne {
+    RoomPicture{room} to Room{pictures}
 }
 
 relationship OneToOne {
     Room{address} to Address
+    Room{price} to RoomExpense
 }
 
 relationship ManyToMany {

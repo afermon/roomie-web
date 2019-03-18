@@ -48,7 +48,7 @@ public class CacheConfiguration {
             cm.createCache(com.cosmicode.roomie.domain.UserPreferences.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Room.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomExpenses", jcacheConfiguration);
-            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".picutres", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".pictures", jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".appointments", jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomTasks", jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomEvents", jcacheConfiguration);
@@ -67,6 +67,7 @@ public class CacheConfiguration {
             cm.createCache(com.cosmicode.roomie.domain.UserReport.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Company.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Notification.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".expenses", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

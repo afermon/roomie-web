@@ -2,17 +2,8 @@ image: atlassian/default-image:2
 clone:
   depth: full
 pipelines:
-  default:
-    - step:
-        name: Build test
-        caches:
-          - maven
-          - node
-        script:
-          - mvn dependency:go-offline
-          - mvn integration-test
   branches:
-     master: 
+     master:
        - step:
            name: Test
            caches:
