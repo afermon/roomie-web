@@ -42,6 +42,7 @@
             <th jhiSortBy="availableFrom"><span jhiTranslate="roomieApp.room.availableFrom">Available From</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="isPremium"><span jhiTranslate="roomieApp.room.isPremium">Is Premium</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="addressId"><span jhiTranslate="roomieApp.room.address">Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="priceId"><span jhiTranslate="roomieApp.room.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="ownerId"><span jhiTranslate="roomieApp.room.owner">Owner</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -63,6 +64,11 @@
                 <td>
                     <div *ngIf="room.addressId">
                         <a [routerLink]="['../address', room.addressId , 'view' ]" >{{room.addressId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="room.priceId">
+                        <a [routerLink]="['../room-expense', room.priceId , 'view' ]" >{{room.priceId}}</a>
                     </div>
                 </td>
                 <td>

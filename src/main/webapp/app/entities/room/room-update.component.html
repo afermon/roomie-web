@@ -181,6 +181,13 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.room.price" for="field_price">Price</label>
+                    <select class="form-control" id="field_price" name="price" [(ngModel)]="room.priceId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="roomExpenseOption.id" *ngFor="let roomExpenseOption of prices; trackBy: trackRoomExpenseById">{{roomExpenseOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label jhiTranslate="roomieApp.room.roomies" for="field_roomies">Roomies</label>
                     <select class="form-control" id="field_roomies" multiple name="roomies" [(ngModel)]="room.roomies">
                         <option [ngValue]="getSelected(room.roomies, roomieOption)" *ngFor="let roomieOption of roomies; trackBy: trackRoomieById">{{roomieOption.id}}</option>

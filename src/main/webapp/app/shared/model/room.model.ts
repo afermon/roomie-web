@@ -32,6 +32,7 @@ export interface IRoom {
     availableFrom?: Moment;
     isPremium?: boolean;
     addressId?: number;
+    priceId?: number;
     appointments?: IAppointment[];
     roomTasks?: IRoomTask[];
     roomEvents?: IRoomEvent[];
@@ -57,6 +58,7 @@ export class Room implements IRoom {
         public availableFrom?: Moment,
         public isPremium?: boolean,
         public addressId?: number,
+        public priceId?: number,
         public appointments?: IAppointment[],
         public roomTasks?: IRoomTask[],
         public roomEvents?: IRoomEvent[],

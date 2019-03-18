@@ -32,9 +32,6 @@ public class RoomExpense implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "is_rent")
-    private Boolean isRent;
-
     @NotNull
     @Size(min = 4, max = 100)
     @Column(name = "name", length = 100, nullable = false)
@@ -81,19 +78,6 @@ public class RoomExpense implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean isIsRent() {
-        return isRent;
-    }
-
-    public RoomExpense isRent(Boolean isRent) {
-        this.isRent = isRent;
-        return this;
-    }
-
-    public void setIsRent(Boolean isRent) {
-        this.isRent = isRent;
     }
 
     public String getName() {
@@ -263,7 +247,6 @@ public class RoomExpense implements Serializable {
     public String toString() {
         return "RoomExpense{" +
             "id=" + getId() +
-            ", isRent='" + isIsRent() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", currency='" + getCurrency() + "'" +

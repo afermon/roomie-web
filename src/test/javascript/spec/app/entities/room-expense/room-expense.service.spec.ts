@@ -25,7 +25,7 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new RoomExpense(0, false, 'AAAAAAA', 'AAAAAAA', CurrencyType.COLON, 0, 0, 0, currentDate, currentDate);
+            elemDefault = new RoomExpense(0, 'AAAAAAA', 'AAAAAAA', CurrencyType.COLON, 0, 0, 0, currentDate, currentDate);
         });
 
         describe('Service methods', async () => {
@@ -73,7 +73,6 @@ describe('Service Tests', () => {
             it('should update a RoomExpense', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        isRent: true,
                         name: 'BBBBBB',
                         description: 'BBBBBB',
                         currency: 'BBBBBB',
@@ -104,7 +103,6 @@ describe('Service Tests', () => {
             it('should return a list of RoomExpense', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        isRent: true,
                         name: 'BBBBBB',
                         description: 'BBBBBB',
                         currency: 'BBBBBB',

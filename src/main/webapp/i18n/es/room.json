@@ -28,6 +28,7 @@
             "availableFrom": "Available From",
             "isPremium": "Is Premium",
             "address": "Address",
+            "price": "Price",
             "appointment": "Appointment",
             "roomTask": "Room Task",
             "roomEvent": "Room Event",

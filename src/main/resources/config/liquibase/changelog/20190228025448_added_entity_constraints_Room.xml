@@ -14,6 +14,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="address"/>
 
+        <addForeignKeyConstraint baseColumnNames="price_id"
+                                 baseTableName="room"
+                                 constraintName="fk_room_price_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room_expense"/>
+
         <addForeignKeyConstraint baseColumnNames="rooms_id"
                                  baseTableName="room_roomies"
                                  constraintName="fk_room_roomies_rooms_id"

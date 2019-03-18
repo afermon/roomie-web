@@ -2,10 +2,6 @@
     "name": "RoomExpense",
     "fields": [
         {
-            "fieldName": "isRent",
-            "fieldType": "Boolean"
-        },
-        {
             "fieldName": "name",
             "fieldType": "String",
             "fieldValidateRules": [

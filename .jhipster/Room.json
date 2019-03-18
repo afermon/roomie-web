@@ -101,6 +101,14 @@
             "otherEntityRelationshipName": "room"
         },
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "price",
+            "otherEntityName": "roomExpense",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "room"
+        },
+        {
             "relationshipType": "one-to-many",
             "relationshipName": "appointment",
             "otherEntityName": "appointment",

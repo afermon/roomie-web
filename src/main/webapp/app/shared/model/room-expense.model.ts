@@ -8,7 +8,6 @@ export const enum CurrencyType {
 
 export interface IRoomExpense {
     id?: number;
-    isRent?: boolean;
     name?: string;
     description?: string;
     currency?: CurrencyType;
@@ -24,7 +23,6 @@ export interface IRoomExpense {
 export class RoomExpense implements IRoomExpense {
     constructor(
         public id?: number,
-        public isRent?: boolean,
         public name?: string,
         public description?: string,
         public currency?: CurrencyType,
@@ -35,7 +33,5 @@ export class RoomExpense implements IRoomExpense {
         public finishDate?: Moment,
         public splits?: IRoomExpenseSplit[],
         public roomId?: number
-    ) {
-        this.isRent = this.isRent || false;
-    }
+    ) {}
 }

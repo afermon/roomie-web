@@ -55,6 +55,12 @@
                         <a [routerLink]="['/address', room.addressId, 'view']">{{room.addressId}}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="roomieApp.room.price">Price</span></dt>
+                <dd>
+                    <div *ngIf="room.priceId">
+                        <a [routerLink]="['/room-expense', room.priceId, 'view']">{{room.priceId}}</a>
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="roomieApp.room.roomies">Roomies</span></dt>
                 <dd>
                     <span *ngFor="let roomies of room.roomies; let last = last">

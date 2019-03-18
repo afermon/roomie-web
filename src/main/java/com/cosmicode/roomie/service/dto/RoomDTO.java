@@ -55,6 +55,8 @@ public class RoomDTO implements Serializable {
 
     private AddressDTO address;
 
+    private Long priceId;
+
     private Set<RoomieDTO> roomies = new HashSet<>();
 
     private Set<RoomFeatureDTO> features = new HashSet<>();
@@ -165,16 +167,12 @@ public class RoomDTO implements Serializable {
         this.addressId = addressId;
     }
 
-    public Boolean getLookingForRoomie() {
-        return lookingForRoomie;
+    public Long getPriceId() {
+        return priceId;
     }
 
-    public AddressDTO getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressDTO address) {
-        this.address = address;
+    public void setPriceId(Long roomExpenseId) {
+        this.priceId = roomExpenseId;
     }
 
     public Set<RoomieDTO> getRoomies() {
@@ -199,6 +197,14 @@ public class RoomDTO implements Serializable {
 
     public void setOwnerId(Long roomieId) {
         this.ownerId = roomieId;
+    }
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
     }
 
     @Override
@@ -238,6 +244,7 @@ public class RoomDTO implements Serializable {
             ", availableFrom='" + getAvailableFrom() + "'" +
             ", isPremium='" + isIsPremium() + "'" +
             ", address=" + getAddressId() +
+            ", price=" + getPriceId() +
             ", owner=" + getOwnerId() +
             "}";
     }

@@ -52,9 +52,6 @@ import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 @SpringBootTest(classes = RoomieApp.class)
 public class RoomExpenseResourceIntTest {
 
-    private static final Boolean DEFAULT_IS_RENT = false;
-    private static final Boolean UPDATED_IS_RENT = true;
-
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -135,7 +132,6 @@ public class RoomExpenseResourceIntTest {
      */
     public static RoomExpense createEntity(EntityManager em) {
         RoomExpense roomExpense = new RoomExpense()
-            .isRent(DEFAULT_IS_RENT)
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .currency(DEFAULT_CURRENCY)
@@ -168,7 +164,6 @@ public class RoomExpenseResourceIntTest {
         List<RoomExpense> roomExpenseList = roomExpenseRepository.findAll();
         assertThat(roomExpenseList).hasSize(databaseSizeBeforeCreate + 1);
         RoomExpense testRoomExpense = roomExpenseList.get(roomExpenseList.size() - 1);
-        assertThat(testRoomExpense.isIsRent()).isEqualTo(DEFAULT_IS_RENT);
         assertThat(testRoomExpense.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testRoomExpense.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testRoomExpense.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
@@ -311,7 +306,6 @@ public class RoomExpenseResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(roomExpense.getId().intValue())))
-            .andExpect(jsonPath("$.[*].isRent").value(hasItem(DEFAULT_IS_RENT.booleanValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
@@ -333,7 +327,6 @@ public class RoomExpenseResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(roomExpense.getId().intValue()))
-            .andExpect(jsonPath("$.isRent").value(DEFAULT_IS_RENT.booleanValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()))
@@ -365,7 +358,6 @@ public class RoomExpenseResourceIntTest {
         // Disconnect from session so that the updates on updatedRoomExpense are not directly saved in db
         em.detach(updatedRoomExpense);
         updatedRoomExpense
-            .isRent(UPDATED_IS_RENT)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .currency(UPDATED_CURRENCY)
@@ -385,7 +377,6 @@ public class RoomExpenseResourceIntTest {
         List<RoomExpense> roomExpenseList = roomExpenseRepository.findAll();
         assertThat(roomExpenseList).hasSize(databaseSizeBeforeUpdate);
         RoomExpense testRoomExpense = roomExpenseList.get(roomExpenseList.size() - 1);
-        assertThat(testRoomExpense.isIsRent()).isEqualTo(UPDATED_IS_RENT);
         assertThat(testRoomExpense.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testRoomExpense.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testRoomExpense.getCurrency()).isEqualTo(UPDATED_CURRENCY);
@@ -454,7 +445,6 @@ public class RoomExpenseResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(roomExpense.getId().intValue())))
-            .andExpect(jsonPath("$.[*].isRent").value(hasItem(DEFAULT_IS_RENT.booleanValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))

@@ -85,6 +85,9 @@ public class Room implements Serializable {
     @OneToOne    @JoinColumn(unique = true)
     private Address address;
 
+    @OneToOne    @JoinColumn(unique = true)
+    private RoomExpense price;
+
     @OneToMany(mappedBy = "room")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Appointment> appointments = new HashSet<>();
@@ -281,6 +284,19 @@ public class Room implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public RoomExpense getPrice() {
+        return price;
+    }
+
+    public Room price(RoomExpense roomExpense) {
+        this.price = roomExpense;
+        return this;
+    }
+
+    public void setPrice(RoomExpense roomExpense) {
+        this.price = roomExpense;
     }
 
     public Set<Appointment> getAppointments() {

@@ -8,14 +8,16 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Room and its DTO RoomDTO.
  */
-@Mapper(componentModel = "spring", uses = {AddressMapper.class, RoomieMapper.class, RoomFeatureMapper.class})
+@Mapper(componentModel = "spring", uses = {AddressMapper.class, RoomExpenseMapper.class, RoomieMapper.class, RoomFeatureMapper.class})
 public interface RoomMapper extends EntityMapper<RoomDTO, Room> {
 
     @Mapping(source = "address.id", target = "addressId")
+    @Mapping(source = "price.id", target = "priceId")
     @Mapping(source = "owner.id", target = "ownerId")
     RoomDTO toDto(Room room);
 
     @Mapping(source = "addressId", target = "address")
+    @Mapping(source = "priceId", target = "price")
     @Mapping(target = "appointments", ignore = true)
     @Mapping(target = "roomTasks", ignore = true)
     @Mapping(target = "roomEvents", ignore = true)

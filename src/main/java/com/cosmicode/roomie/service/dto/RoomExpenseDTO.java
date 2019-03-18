@@ -13,8 +13,6 @@ public class RoomExpenseDTO implements Serializable {
 
     private Long id;
 
-    private Boolean isRent;
-
     @NotNull
     @Size(min = 4, max = 100)
     private String name;
@@ -46,14 +44,6 @@ public class RoomExpenseDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean isIsRent() {
-        return isRent;
-    }
-
-    public void setIsRent(Boolean isRent) {
-        this.isRent = isRent;
     }
 
     public String getName() {
@@ -153,7 +143,6 @@ public class RoomExpenseDTO implements Serializable {
     public String toString() {
         return "RoomExpenseDTO{" +
             "id=" + getId() +
-            ", isRent='" + isIsRent() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", currency='" + getCurrency() + "'" +
