@@ -105,4 +105,15 @@ public class AddressService {
         return addressSearchRepository.search(queryStringQuery(query), pageable)
             .map(addressMapper::toDto);
     }
+/*
+    @Transactional(readOnly = true)
+    public Page<AddressDTO> searchGeoLocation(String location, Pageable pageable) {
+        log.debug("Request to search for a page of Addresses for query {}", location);
+
+        addressSearchRepository.search()
+        return addressSearchRepository.search(queryStringQuery(query), pageable)
+            .map(addressMapper::toDto);
+    }
+
+*/
 }

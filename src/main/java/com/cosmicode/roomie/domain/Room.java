@@ -19,6 +19,8 @@ import java.util.Objects;
 import com.cosmicode.roomie.domain.enumeration.RoomState;
 
 import com.cosmicode.roomie.domain.enumeration.RoomType;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * A Room.
@@ -82,6 +84,7 @@ public class Room implements Serializable {
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium;
 
+    @Field(type = FieldType.Object)
     @OneToOne    @JoinColumn(unique = true)
     private Address address;
 
