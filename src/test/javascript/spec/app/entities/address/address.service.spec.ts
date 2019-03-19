@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(AddressService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Address(0, 0, 0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+            elemDefault = new Address(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -55,8 +55,7 @@ describe('Service Tests', () => {
             it('should update a Address', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        latitude: 1,
-                        longitude: 1,
+                        location: 'BBBBBB',
                         city: 'BBBBBB',
                         state: 'BBBBBB',
                         description: 'BBBBBB'
@@ -76,8 +75,7 @@ describe('Service Tests', () => {
             it('should return a list of Address', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        latitude: 1,
-                        longitude: 1,
+                        location: 'BBBBBB',
                         city: 'BBBBBB',
                         state: 'BBBBBB',
                         description: 'BBBBBB'

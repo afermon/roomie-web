@@ -1,19 +1,11 @@
 export interface IAddress {
     id?: number;
-    latitude?: number;
-    longitude?: number;
+    location?: string;
     city?: string;
     state?: string;
     description?: string;
 }
 
 export class Address implements IAddress {
-    constructor(
-        public id?: number,
-        public latitude?: number,
-        public longitude?: number,
-        public city?: string,
-        public state?: string,
-        public description?: string
-    ) {}
+    constructor(public id?: number, public location?: string, public city?: string, public state?: string, public description?: string) {}
 }

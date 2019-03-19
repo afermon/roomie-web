@@ -26,7 +26,7 @@ import com.cosmicode.roomie.domain.enumeration.RoomType;
 @Entity
 @Table(name = "room")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "room")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "room")
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;

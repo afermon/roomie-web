@@ -17,7 +17,7 @@ import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 @Entity
 @Table(name = "user_preferences")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "userpreferences")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "userpreferences")
 public class UserPreferences implements Serializable {
 
     private static final long serialVersionUID = 1L;

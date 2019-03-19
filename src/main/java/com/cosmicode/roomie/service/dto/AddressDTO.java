@@ -2,7 +2,6 @@ package com.cosmicode.roomie.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -13,10 +12,8 @@ public class AddressDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private BigDecimal latitude;
-
-    @NotNull
-    private BigDecimal longitude;
+    @Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$")
+    private String location;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -37,20 +34,12 @@ public class AddressDTO implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getLatitude() {
-        return latitude;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
-    }
-
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getCity() {
@@ -102,8 +91,7 @@ public class AddressDTO implements Serializable {
     public String toString() {
         return "AddressDTO{" +
             "id=" + getId() +
-            ", latitude=" + getLatitude() +
-            ", longitude=" + getLongitude() +
+            ", location='" + getLocation() + "'" +
             ", city='" + getCity() + "'" +
             ", state='" + getState() + "'" +
             ", description='" + getDescription() + "'" +

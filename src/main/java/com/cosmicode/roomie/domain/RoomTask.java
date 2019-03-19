@@ -20,7 +20,7 @@ import com.cosmicode.roomie.domain.enumeration.RoomTaskState;
 @Entity
 @Table(name = "room_task")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomtask")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomtask")
 public class RoomTask implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -7,8 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "address")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "address")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "address", type = "geo-annotation-point-type")
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,12 +28,10 @@ public class Address implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "latitude", precision = 15, scale = 13, nullable = false)
-    private BigDecimal latitude;
-
-    @NotNull
-    @Column(name = "longitude", precision = 16, scale = 13, nullable = false)
-    private BigDecimal longitude;
+    @GeoPointField
+    @Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$")
+    @Column(name = "location", nullable = false)
+    private String location;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -57,30 +56,17 @@ public class Address implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getLatitude() {
-        return latitude;
+    public String getLocation() {
+        return location;
     }
 
-    public Address latitude(BigDecimal latitude) {
-        this.latitude = latitude;
+    public Address location(String location) {
+        this.location = location;
         return this;
     }
 
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
-    }
-
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
-
-    public Address longitude(BigDecimal longitude) {
-        this.longitude = longitude;
-        return this;
-    }
-
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getCity() {
@@ -147,8 +133,7 @@ public class Address implements Serializable {
     public String toString() {
         return "Address{" +
             "id=" + getId() +
-            ", latitude=" + getLatitude() +
-            ", longitude=" + getLongitude() +
+            ", location='" + getLocation() + "'" +
             ", city='" + getCity() + "'" +
             ", state='" + getState() + "'" +
             ", description='" + getDescription() + "'" +

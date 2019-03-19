@@ -58,8 +58,7 @@ entity RoomieState{
 }
 
 entity Address {
-    latitude BigDecimal required,
-    longitude BigDecimal required,
+    location String pattern(/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/) required,
     city String minlength(2) maxlength(50) required,
     state String minlength(4) maxlength(50) required,
     description String minlength(4) maxlength(500)

@@ -30,8 +30,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="latitude"><span jhiTranslate="roomieApp.address.latitude">Latitude</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="longitude"><span jhiTranslate="roomieApp.address.longitude">Longitude</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="location"><span jhiTranslate="roomieApp.address.location">Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="city"><span jhiTranslate="roomieApp.address.city">City</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="state"><span jhiTranslate="roomieApp.address.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="description"><span jhiTranslate="roomieApp.address.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -41,8 +40,7 @@
             <tbody>
             <tr *ngFor="let address of addresses ;trackBy: trackId">
                 <td><a [routerLink]="['/address', address.id, 'view' ]">{{address.id}}</a></td>
-                <td>{{address.latitude}}</td>
-                <td>{{address.longitude}}</td>
+                <td>{{address.location}}</td>
                 <td>{{address.city}}</td>
                 <td>{{address.state}}</td>
                 <td>{{address.description}}</td>

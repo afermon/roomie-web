@@ -74,14 +74,13 @@ public class RoomieResource {
         if (roomieDTO.getId() != null) {
             throw new BadRequestAlertException("A new roomie cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        BigDecimal latlong = new BigDecimal(0);
+
         RoomieStateDTO state = new RoomieStateDTO();
         state.setState(AccountState.ACTIVE);
         state = roomieStateService.save(state);
 
         AddressDTO address = new AddressDTO();
-        address.setLatitude(latlong);
-        address.setLongitude(latlong);
+        address.setLocation("9.932533, -84.031295"); // Lat,Long Cenfotec.
         address.setCity("Default");
         address.setState("Default");
         address = addressService.save(address);
