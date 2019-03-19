@@ -10,32 +10,17 @@
                         [(ngModel)]="address.id" readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="roomieApp.address.latitude" for="field_latitude">Latitude</label>
-                    <input type="number" class="form-control" name="latitude" id="field_latitude"
-                        [(ngModel)]="address.latitude" required/>
-                    <div [hidden]="!(editForm.controls.latitude?.dirty && editForm.controls.latitude?.invalid)">
+                    <label class="form-control-label" jhiTranslate="roomieApp.address.location" for="field_location">Location</label>
+                    <input type="text" class="form-control" name="location" id="field_location"
+                        [(ngModel)]="address.location" required pattern="^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$"/>
+                    <div [hidden]="!(editForm.controls.location?.dirty && editForm.controls.location?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.latitude?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.location?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.latitude?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="roomieApp.address.longitude" for="field_longitude">Longitude</label>
-                    <input type="number" class="form-control" name="longitude" id="field_longitude"
-                        [(ngModel)]="address.longitude" required/>
-                    <div [hidden]="!(editForm.controls.longitude?.dirty && editForm.controls.longitude?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.longitude?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.longitude?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
+                            [hidden]="!editForm.controls.location?.errors?.pattern" jhiTranslate="entity.validation.pattern" translateValues="{ pattern: 'Location' }">
+                            This field should follow pattern for "Location".
                         </small>
                     </div>
                 </div>

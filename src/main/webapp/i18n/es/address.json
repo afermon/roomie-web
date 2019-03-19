@@ -16,8 +16,7 @@
             "detail": {
                 "title": "Address"
             },
-            "latitude": "Latitude",
-            "longitude": "Longitude",
+            "location": "Location",
             "city": "City",
             "state": "State",
             "description": "Description"

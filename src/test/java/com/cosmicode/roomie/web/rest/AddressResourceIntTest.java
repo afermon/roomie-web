@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,11 +49,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = RoomieApp.class)
 public class AddressResourceIntTest {
 
-    private static final BigDecimal DEFAULT_LATITUDE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_LATITUDE = new BigDecimal(2);
-
-    private static final BigDecimal DEFAULT_LONGITUDE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_LONGITUDE = new BigDecimal(2);
+    private static final String DEFAULT_LOCATION = "90, 180.0";
+    private static final String UPDATED_LOCATION = "90,+23.43";
 
     private static final String DEFAULT_CITY = "AAAAAAAAAA";
     private static final String UPDATED_CITY = "BBBBBBBBBB";
@@ -121,8 +117,7 @@ public class AddressResourceIntTest {
      */
     public static Address createEntity(EntityManager em) {
         Address address = new Address()
-            .latitude(DEFAULT_LATITUDE)
-            .longitude(DEFAULT_LONGITUDE)
+            .location(DEFAULT_LOCATION)
             .city(DEFAULT_CITY)
             .state(DEFAULT_STATE)
             .description(DEFAULT_DESCRIPTION);
@@ -150,8 +145,7 @@ public class AddressResourceIntTest {
         List<Address> addressList = addressRepository.findAll();
         assertThat(addressList).hasSize(databaseSizeBeforeCreate + 1);
         Address testAddress = addressList.get(addressList.size() - 1);
-        assertThat(testAddress.getLatitude()).isEqualTo(DEFAULT_LATITUDE);
-        assertThat(testAddress.getLongitude()).isEqualTo(DEFAULT_LONGITUDE);
+        assertThat(testAddress.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testAddress.getCity()).isEqualTo(DEFAULT_CITY);
         assertThat(testAddress.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testAddress.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
@@ -185,29 +179,10 @@ public class AddressResourceIntTest {
 
     @Test
     @Transactional
-    public void checkLatitudeIsRequired() throws Exception {
+    public void checkLocationIsRequired() throws Exception {
         int databaseSizeBeforeTest = addressRepository.findAll().size();
         // set the field null
-        address.setLatitude(null);
-
-        // Create the Address, which fails.
-        AddressDTO addressDTO = addressMapper.toDto(address);
-
-        restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(addressDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Address> addressList = addressRepository.findAll();
-        assertThat(addressList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkLongitudeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = addressRepository.findAll().size();
-        // set the field null
-        address.setLongitude(null);
+        address.setLocation(null);
 
         // Create the Address, which fails.
         AddressDTO addressDTO = addressMapper.toDto(address);
@@ -270,8 +245,7 @@ public class AddressResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId().intValue())))
-            .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.intValue())))
-            .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE.intValue())))
+            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
             .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
@@ -288,8 +262,7 @@ public class AddressResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(address.getId().intValue()))
-            .andExpect(jsonPath("$.latitude").value(DEFAULT_LATITUDE.intValue()))
-            .andExpect(jsonPath("$.longitude").value(DEFAULT_LONGITUDE.intValue()))
+            .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()))
             .andExpect(jsonPath("$.city").value(DEFAULT_CITY.toString()))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
@@ -316,8 +289,7 @@ public class AddressResourceIntTest {
         // Disconnect from session so that the updates on updatedAddress are not directly saved in db
         em.detach(updatedAddress);
         updatedAddress
-            .latitude(UPDATED_LATITUDE)
-            .longitude(UPDATED_LONGITUDE)
+            .location(UPDATED_LOCATION)
             .city(UPDATED_CITY)
             .state(UPDATED_STATE)
             .description(UPDATED_DESCRIPTION);
@@ -332,8 +304,7 @@ public class AddressResourceIntTest {
         List<Address> addressList = addressRepository.findAll();
         assertThat(addressList).hasSize(databaseSizeBeforeUpdate);
         Address testAddress = addressList.get(addressList.size() - 1);
-        assertThat(testAddress.getLatitude()).isEqualTo(UPDATED_LATITUDE);
-        assertThat(testAddress.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
+        assertThat(testAddress.getLocation()).isEqualTo(UPDATED_LOCATION);
         assertThat(testAddress.getCity()).isEqualTo(UPDATED_CITY);
         assertThat(testAddress.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testAddress.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
@@ -397,8 +368,7 @@ public class AddressResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId().intValue())))
-            .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.intValue())))
-            .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE.intValue())))
+            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
