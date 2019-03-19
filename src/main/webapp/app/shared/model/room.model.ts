@@ -9,7 +9,9 @@ import { IRoomPicture } from 'app/shared/model//room-picture.model';
 
 export const enum RoomState {
     SEARCH = 'SEARCH',
-    PREMIUM = 'PREMIUM'
+    PREMIUM = 'PREMIUM',
+    REGULAR = 'REGULAR',
+    INACTIVE = 'INACTIVE'
 }
 
 export const enum RoomType {

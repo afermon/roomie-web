@@ -3,7 +3,9 @@
         "RoomState": {
             "null": "",
             "SEARCH": "SEARCH",
-            "PREMIUM": "PREMIUM"
+            "PREMIUM": "PREMIUM",
+            "REGULAR": "REGULAR",
+            "INACTIVE": "INACTIVE"
         }
     }
 }

@@ -4,7 +4,7 @@
         {
             "fieldName": "state",
             "fieldType": "RoomState",
-            "fieldValues": "SEARCH,PREMIUM",
+            "fieldValues": "SEARCH,PREMIUM,REGULAR,INACTIVE",
             "fieldValidateRules": [
                 "required"
             ]
