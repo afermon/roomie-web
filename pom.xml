@@ -402,11 +402,6 @@
             <artifactId>json</artifactId>
             <version>20180813</version>
         </dependency>
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>javafx</artifactId>
-            <version>2016.10.0</version>
-        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
