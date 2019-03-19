@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.rmi.runtime.Log;
 
 import java.util.Optional;
 
@@ -50,6 +51,7 @@ public class RoomService {
         Room room = roomMapper.toEntity(roomDTO);
         room = roomRepository.save(room);
         RoomDTO result = roomMapper.toDto(room);
+        room = roomRepository.findOneWithEagerRelationships(room.getId()).get();
         roomSearchRepository.save(room);
         return result;
     }
