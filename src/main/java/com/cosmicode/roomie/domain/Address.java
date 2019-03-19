@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "address")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "address")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "address", type = "geo-annotation-point-type")
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +28,7 @@ public class Address implements Serializable {
     private Long id;
 
     @NotNull
+    @GeoPointField
     @Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$")
     @Column(name = "location", nullable = false)
     private String location;

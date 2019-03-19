@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "room_picture")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roompicture")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roompicture")
 public class RoomPicture implements Serializable {
 
     private static final long serialVersionUID = 1L;

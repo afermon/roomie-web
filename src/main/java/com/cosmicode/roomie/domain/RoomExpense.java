@@ -23,7 +23,7 @@ import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 @Entity
 @Table(name = "room_expense")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomexpense")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomexpense")
 public class RoomExpense implements Serializable {
 
     private static final long serialVersionUID = 1L;

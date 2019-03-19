@@ -18,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "room_event")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomevent")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomevent")
 public class RoomEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;

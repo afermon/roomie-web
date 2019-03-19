@@ -18,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "room_expense_split_record")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomexpensesplitrecord")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomexpensesplitrecord")
 public class RoomExpenseSplitRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;

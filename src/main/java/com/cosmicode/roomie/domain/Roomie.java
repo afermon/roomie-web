@@ -22,7 +22,7 @@ import com.cosmicode.roomie.domain.enumeration.Gender;
 @Entity
 @Table(name = "roomie")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomie")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomie")
 public class Roomie implements Serializable {
 
     private static final long serialVersionUID = 1L;

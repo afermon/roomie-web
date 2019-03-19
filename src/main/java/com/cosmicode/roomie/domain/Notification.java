@@ -18,7 +18,7 @@ import com.cosmicode.roomie.domain.enumeration.NotificationType;
 @Entity
 @Table(name = "notification")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "notification")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "notification")
 public class Notification implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -19,7 +19,7 @@ import com.cosmicode.roomie.domain.enumeration.ReportType;
 @Entity
 @Table(name = "user_report")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "userreport")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "userreport")
 public class UserReport implements Serializable {
 
     private static final long serialVersionUID = 1L;

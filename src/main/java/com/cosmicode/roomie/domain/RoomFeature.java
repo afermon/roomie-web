@@ -20,7 +20,7 @@ import com.cosmicode.roomie.domain.enumeration.FeatureType;
 @Entity
 @Table(name = "room_feature")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomfeature")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomfeature")
 public class RoomFeature implements Serializable {
 
     private static final long serialVersionUID = 1L;

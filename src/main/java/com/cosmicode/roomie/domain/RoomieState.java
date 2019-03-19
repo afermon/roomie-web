@@ -19,7 +19,7 @@ import com.cosmicode.roomie.domain.enumeration.AccountState;
 @Entity
 @Table(name = "roomie_state")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomiestate")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomiestate")
 public class RoomieState implements Serializable {
 
     private static final long serialVersionUID = 1L;

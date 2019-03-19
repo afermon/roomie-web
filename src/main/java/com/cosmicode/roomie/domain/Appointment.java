@@ -20,7 +20,7 @@ import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 @Entity
 @Table(name = "appointment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "appointment")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "appointment")
 public class Appointment implements Serializable {
 
     private static final long serialVersionUID = 1L;

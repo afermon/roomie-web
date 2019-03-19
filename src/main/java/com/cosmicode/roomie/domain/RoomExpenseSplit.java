@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "room_expense_split")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "roomexpensesplit")
+@Document(shards = 1, replicas = 0, refreshInterval = "-1", indexName = "roomexpensesplit")
 public class RoomExpenseSplit implements Serializable {
 
     private static final long serialVersionUID = 1L;
