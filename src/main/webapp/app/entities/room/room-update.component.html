@@ -14,6 +14,8 @@
                     <select class="form-control" name="state" [(ngModel)]="room.state" id="field_state"  required>
                         <option value="SEARCH">{{'roomieApp.RoomState.SEARCH' | translate}}</option>
                         <option value="PREMIUM">{{'roomieApp.RoomState.PREMIUM' | translate}}</option>
+                        <option value="REGULAR">{{'roomieApp.RoomState.REGULAR' | translate}}</option>
+                        <option value="INACTIVE">{{'roomieApp.RoomState.INACTIVE' | translate}}</option>
                     </select>
                     <div [hidden]="!(editForm.controls.state?.dirty && editForm.controls.state?.invalid)">
                         <small class="form-text text-danger"

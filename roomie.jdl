@@ -8,7 +8,7 @@ enum AccountState{
 }
 
 enum RoomState{
-    SEARCH, PREMIUM
+    SEARCH, PREMIUM, REGULAR, INACTIVE
 }
 
 enum RoomType{

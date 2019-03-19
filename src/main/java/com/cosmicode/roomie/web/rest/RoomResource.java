@@ -6,6 +6,7 @@ import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
 import com.cosmicode.roomie.service.dto.RoomDTO;
+import com.sun.javafx.binding.StringFormatter;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,6 +149,24 @@ public class RoomResource {
         log.debug("REST request to search for a page of Rooms for query {}", query);
         Page<RoomDTO> page = roomService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/rooms");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * SEARCH  /_search/rooms?query=:query : search for the room corresponding
+     * to the query.
+     *
+     * @param latitude the query of the room search
+     * @param longitude the query of the room search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search/rooms/geo")
+    @Timed
+    public ResponseEntity<List<RoomDTO>> searchRoomsLocation(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam int distance, Pageable pageable) {
+        log.debug("REST request to search for a page of Rooms for query {} {} {} km", latitude, longitude, distance);
+        Page<RoomDTO> page = roomService.search(latitude, longitude, distance, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(String.format("%s,%s", latitude, longitude), page, "/api/_search/rooms/geo");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
