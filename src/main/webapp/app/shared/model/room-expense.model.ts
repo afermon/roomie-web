@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { IRoomExpenseSplit } from 'app/shared/model//room-expense-split.model';
+import { IRoomExpenseSplit } from 'app/shared/model/room-expense-split.model';
 
 export const enum CurrencyType {
     COLON = 'COLON',

@@ -54,11 +54,11 @@ export class RoomExpenseSplitRecordDeletePopupComponent implements OnInit, OnDes
                 this.ngbModalRef.componentInstance.roomExpenseSplitRecord = roomExpenseSplitRecord;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/room-expense-split-record', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/room-expense-split-record', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

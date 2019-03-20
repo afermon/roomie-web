@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -22,6 +21,7 @@ public class AppointmentDTO implements Serializable {
 
     @NotNull
     private AppointmentState state;
+
 
     private Long petitionerId;
 

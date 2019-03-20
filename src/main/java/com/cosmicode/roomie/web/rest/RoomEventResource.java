@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomEventService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-events")
-    @Timed
     public ResponseEntity<RoomEventDTO> createRoomEvent(@Valid @RequestBody RoomEventDTO roomEventDTO) throws URISyntaxException {
         log.debug("REST request to save RoomEvent : {}", roomEventDTO);
         if (roomEventDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-events")
-    @Timed
     public ResponseEntity<RoomEventDTO> updateRoomEvent(@Valid @RequestBody RoomEventDTO roomEventDTO) throws URISyntaxException {
         log.debug("REST request to update RoomEvent : {}", roomEventDTO);
         if (roomEventDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomEventResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomEvents in body
      */
     @GetMapping("/room-events")
-    @Timed
     public ResponseEntity<List<RoomEventDTO>> getAllRoomEvents(Pageable pageable) {
         log.debug("REST request to get a page of RoomEvents");
         Page<RoomEventDTO> page = roomEventService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomEventResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomEventDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-events/{id}")
-    @Timed
     public ResponseEntity<RoomEventDTO> getRoomEvent(@PathVariable Long id) {
         log.debug("REST request to get RoomEvent : {}", id);
         Optional<RoomEventDTO> roomEventDTO = roomEventService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomEventResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-events/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomEvent(@PathVariable Long id) {
         log.debug("REST request to delete RoomEvent : {}", id);
         roomEventService.delete(id);
@@ -137,12 +130,11 @@ public class RoomEventResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-events")
-    @Timed
     public ResponseEntity<List<RoomEventDTO>> searchRoomEvents(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomEvents for query {}", query);
         Page<RoomEventDTO> page = roomEventService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-events");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

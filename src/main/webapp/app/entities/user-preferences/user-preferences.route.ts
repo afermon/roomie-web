@@ -17,7 +17,7 @@ import { IUserPreferences } from 'app/shared/model/user-preferences.model';
 export class UserPreferencesResolve implements Resolve<IUserPreferences> {
     constructor(private service: UserPreferencesService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<UserPreferences> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IUserPreferences> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class UserPreferencesResolve implements Resolve<IUserPreferences> {
 
 export const userPreferencesRoute: Routes = [
     {
-        path: 'user-preferences',
+        path: '',
         component: UserPreferencesComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const userPreferencesRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'user-preferences/:id/view',
+        path: ':id/view',
         component: UserPreferencesDetailComponent,
         resolve: {
             userPreferences: UserPreferencesResolve
@@ -56,7 +56,7 @@ export const userPreferencesRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'user-preferences/new',
+        path: 'new',
         component: UserPreferencesUpdateComponent,
         resolve: {
             userPreferences: UserPreferencesResolve
@@ -68,7 +68,7 @@ export const userPreferencesRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'user-preferences/:id/edit',
+        path: ':id/edit',
         component: UserPreferencesUpdateComponent,
         resolve: {
             userPreferences: UserPreferencesResolve
@@ -83,7 +83,7 @@ export const userPreferencesRoute: Routes = [
 
 export const userPreferencesPopupRoute: Routes = [
     {
-        path: 'user-preferences/:id/delete',
+        path: ':id/delete',
         component: UserPreferencesDeletePopupComponent,
         resolve: {
             userPreferences: UserPreferencesResolve

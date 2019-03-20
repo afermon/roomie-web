@@ -1,5 +1,6 @@
 package com.cosmicode.roomie.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -26,7 +27,7 @@ import com.cosmicode.roomie.domain.enumeration.Gender;
 public class Roomie implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -58,16 +59,20 @@ public class Roomie implements Serializable {
     @Column(name = "mobile_device_id", length = 200, nullable = false)
     private String mobileDeviceID;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private User user;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private RoomieState state;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private Address address;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private UserPreferences configuration;
 
     @OneToMany(mappedBy = "roomie")
@@ -82,8 +87,8 @@ public class Roomie implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "roomie_lifestyle",
-               joinColumns = @JoinColumn(name = "roomies_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "lifestyles_id", referencedColumnName = "id"))
+               joinColumns = @JoinColumn(name = "roomie_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "lifestyle_id", referencedColumnName = "id"))
     private Set<RoomFeature> lifestyles = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

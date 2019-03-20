@@ -17,7 +17,7 @@ import { IRoom } from 'app/shared/model/room.model';
 export class RoomResolve implements Resolve<IRoom> {
     constructor(private service: RoomService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Room> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoom> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomResolve implements Resolve<IRoom> {
 
 export const roomRoute: Routes = [
     {
-        path: 'room',
+        path: '',
         component: RoomComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room/:id/view',
+        path: ':id/view',
         component: RoomDetailComponent,
         resolve: {
             room: RoomResolve
@@ -56,7 +56,7 @@ export const roomRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room/new',
+        path: 'new',
         component: RoomUpdateComponent,
         resolve: {
             room: RoomResolve
@@ -68,7 +68,7 @@ export const roomRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room/:id/edit',
+        path: ':id/edit',
         component: RoomUpdateComponent,
         resolve: {
             room: RoomResolve
@@ -83,7 +83,7 @@ export const roomRoute: Routes = [
 
 export const roomPopupRoute: Routes = [
     {
-        path: 'room/:id/delete',
+        path: ':id/delete',
         component: RoomDeletePopupComponent,
         resolve: {
             room: RoomResolve

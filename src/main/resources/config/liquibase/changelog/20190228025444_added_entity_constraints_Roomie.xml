@@ -32,14 +32,14 @@
                                  referencedColumnNames="id"
                                  referencedTableName="user_preferences"/>
 
-        <addForeignKeyConstraint baseColumnNames="roomies_id"
+        <addForeignKeyConstraint baseColumnNames="roomie_id"
                                  baseTableName="roomie_lifestyle"
-                                 constraintName="fk_roomie_lifestyle_roomies_id"
+                                 constraintName="fk_roomie_lifestyle_roomie_id"
                                  referencedColumnNames="id"
                                  referencedTableName="roomie"/>
-        <addForeignKeyConstraint baseColumnNames="lifestyles_id"
+        <addForeignKeyConstraint baseColumnNames="lifestyle_id"
                                  baseTableName="roomie_lifestyle"
-                                 constraintName="fk_roomie_lifestyle_lifestyles_id"
+                                 constraintName="fk_roomie_lifestyle_lifestyle_id"
                                  referencedColumnNames="id"
                                  referencedTableName="room_feature"/>
         

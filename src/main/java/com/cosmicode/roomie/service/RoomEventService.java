@@ -46,7 +46,6 @@ public class RoomEventService {
      */
     public RoomEventDTO save(RoomEventDTO roomEventDTO) {
         log.debug("Request to save RoomEvent : {}", roomEventDTO);
-
         RoomEvent roomEvent = roomEventMapper.toEntity(roomEventDTO);
         roomEvent = roomEventRepository.save(roomEvent);
         RoomEventDTO result = roomEventMapper.toDto(roomEvent);

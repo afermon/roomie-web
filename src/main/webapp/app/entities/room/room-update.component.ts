@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IRoom } from 'app/shared/model/room.model';
 import { RoomService } from './room.service';
 import { IAddress } from 'app/shared/model/address.model';
@@ -53,48 +53,70 @@ export class RoomUpdateComponent implements OnInit {
             this.created = this.room.created != null ? this.room.created.format(DATE_TIME_FORMAT) : null;
             this.published = this.room.published != null ? this.room.published.format(DATE_TIME_FORMAT) : null;
         });
-        this.addressService.query({ filter: 'room-is-null' }).subscribe(
-            (res: HttpResponse<IAddress[]>) => {
-                if (!this.room.addressId) {
-                    this.addresses = res.body;
-                } else {
-                    this.addressService.find(this.room.addressId).subscribe(
-                        (subRes: HttpResponse<IAddress>) => {
-                            this.addresses = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomExpenseService.query({ filter: 'room-is-null' }).subscribe(
-            (res: HttpResponse<IRoomExpense[]>) => {
-                if (!this.room.priceId) {
-                    this.prices = res.body;
-                } else {
-                    this.roomExpenseService.find(this.room.priceId).subscribe(
-                        (subRes: HttpResponse<IRoomExpense>) => {
-                            this.prices = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomieService.query().subscribe(
-            (res: HttpResponse<IRoomie[]>) => {
-                this.roomies = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomFeatureService.query().subscribe(
-            (res: HttpResponse<IRoomFeature[]>) => {
-                this.roomfeatures = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.addressService
+            .query({ filter: 'room-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IAddress[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IAddress[]>) => response.body)
+            )
+            .subscribe(
+                (res: IAddress[]) => {
+                    if (!this.room.addressId) {
+                        this.addresses = res;
+                    } else {
+                        this.addressService
+                            .find(this.room.addressId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IAddress>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IAddress>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IAddress) => (this.addresses = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.roomExpenseService
+            .query({ filter: 'room-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomExpense[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomExpense[]>) => response.body)
+            )
+            .subscribe(
+                (res: IRoomExpense[]) => {
+                    if (!this.room.priceId) {
+                        this.prices = res;
+                    } else {
+                        this.roomExpenseService
+                            .find(this.room.priceId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IRoomExpense>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IRoomExpense>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IRoomExpense) => (this.prices = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.roomieService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomie[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomie[]>) => response.body)
+            )
+            .subscribe((res: IRoomie[]) => (this.roomies = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.roomFeatureService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomFeature[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomFeature[]>) => response.body)
+            )
+            .subscribe((res: IRoomFeature[]) => (this.roomfeatures = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

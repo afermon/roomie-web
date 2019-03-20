@@ -17,7 +17,7 @@ import { IUserReport } from 'app/shared/model/user-report.model';
 export class UserReportResolve implements Resolve<IUserReport> {
     constructor(private service: UserReportService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<UserReport> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IUserReport> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class UserReportResolve implements Resolve<IUserReport> {
 
 export const userReportRoute: Routes = [
     {
-        path: 'user-report',
+        path: '',
         component: UserReportComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const userReportRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'user-report/:id/view',
+        path: ':id/view',
         component: UserReportDetailComponent,
         resolve: {
             userReport: UserReportResolve
@@ -56,7 +56,7 @@ export const userReportRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'user-report/new',
+        path: 'new',
         component: UserReportUpdateComponent,
         resolve: {
             userReport: UserReportResolve
@@ -68,7 +68,7 @@ export const userReportRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'user-report/:id/edit',
+        path: ':id/edit',
         component: UserReportUpdateComponent,
         resolve: {
             userReport: UserReportResolve
@@ -83,7 +83,7 @@ export const userReportRoute: Routes = [
 
 export const userReportPopupRoute: Routes = [
     {
-        path: 'user-report/:id/delete',
+        path: ':id/delete',
         component: UserReportDeletePopupComponent,
         resolve: {
             userReport: UserReportResolve

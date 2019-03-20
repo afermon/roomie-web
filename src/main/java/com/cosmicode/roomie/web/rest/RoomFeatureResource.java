@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomFeatureService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomFeatureResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-features")
-    @Timed
     public ResponseEntity<RoomFeatureDTO> createRoomFeature(@Valid @RequestBody RoomFeatureDTO roomFeatureDTO) throws URISyntaxException {
         log.debug("REST request to save RoomFeature : {}", roomFeatureDTO);
         if (roomFeatureDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomFeatureResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-features")
-    @Timed
     public ResponseEntity<RoomFeatureDTO> updateRoomFeature(@Valid @RequestBody RoomFeatureDTO roomFeatureDTO) throws URISyntaxException {
         log.debug("REST request to update RoomFeature : {}", roomFeatureDTO);
         if (roomFeatureDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomFeatureResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomFeatures in body
      */
     @GetMapping("/room-features")
-    @Timed
     public ResponseEntity<List<RoomFeatureDTO>> getAllRoomFeatures(Pageable pageable) {
         log.debug("REST request to get a page of RoomFeatures");
         Page<RoomFeatureDTO> page = roomFeatureService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomFeatureResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomFeatureDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-features/{id}")
-    @Timed
     public ResponseEntity<RoomFeatureDTO> getRoomFeature(@PathVariable Long id) {
         log.debug("REST request to get RoomFeature : {}", id);
         Optional<RoomFeatureDTO> roomFeatureDTO = roomFeatureService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomFeatureResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-features/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomFeature(@PathVariable Long id) {
         log.debug("REST request to delete RoomFeature : {}", id);
         roomFeatureService.delete(id);
@@ -137,12 +130,11 @@ public class RoomFeatureResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-features")
-    @Timed
     public ResponseEntity<List<RoomFeatureDTO>> searchRoomFeatures(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomFeatures for query {}", query);
         Page<RoomFeatureDTO> page = roomFeatureService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-features");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.AppointmentService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class AppointmentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/appointments")
-    @Timed
     public ResponseEntity<AppointmentDTO> createAppointment(@Valid @RequestBody AppointmentDTO appointmentDTO) throws URISyntaxException {
         log.debug("REST request to save Appointment : {}", appointmentDTO);
         if (appointmentDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class AppointmentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/appointments")
-    @Timed
     public ResponseEntity<AppointmentDTO> updateAppointment(@Valid @RequestBody AppointmentDTO appointmentDTO) throws URISyntaxException {
         log.debug("REST request to update Appointment : {}", appointmentDTO);
         if (appointmentDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class AppointmentResource {
      * @return the ResponseEntity with status 200 (OK) and the list of appointments in body
      */
     @GetMapping("/appointments")
-    @Timed
     public ResponseEntity<List<AppointmentDTO>> getAllAppointments(Pageable pageable) {
         log.debug("REST request to get a page of Appointments");
         Page<AppointmentDTO> page = appointmentService.findAll(pageable);
@@ -107,7 +102,6 @@ public class AppointmentResource {
      * @return the ResponseEntity with status 200 (OK) and with body the appointmentDTO, or with status 404 (Not Found)
      */
     @GetMapping("/appointments/{id}")
-    @Timed
     public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable Long id) {
         log.debug("REST request to get Appointment : {}", id);
         Optional<AppointmentDTO> appointmentDTO = appointmentService.findOne(id);
@@ -121,7 +115,6 @@ public class AppointmentResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/appointments/{id}")
-    @Timed
     public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
         log.debug("REST request to delete Appointment : {}", id);
         appointmentService.delete(id);
@@ -137,12 +130,11 @@ public class AppointmentResource {
      * @return the result of the search
      */
     @GetMapping("/_search/appointments")
-    @Timed
     public ResponseEntity<List<AppointmentDTO>> searchAppointments(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Appointments for query {}", query);
         Page<AppointmentDTO> page = appointmentService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/appointments");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

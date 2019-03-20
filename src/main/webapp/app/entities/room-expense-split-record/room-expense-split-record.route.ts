@@ -17,7 +17,7 @@ import { IRoomExpenseSplitRecord } from 'app/shared/model/room-expense-split-rec
 export class RoomExpenseSplitRecordResolve implements Resolve<IRoomExpenseSplitRecord> {
     constructor(private service: RoomExpenseSplitRecordService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomExpenseSplitRecord> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomExpenseSplitRecord> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomExpenseSplitRecordResolve implements Resolve<IRoomExpenseSplitR
 
 export const roomExpenseSplitRecordRoute: Routes = [
     {
-        path: 'room-expense-split-record',
+        path: '',
         component: RoomExpenseSplitRecordComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomExpenseSplitRecordRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense-split-record/:id/view',
+        path: ':id/view',
         component: RoomExpenseSplitRecordDetailComponent,
         resolve: {
             roomExpenseSplitRecord: RoomExpenseSplitRecordResolve
@@ -56,7 +56,7 @@ export const roomExpenseSplitRecordRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense-split-record/new',
+        path: 'new',
         component: RoomExpenseSplitRecordUpdateComponent,
         resolve: {
             roomExpenseSplitRecord: RoomExpenseSplitRecordResolve
@@ -68,7 +68,7 @@ export const roomExpenseSplitRecordRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense-split-record/:id/edit',
+        path: ':id/edit',
         component: RoomExpenseSplitRecordUpdateComponent,
         resolve: {
             roomExpenseSplitRecord: RoomExpenseSplitRecordResolve
@@ -83,7 +83,7 @@ export const roomExpenseSplitRecordRoute: Routes = [
 
 export const roomExpenseSplitRecordPopupRoute: Routes = [
     {
-        path: 'room-expense-split-record/:id/delete',
+        path: ':id/delete',
         component: RoomExpenseSplitRecordDeletePopupComponent,
         resolve: {
             roomExpenseSplitRecord: RoomExpenseSplitRecordResolve

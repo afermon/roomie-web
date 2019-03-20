@@ -17,7 +17,7 @@ import { IRoomFeature } from 'app/shared/model/room-feature.model';
 export class RoomFeatureResolve implements Resolve<IRoomFeature> {
     constructor(private service: RoomFeatureService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomFeature> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomFeature> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomFeatureResolve implements Resolve<IRoomFeature> {
 
 export const roomFeatureRoute: Routes = [
     {
-        path: 'room-feature',
+        path: '',
         component: RoomFeatureComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomFeatureRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-feature/:id/view',
+        path: ':id/view',
         component: RoomFeatureDetailComponent,
         resolve: {
             roomFeature: RoomFeatureResolve
@@ -56,7 +56,7 @@ export const roomFeatureRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-feature/new',
+        path: 'new',
         component: RoomFeatureUpdateComponent,
         resolve: {
             roomFeature: RoomFeatureResolve
@@ -68,7 +68,7 @@ export const roomFeatureRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-feature/:id/edit',
+        path: ':id/edit',
         component: RoomFeatureUpdateComponent,
         resolve: {
             roomFeature: RoomFeatureResolve
@@ -83,7 +83,7 @@ export const roomFeatureRoute: Routes = [
 
 export const roomFeaturePopupRoute: Routes = [
     {
-        path: 'room-feature/:id/delete',
+        path: ':id/delete',
         component: RoomFeatureDeletePopupComponent,
         resolve: {
             roomFeature: RoomFeatureResolve

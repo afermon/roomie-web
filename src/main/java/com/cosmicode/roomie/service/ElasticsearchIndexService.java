@@ -1,6 +1,5 @@
 package com.cosmicode.roomie.service;
 
-import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.cosmicode.roomie.domain.*;
 import com.cosmicode.roomie.repository.*;
@@ -183,7 +182,6 @@ public class ElasticsearchIndexService {
     }
 
     @Async
-    @Timed
     public void reindexAll() {
         if (reindexLock.tryLock()) {
             try {

@@ -46,7 +46,6 @@ public class AddressService {
      */
     public AddressDTO save(AddressDTO addressDTO) {
         log.debug("Request to save Address : {}", addressDTO);
-
         Address address = addressMapper.toEntity(addressDTO);
         address = addressRepository.save(address);
         AddressDTO result = addressMapper.toDto(address);

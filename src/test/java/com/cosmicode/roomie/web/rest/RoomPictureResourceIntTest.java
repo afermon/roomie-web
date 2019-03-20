@@ -306,7 +306,7 @@ public class RoomPictureResourceIntTest {
 
         int databaseSizeBeforeDelete = roomPictureRepository.findAll().size();
 
-        // Get the roomPicture
+        // Delete the roomPicture
         restRoomPictureMockMvc.perform(delete("/api/room-pictures/{id}", roomPicture.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

@@ -17,7 +17,7 @@ import { IRoomExpense } from 'app/shared/model/room-expense.model';
 export class RoomExpenseResolve implements Resolve<IRoomExpense> {
     constructor(private service: RoomExpenseService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomExpense> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomExpense> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomExpenseResolve implements Resolve<IRoomExpense> {
 
 export const roomExpenseRoute: Routes = [
     {
-        path: 'room-expense',
+        path: '',
         component: RoomExpenseComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomExpenseRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense/:id/view',
+        path: ':id/view',
         component: RoomExpenseDetailComponent,
         resolve: {
             roomExpense: RoomExpenseResolve
@@ -56,7 +56,7 @@ export const roomExpenseRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense/new',
+        path: 'new',
         component: RoomExpenseUpdateComponent,
         resolve: {
             roomExpense: RoomExpenseResolve
@@ -68,7 +68,7 @@ export const roomExpenseRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense/:id/edit',
+        path: ':id/edit',
         component: RoomExpenseUpdateComponent,
         resolve: {
             roomExpense: RoomExpenseResolve
@@ -83,7 +83,7 @@ export const roomExpenseRoute: Routes = [
 
 export const roomExpensePopupRoute: Routes = [
     {
-        path: 'room-expense/:id/delete',
+        path: ':id/delete',
         component: RoomExpenseDeletePopupComponent,
         resolve: {
             roomExpense: RoomExpenseResolve

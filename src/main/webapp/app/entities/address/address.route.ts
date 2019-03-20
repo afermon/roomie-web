@@ -17,7 +17,7 @@ import { IAddress } from 'app/shared/model/address.model';
 export class AddressResolve implements Resolve<IAddress> {
     constructor(private service: AddressService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Address> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IAddress> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class AddressResolve implements Resolve<IAddress> {
 
 export const addressRoute: Routes = [
     {
-        path: 'address',
+        path: '',
         component: AddressComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const addressRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'address/:id/view',
+        path: ':id/view',
         component: AddressDetailComponent,
         resolve: {
             address: AddressResolve
@@ -56,7 +56,7 @@ export const addressRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'address/new',
+        path: 'new',
         component: AddressUpdateComponent,
         resolve: {
             address: AddressResolve
@@ -68,7 +68,7 @@ export const addressRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'address/:id/edit',
+        path: ':id/edit',
         component: AddressUpdateComponent,
         resolve: {
             address: AddressResolve
@@ -83,7 +83,7 @@ export const addressRoute: Routes = [
 
 export const addressPopupRoute: Routes = [
     {
-        path: 'address/:id/delete',
+        path: ':id/delete',
         component: AddressDeletePopupComponent,
         resolve: {
             address: AddressResolve

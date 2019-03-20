@@ -337,7 +337,7 @@ public class AppointmentResourceIntTest {
 
         int databaseSizeBeforeDelete = appointmentRepository.findAll().size();
 
-        // Get the appointment
+        // Delete the appointment
         restAppointmentMockMvc.perform(delete("/api/appointments/{id}", appointment.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

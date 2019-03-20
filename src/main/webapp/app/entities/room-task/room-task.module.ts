@@ -1,5 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageHelper } from 'app/core';
 
 import { RoomieSharedModule } from 'app/shared';
 import {
@@ -24,6 +26,15 @@ const ENTITY_STATES = [...roomTaskRoute, ...roomTaskPopupRoute];
         RoomTaskDeletePopupComponent
     ],
     entryComponents: [RoomTaskComponent, RoomTaskUpdateComponent, RoomTaskDeleteDialogComponent, RoomTaskDeletePopupComponent],
+    providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class RoomieRoomTaskModule {}
+export class RoomieRoomTaskModule {
+    constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+        this.languageHelper.language.subscribe((languageKey: string) => {
+            if (languageKey !== undefined) {
+                this.languageService.changeLanguage(languageKey);
+            }
+        });
+    }
+}

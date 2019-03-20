@@ -1,6 +1,5 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -47,7 +46,6 @@ public class SocialLoginResource {
 
 
     @PostMapping("/authenticate/facebook")
-    @Timed
     public ResponseEntity authorizeClientFromFacebook(@RequestBody String token, HttpServletResponse response) throws IOException {
 
         token=token.replace("\"","");
@@ -119,7 +117,6 @@ public class SocialLoginResource {
     }
 
     @PostMapping("/authenticate/google")
-    @Timed
     public ResponseEntity authorizeClientFromGoogle(@RequestBody String token, HttpServletResponse response) throws IOException {
 
         Reader fileReader = null;

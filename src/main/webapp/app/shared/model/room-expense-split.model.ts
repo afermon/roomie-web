@@ -1,4 +1,4 @@
-import { IRoomExpenseSplitRecord } from 'app/shared/model//room-expense-split-record.model';
+import { IRoomExpenseSplitRecord } from 'app/shared/model/room-expense-split-record.model';
 
 export interface IRoomExpenseSplit {
     id?: number;

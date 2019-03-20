@@ -318,7 +318,7 @@ public class UserReportResourceIntTest {
 
         int databaseSizeBeforeDelete = userReportRepository.findAll().size();
 
-        // Get the userReport
+        // Delete the userReport
         restUserReportMockMvc.perform(delete("/api/user-reports/{id}", userReport.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

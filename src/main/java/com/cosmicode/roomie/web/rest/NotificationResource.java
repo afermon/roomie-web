@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.NotificationService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class NotificationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/notifications")
-    @Timed
     public ResponseEntity<NotificationDTO> createNotification(@Valid @RequestBody NotificationDTO notificationDTO) throws URISyntaxException {
         log.debug("REST request to save Notification : {}", notificationDTO);
         if (notificationDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class NotificationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/notifications")
-    @Timed
     public ResponseEntity<NotificationDTO> updateNotification(@Valid @RequestBody NotificationDTO notificationDTO) throws URISyntaxException {
         log.debug("REST request to update Notification : {}", notificationDTO);
         if (notificationDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class NotificationResource {
      * @return the ResponseEntity with status 200 (OK) and the list of notifications in body
      */
     @GetMapping("/notifications")
-    @Timed
     public ResponseEntity<List<NotificationDTO>> getAllNotifications(Pageable pageable) {
         log.debug("REST request to get a page of Notifications");
         Page<NotificationDTO> page = notificationService.findAll(pageable);
@@ -107,7 +102,6 @@ public class NotificationResource {
      * @return the ResponseEntity with status 200 (OK) and with body the notificationDTO, or with status 404 (Not Found)
      */
     @GetMapping("/notifications/{id}")
-    @Timed
     public ResponseEntity<NotificationDTO> getNotification(@PathVariable Long id) {
         log.debug("REST request to get Notification : {}", id);
         Optional<NotificationDTO> notificationDTO = notificationService.findOne(id);
@@ -121,7 +115,6 @@ public class NotificationResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/notifications/{id}")
-    @Timed
     public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
         log.debug("REST request to delete Notification : {}", id);
         notificationService.delete(id);
@@ -137,12 +130,11 @@ public class NotificationResource {
      * @return the result of the search
      */
     @GetMapping("/_search/notifications")
-    @Timed
     public ResponseEntity<List<NotificationDTO>> searchNotifications(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Notifications for query {}", query);
         Page<NotificationDTO> page = notificationService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/notifications");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

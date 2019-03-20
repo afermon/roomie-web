@@ -373,7 +373,7 @@ public class RoomFeatureResourceIntTest {
 
         int databaseSizeBeforeDelete = roomFeatureRepository.findAll().size();
 
-        // Get the roomFeature
+        // Delete the roomFeature
         restRoomFeatureMockMvc.perform(delete("/api/room-features/{id}", roomFeature.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

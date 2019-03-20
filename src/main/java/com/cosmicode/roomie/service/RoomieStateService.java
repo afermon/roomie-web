@@ -46,7 +46,6 @@ public class RoomieStateService {
      */
     public RoomieStateDTO save(RoomieStateDTO roomieStateDTO) {
         log.debug("Request to save RoomieState : {}", roomieStateDTO);
-
         RoomieState roomieState = roomieStateMapper.toEntity(roomieStateDTO);
         roomieState = roomieStateRepository.save(roomieState);
         RoomieStateDTO result = roomieStateMapper.toDto(roomieState);

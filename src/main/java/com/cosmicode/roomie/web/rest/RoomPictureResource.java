@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomPictureService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomPictureResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-pictures")
-    @Timed
     public ResponseEntity<RoomPictureDTO> createRoomPicture(@Valid @RequestBody RoomPictureDTO roomPictureDTO) throws URISyntaxException {
         log.debug("REST request to save RoomPicture : {}", roomPictureDTO);
         if (roomPictureDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomPictureResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-pictures")
-    @Timed
     public ResponseEntity<RoomPictureDTO> updateRoomPicture(@Valid @RequestBody RoomPictureDTO roomPictureDTO) throws URISyntaxException {
         log.debug("REST request to update RoomPicture : {}", roomPictureDTO);
         if (roomPictureDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomPictureResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomPictures in body
      */
     @GetMapping("/room-pictures")
-    @Timed
     public ResponseEntity<List<RoomPictureDTO>> getAllRoomPictures(Pageable pageable) {
         log.debug("REST request to get a page of RoomPictures");
         Page<RoomPictureDTO> page = roomPictureService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomPictureResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomPictureDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-pictures/{id}")
-    @Timed
     public ResponseEntity<RoomPictureDTO> getRoomPicture(@PathVariable Long id) {
         log.debug("REST request to get RoomPicture : {}", id);
         Optional<RoomPictureDTO> roomPictureDTO = roomPictureService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomPictureResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-pictures/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomPicture(@PathVariable Long id) {
         log.debug("REST request to delete RoomPicture : {}", id);
         roomPictureService.delete(id);
@@ -137,12 +130,11 @@ public class RoomPictureResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-pictures")
-    @Timed
     public ResponseEntity<List<RoomPictureDTO>> searchRoomPictures(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomPictures for query {}", query);
         Page<RoomPictureDTO> page = roomPictureService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-pictures");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

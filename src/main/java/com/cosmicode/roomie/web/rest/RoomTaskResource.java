@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomTaskService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomTaskResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-tasks")
-    @Timed
     public ResponseEntity<RoomTaskDTO> createRoomTask(@Valid @RequestBody RoomTaskDTO roomTaskDTO) throws URISyntaxException {
         log.debug("REST request to save RoomTask : {}", roomTaskDTO);
         if (roomTaskDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomTaskResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-tasks")
-    @Timed
     public ResponseEntity<RoomTaskDTO> updateRoomTask(@Valid @RequestBody RoomTaskDTO roomTaskDTO) throws URISyntaxException {
         log.debug("REST request to update RoomTask : {}", roomTaskDTO);
         if (roomTaskDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomTaskResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomTasks in body
      */
     @GetMapping("/room-tasks")
-    @Timed
     public ResponseEntity<List<RoomTaskDTO>> getAllRoomTasks(Pageable pageable) {
         log.debug("REST request to get a page of RoomTasks");
         Page<RoomTaskDTO> page = roomTaskService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomTaskResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomTaskDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-tasks/{id}")
-    @Timed
     public ResponseEntity<RoomTaskDTO> getRoomTask(@PathVariable Long id) {
         log.debug("REST request to get RoomTask : {}", id);
         Optional<RoomTaskDTO> roomTaskDTO = roomTaskService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomTaskResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-tasks/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomTask(@PathVariable Long id) {
         log.debug("REST request to delete RoomTask : {}", id);
         roomTaskService.delete(id);
@@ -137,12 +130,11 @@ public class RoomTaskResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-tasks")
-    @Timed
     public ResponseEntity<List<RoomTaskDTO>> searchRoomTasks(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomTasks for query {}", query);
         Page<RoomTaskDTO> page = roomTaskService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-tasks");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     @GetMapping("/tasksByRoom/{id}")

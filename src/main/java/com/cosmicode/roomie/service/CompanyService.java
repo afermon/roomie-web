@@ -46,7 +46,6 @@ public class CompanyService {
      */
     public CompanyDTO save(CompanyDTO companyDTO) {
         log.debug("Request to save Company : {}", companyDTO);
-
         Company company = companyMapper.toEntity(companyDTO);
         company = companyRepository.save(company);
         CompanyDTO result = companyMapper.toDto(company);

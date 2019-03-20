@@ -1,5 +1,6 @@
 package com.cosmicode.roomie.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
@@ -32,7 +33,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -85,10 +86,12 @@ public class Room implements Serializable {
     private Boolean isPremium;
 
     @Field(type = FieldType.Object)
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private Address address;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private RoomExpense price;
 
     @OneToMany(mappedBy = "room")
@@ -103,14 +106,14 @@ public class Room implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "room_roomies",
-               joinColumns = @JoinColumn(name = "rooms_id", referencedColumnName = "id"),
+               joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "roomies_id", referencedColumnName = "id"))
     private Set<Roomie> roomies = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "room_features",
-               joinColumns = @JoinColumn(name = "rooms_id", referencedColumnName = "id"),
+               joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "features_id", referencedColumnName = "id"))
     private Set<RoomFeature> features = new HashSet<>();
 

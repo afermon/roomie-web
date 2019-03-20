@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,6 +15,7 @@ public class RoomPictureDTO implements Serializable {
 
     @NotNull
     private Boolean isMain;
+
 
     private Long roomId;
 

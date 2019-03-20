@@ -308,7 +308,7 @@ public class RoomExpenseSplitRecordResourceIntTest {
 
         int databaseSizeBeforeDelete = roomExpenseSplitRecordRepository.findAll().size();
 
-        // Get the roomExpenseSplitRecord
+        // Delete the roomExpenseSplitRecord
         restRoomExpenseSplitRecordMockMvc.perform(delete("/api/room-expense-split-records/{id}", roomExpenseSplitRecord.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

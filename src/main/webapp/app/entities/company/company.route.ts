@@ -17,7 +17,7 @@ import { ICompany } from 'app/shared/model/company.model';
 export class CompanyResolve implements Resolve<ICompany> {
     constructor(private service: CompanyService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Company> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ICompany> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class CompanyResolve implements Resolve<ICompany> {
 
 export const companyRoute: Routes = [
     {
-        path: 'company',
+        path: '',
         component: CompanyComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const companyRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'company/:id/view',
+        path: ':id/view',
         component: CompanyDetailComponent,
         resolve: {
             company: CompanyResolve
@@ -56,7 +56,7 @@ export const companyRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'company/new',
+        path: 'new',
         component: CompanyUpdateComponent,
         resolve: {
             company: CompanyResolve
@@ -68,7 +68,7 @@ export const companyRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'company/:id/edit',
+        path: ':id/edit',
         component: CompanyUpdateComponent,
         resolve: {
             company: CompanyResolve
@@ -83,7 +83,7 @@ export const companyRoute: Routes = [
 
 export const companyPopupRoute: Routes = [
     {
-        path: 'company/:id/delete',
+        path: ':id/delete',
         component: CompanyDeletePopupComponent,
         resolve: {
             company: CompanyResolve

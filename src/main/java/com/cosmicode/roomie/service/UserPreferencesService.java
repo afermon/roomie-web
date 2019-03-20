@@ -46,7 +46,6 @@ public class UserPreferencesService {
      */
     public UserPreferencesDTO save(UserPreferencesDTO userPreferencesDTO) {
         log.debug("Request to save UserPreferences : {}", userPreferencesDTO);
-
         UserPreferences userPreferences = userPreferencesMapper.toEntity(userPreferencesDTO);
         userPreferences = userPreferencesRepository.save(userPreferences);
         UserPreferencesDTO result = userPreferencesMapper.toDto(userPreferences);

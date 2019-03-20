@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <p id="jhi-delete-userPreferences-heading" jhiTranslate="roomieApp.userPreferences.delete.question" translateValues="{id: '{{userPreferences.id}}'}">Are you sure you want to delete this User Preferences?</p>
+        <p id="jhi-delete-userPreferences-heading" jhiTranslate="roomieApp.userPreferences.delete.question" [translateValues]="{id: userPreferences.id}">Are you sure you want to delete this User Preferences?</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

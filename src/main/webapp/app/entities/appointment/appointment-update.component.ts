@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IAppointment } from 'app/shared/model/appointment.model';
 import { AppointmentService } from './appointment.service';
 import { IRoomie } from 'app/shared/model/roomie.model';
@@ -40,18 +40,20 @@ export class AppointmentUpdateComponent implements OnInit {
             this.appointment = appointment;
             this.dateTime = this.appointment.dateTime != null ? this.appointment.dateTime.format(DATE_TIME_FORMAT) : null;
         });
-        this.roomieService.query().subscribe(
-            (res: HttpResponse<IRoomie[]>) => {
-                this.roomies = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomService.query().subscribe(
-            (res: HttpResponse<IRoom[]>) => {
-                this.rooms = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.roomieService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomie[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomie[]>) => response.body)
+            )
+            .subscribe((res: IRoomie[]) => (this.roomies = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.roomService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoom[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoom[]>) => response.body)
+            )
+            .subscribe((res: IRoom[]) => (this.rooms = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

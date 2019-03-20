@@ -1,8 +1,8 @@
 import { Moment } from 'moment';
-import { IRoomExpenseSplit } from 'app/shared/model//room-expense-split.model';
-import { IRoom } from 'app/shared/model//room.model';
-import { IRoomEvent } from 'app/shared/model//room-event.model';
-import { IRoomFeature } from 'app/shared/model//room-feature.model';
+import { IRoomExpenseSplit } from 'app/shared/model/room-expense-split.model';
+import { IRoom } from 'app/shared/model/room.model';
+import { IRoomEvent } from 'app/shared/model/room-event.model';
+import { IRoomFeature } from 'app/shared/model/room-feature.model';
 
 export const enum Gender {
     MALE = 'MALE',

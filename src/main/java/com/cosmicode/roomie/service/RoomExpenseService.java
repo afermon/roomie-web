@@ -46,7 +46,6 @@ public class RoomExpenseService {
      */
     public RoomExpenseDTO save(RoomExpenseDTO roomExpenseDTO) {
         log.debug("Request to save RoomExpense : {}", roomExpenseDTO);
-
         RoomExpense roomExpense = roomExpenseMapper.toEntity(roomExpenseDTO);
         roomExpense = roomExpenseRepository.save(roomExpense);
         RoomExpenseDTO result = roomExpenseMapper.toDto(roomExpense);

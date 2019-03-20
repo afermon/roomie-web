@@ -46,7 +46,6 @@ public class RoomFeatureService {
      */
     public RoomFeatureDTO save(RoomFeatureDTO roomFeatureDTO) {
         log.debug("Request to save RoomFeature : {}", roomFeatureDTO);
-
         RoomFeature roomFeature = roomFeatureMapper.toEntity(roomFeatureDTO);
         roomFeature = roomFeatureRepository.save(roomFeature);
         RoomFeatureDTO result = roomFeatureMapper.toDto(roomFeature);

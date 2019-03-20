@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.UserReportService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class UserReportResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/user-reports")
-    @Timed
     public ResponseEntity<UserReportDTO> createUserReport(@Valid @RequestBody UserReportDTO userReportDTO) throws URISyntaxException {
         log.debug("REST request to save UserReport : {}", userReportDTO);
         if (userReportDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class UserReportResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/user-reports")
-    @Timed
     public ResponseEntity<UserReportDTO> updateUserReport(@Valid @RequestBody UserReportDTO userReportDTO) throws URISyntaxException {
         log.debug("REST request to update UserReport : {}", userReportDTO);
         if (userReportDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class UserReportResource {
      * @return the ResponseEntity with status 200 (OK) and the list of userReports in body
      */
     @GetMapping("/user-reports")
-    @Timed
     public ResponseEntity<List<UserReportDTO>> getAllUserReports(Pageable pageable) {
         log.debug("REST request to get a page of UserReports");
         Page<UserReportDTO> page = userReportService.findAll(pageable);
@@ -107,7 +102,6 @@ public class UserReportResource {
      * @return the ResponseEntity with status 200 (OK) and with body the userReportDTO, or with status 404 (Not Found)
      */
     @GetMapping("/user-reports/{id}")
-    @Timed
     public ResponseEntity<UserReportDTO> getUserReport(@PathVariable Long id) {
         log.debug("REST request to get UserReport : {}", id);
         Optional<UserReportDTO> userReportDTO = userReportService.findOne(id);
@@ -121,7 +115,6 @@ public class UserReportResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/user-reports/{id}")
-    @Timed
     public ResponseEntity<Void> deleteUserReport(@PathVariable Long id) {
         log.debug("REST request to delete UserReport : {}", id);
         userReportService.delete(id);
@@ -137,12 +130,11 @@ public class UserReportResource {
      * @return the result of the search
      */
     @GetMapping("/_search/user-reports")
-    @Timed
     public ResponseEntity<List<UserReportDTO>> searchUserReports(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of UserReports for query {}", query);
         Page<UserReportDTO> page = userReportService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/user-reports");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

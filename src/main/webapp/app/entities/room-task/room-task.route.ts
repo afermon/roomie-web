@@ -17,7 +17,7 @@ import { IRoomTask } from 'app/shared/model/room-task.model';
 export class RoomTaskResolve implements Resolve<IRoomTask> {
     constructor(private service: RoomTaskService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomTask> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomTask> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomTaskResolve implements Resolve<IRoomTask> {
 
 export const roomTaskRoute: Routes = [
     {
-        path: 'room-task',
+        path: '',
         component: RoomTaskComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomTaskRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-task/:id/view',
+        path: ':id/view',
         component: RoomTaskDetailComponent,
         resolve: {
             roomTask: RoomTaskResolve
@@ -56,7 +56,7 @@ export const roomTaskRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-task/new',
+        path: 'new',
         component: RoomTaskUpdateComponent,
         resolve: {
             roomTask: RoomTaskResolve
@@ -68,7 +68,7 @@ export const roomTaskRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-task/:id/edit',
+        path: ':id/edit',
         component: RoomTaskUpdateComponent,
         resolve: {
             roomTask: RoomTaskResolve
@@ -83,7 +83,7 @@ export const roomTaskRoute: Routes = [
 
 export const roomTaskPopupRoute: Routes = [
     {
-        path: 'room-task/:id/delete',
+        path: ':id/delete',
         component: RoomTaskDeletePopupComponent,
         resolve: {
             roomTask: RoomTaskResolve

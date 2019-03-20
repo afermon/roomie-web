@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomExpenseService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomExpenseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-expenses")
-    @Timed
     public ResponseEntity<RoomExpenseDTO> createRoomExpense(@Valid @RequestBody RoomExpenseDTO roomExpenseDTO) throws URISyntaxException {
         log.debug("REST request to save RoomExpense : {}", roomExpenseDTO);
         if (roomExpenseDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomExpenseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-expenses")
-    @Timed
     public ResponseEntity<RoomExpenseDTO> updateRoomExpense(@Valid @RequestBody RoomExpenseDTO roomExpenseDTO) throws URISyntaxException {
         log.debug("REST request to update RoomExpense : {}", roomExpenseDTO);
         if (roomExpenseDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomExpenseResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomExpenses in body
      */
     @GetMapping("/room-expenses")
-    @Timed
     public ResponseEntity<List<RoomExpenseDTO>> getAllRoomExpenses(Pageable pageable) {
         log.debug("REST request to get a page of RoomExpenses");
         Page<RoomExpenseDTO> page = roomExpenseService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomExpenseResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomExpenseDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-expenses/{id}")
-    @Timed
     public ResponseEntity<RoomExpenseDTO> getRoomExpense(@PathVariable Long id) {
         log.debug("REST request to get RoomExpense : {}", id);
         Optional<RoomExpenseDTO> roomExpenseDTO = roomExpenseService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomExpenseResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-expenses/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomExpense(@PathVariable Long id) {
         log.debug("REST request to delete RoomExpense : {}", id);
         roomExpenseService.delete(id);
@@ -137,12 +130,11 @@ public class RoomExpenseResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-expenses")
-    @Timed
     public ResponseEntity<List<RoomExpenseDTO>> searchRoomExpenses(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomExpenses for query {}", query);
         Page<RoomExpenseDTO> page = roomExpenseService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-expenses");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

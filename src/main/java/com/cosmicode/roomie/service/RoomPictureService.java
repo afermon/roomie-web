@@ -46,7 +46,6 @@ public class RoomPictureService {
      */
     public RoomPictureDTO save(RoomPictureDTO roomPictureDTO) {
         log.debug("Request to save RoomPicture : {}", roomPictureDTO);
-
         RoomPicture roomPicture = roomPictureMapper.toEntity(roomPictureDTO);
         roomPicture = roomPictureRepository.save(roomPicture);
         RoomPictureDTO result = roomPictureMapper.toDto(roomPicture);

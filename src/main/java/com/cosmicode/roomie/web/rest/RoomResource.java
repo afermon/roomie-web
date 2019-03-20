@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -48,7 +46,6 @@ public class RoomResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/rooms")
-    @Timed
     public ResponseEntity<RoomDTO> createRoom(@Valid @RequestBody RoomDTO roomDTO) throws URISyntaxException {
         log.debug("REST request to save Room : {}", roomDTO);
         if (roomDTO.getId() != null) {
@@ -70,7 +67,6 @@ public class RoomResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/rooms")
-    @Timed
     public ResponseEntity<RoomDTO> updateRoom(@Valid @RequestBody RoomDTO roomDTO) throws URISyntaxException {
         log.debug("REST request to update Room : {}", roomDTO);
         if (roomDTO.getId() == null) {
@@ -90,7 +86,6 @@ public class RoomResource {
      * @return the ResponseEntity with status 200 (OK) and the list of rooms in body
      */
     @GetMapping("/rooms")
-    @Timed
     public ResponseEntity<List<RoomDTO>> getAllRooms(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Rooms");
         Page<RoomDTO> page;
@@ -110,7 +105,6 @@ public class RoomResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomDTO, or with status 404 (Not Found)
      */
     @GetMapping("/rooms/{id}")
-    @Timed
     public ResponseEntity<RoomDTO> getRoom(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
         Optional<RoomDTO> roomDTO = roomService.findOne(id);
@@ -124,7 +118,6 @@ public class RoomResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/rooms/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         log.debug("REST request to delete Room : {}", id);
         roomService.delete(id);
@@ -140,12 +133,11 @@ public class RoomResource {
      * @return the result of the search
      */
     @GetMapping("/_search/rooms")
-    @Timed
     public ResponseEntity<List<RoomDTO>> searchRooms(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Rooms for query {}", query);
         Page<RoomDTO> page = roomService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/rooms");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -158,7 +150,6 @@ public class RoomResource {
      * @return the result of the search
      */
     @GetMapping("/_search/rooms/geo")
-    @Timed
     public ResponseEntity<List<RoomDTO>> searchRoomsLocation(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam int distance, Pageable pageable) {
         log.debug("REST request to search for a page of Rooms for query {} {} {} km", latitude, longitude, distance);
         Page<RoomDTO> page = roomService.search(latitude, longitude, distance, pageable);

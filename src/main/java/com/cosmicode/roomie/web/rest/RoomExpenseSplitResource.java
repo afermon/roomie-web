@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomExpenseSplitService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomExpenseSplitResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-expense-splits")
-    @Timed
     public ResponseEntity<RoomExpenseSplitDTO> createRoomExpenseSplit(@Valid @RequestBody RoomExpenseSplitDTO roomExpenseSplitDTO) throws URISyntaxException {
         log.debug("REST request to save RoomExpenseSplit : {}", roomExpenseSplitDTO);
         if (roomExpenseSplitDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomExpenseSplitResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-expense-splits")
-    @Timed
     public ResponseEntity<RoomExpenseSplitDTO> updateRoomExpenseSplit(@Valid @RequestBody RoomExpenseSplitDTO roomExpenseSplitDTO) throws URISyntaxException {
         log.debug("REST request to update RoomExpenseSplit : {}", roomExpenseSplitDTO);
         if (roomExpenseSplitDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomExpenseSplitResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomExpenseSplits in body
      */
     @GetMapping("/room-expense-splits")
-    @Timed
     public ResponseEntity<List<RoomExpenseSplitDTO>> getAllRoomExpenseSplits(Pageable pageable) {
         log.debug("REST request to get a page of RoomExpenseSplits");
         Page<RoomExpenseSplitDTO> page = roomExpenseSplitService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomExpenseSplitResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomExpenseSplitDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-expense-splits/{id}")
-    @Timed
     public ResponseEntity<RoomExpenseSplitDTO> getRoomExpenseSplit(@PathVariable Long id) {
         log.debug("REST request to get RoomExpenseSplit : {}", id);
         Optional<RoomExpenseSplitDTO> roomExpenseSplitDTO = roomExpenseSplitService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomExpenseSplitResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-expense-splits/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomExpenseSplit(@PathVariable Long id) {
         log.debug("REST request to delete RoomExpenseSplit : {}", id);
         roomExpenseSplitService.delete(id);
@@ -137,12 +130,11 @@ public class RoomExpenseSplitResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-expense-splits")
-    @Timed
     public ResponseEntity<List<RoomExpenseSplitDTO>> searchRoomExpenseSplits(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomExpenseSplits for query {}", query);
         Page<RoomExpenseSplitDTO> page = roomExpenseSplitService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-expense-splits");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

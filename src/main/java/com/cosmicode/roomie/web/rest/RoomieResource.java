@@ -1,9 +1,5 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.cosmicode.roomie.domain.RoomFeature;
-import com.cosmicode.roomie.domain.Roomie;
-import com.cosmicode.roomie.domain.RoomieState;
 import com.cosmicode.roomie.domain.enumeration.AccountState;
 import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.service.AddressService;
@@ -14,18 +10,17 @@ import com.cosmicode.roomie.service.dto.*;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
+import com.cosmicode.roomie.service.dto.RoomieDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -33,9 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Roomie.
@@ -68,7 +60,6 @@ public class RoomieResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/roomies")
-    @Timed
     public ResponseEntity<RoomieDTO> createRoomie(@Valid @RequestBody RoomieDTO roomieDTO) throws URISyntaxException {
         log.debug("REST request to save Roomie : {}", roomieDTO);
         if (roomieDTO.getId() != null) {
@@ -115,7 +106,6 @@ public class RoomieResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/roomies")
-    @Timed
     public ResponseEntity<RoomieDTO> updateRoomie(@Valid @RequestBody RoomieDTO roomieDTO) throws URISyntaxException {
         log.debug("REST request to update Roomie : {}", roomieDTO);
         if (roomieDTO.getId() == null) {
@@ -135,7 +125,6 @@ public class RoomieResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomies in body
      */
     @GetMapping("/roomies")
-    @Timed
     public ResponseEntity<List<RoomieDTO>> getAllRoomies(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Roomies");
         Page<RoomieDTO> page;
@@ -155,7 +144,6 @@ public class RoomieResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomieDTO, or with status 404 (Not Found)
      */
     @GetMapping("/roomies/{id}")
-    @Timed
     public ResponseEntity<RoomieDTO> getRoomie(@PathVariable Long id) {
         log.debug("REST request to get Roomie : {}", id);
         Optional<RoomieDTO> roomieDTO = roomieService.findOne(id);
@@ -169,7 +157,6 @@ public class RoomieResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/roomies/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomie(@PathVariable Long id) {
         log.debug("REST request to delete Roomie : {}", id);
         roomieService.delete(id);
@@ -185,12 +172,11 @@ public class RoomieResource {
      * @return the result of the search
      */
     @GetMapping("/_search/roomies")
-    @Timed
     public ResponseEntity<List<RoomieDTO>> searchRoomies(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Roomies for query {}", query);
         Page<RoomieDTO> page = roomieService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/roomies");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     @GetMapping("/currentRoomie")
@@ -198,5 +184,4 @@ public class RoomieResource {
         log.debug("REST request to get currently logged roomie");
         return roomieService.findCurrentLoggedRoomie();
     }
-
 }

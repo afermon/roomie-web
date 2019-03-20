@@ -363,7 +363,7 @@ public class NotificationResourceIntTest {
 
         int databaseSizeBeforeDelete = notificationRepository.findAll().size();
 
-        // Get the notification
+        // Delete the notification
         restNotificationMockMvc.perform(delete("/api/notifications/{id}", notification.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

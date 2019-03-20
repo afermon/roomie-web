@@ -46,7 +46,6 @@ public class RoomieService {
      */
     public RoomieDTO save(RoomieDTO roomieDTO) {
         log.debug("Request to save Roomie : {}", roomieDTO);
-
         Roomie roomie = roomieMapper.toEntity(roomieDTO);
         roomie = roomieRepository.save(roomie);
         RoomieDTO result = roomieMapper.toDto(roomie);

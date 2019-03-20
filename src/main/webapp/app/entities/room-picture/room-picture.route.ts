@@ -17,7 +17,7 @@ import { IRoomPicture } from 'app/shared/model/room-picture.model';
 export class RoomPictureResolve implements Resolve<IRoomPicture> {
     constructor(private service: RoomPictureService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomPicture> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomPicture> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomPictureResolve implements Resolve<IRoomPicture> {
 
 export const roomPictureRoute: Routes = [
     {
-        path: 'room-picture',
+        path: '',
         component: RoomPictureComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomPictureRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-picture/:id/view',
+        path: ':id/view',
         component: RoomPictureDetailComponent,
         resolve: {
             roomPicture: RoomPictureResolve
@@ -56,7 +56,7 @@ export const roomPictureRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-picture/new',
+        path: 'new',
         component: RoomPictureUpdateComponent,
         resolve: {
             roomPicture: RoomPictureResolve
@@ -68,7 +68,7 @@ export const roomPictureRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-picture/:id/edit',
+        path: ':id/edit',
         component: RoomPictureUpdateComponent,
         resolve: {
             roomPicture: RoomPictureResolve
@@ -83,7 +83,7 @@ export const roomPictureRoute: Routes = [
 
 export const roomPicturePopupRoute: Routes = [
     {
-        path: 'room-picture/:id/delete',
+        path: ':id/delete',
         component: RoomPictureDeletePopupComponent,
         resolve: {
             roomPicture: RoomPictureResolve
