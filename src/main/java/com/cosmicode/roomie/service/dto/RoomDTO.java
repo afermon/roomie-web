@@ -1,15 +1,16 @@
 package com.cosmicode.roomie.service.dto;
-import java.time.Instant;
-import java.time.LocalDate;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 
-import com.cosmicode.roomie.domain.RoomPicture;
 import com.cosmicode.roomie.domain.enumeration.RoomState;
 import com.cosmicode.roomie.domain.enumeration.RoomType;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Room entity.

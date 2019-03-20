@@ -1,7 +1,7 @@
 package com.cosmicode.roomie.repository;
 
 import com.cosmicode.roomie.domain.UserPreferences;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 

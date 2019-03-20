@@ -1,9 +1,9 @@
 package com.cosmicode.roomie.service.mapper;
 
-import com.cosmicode.roomie.domain.*;
+import com.cosmicode.roomie.domain.Appointment;
 import com.cosmicode.roomie.service.dto.AppointmentDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity Appointment and its DTO AppointmentDTO.

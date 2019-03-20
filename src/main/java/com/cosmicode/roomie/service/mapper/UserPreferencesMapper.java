@@ -1,9 +1,8 @@
 package com.cosmicode.roomie.service.mapper;
 
-import com.cosmicode.roomie.domain.*;
+import com.cosmicode.roomie.domain.UserPreferences;
 import com.cosmicode.roomie.service.dto.UserPreferencesDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity UserPreferences and its DTO UserPreferencesDTO.

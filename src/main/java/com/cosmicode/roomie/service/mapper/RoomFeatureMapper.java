@@ -1,9 +1,8 @@
 package com.cosmicode.roomie.service.mapper;
 
-import com.cosmicode.roomie.domain.*;
+import com.cosmicode.roomie.domain.RoomFeature;
 import com.cosmicode.roomie.service.dto.RoomFeatureDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity RoomFeature and its DTO RoomFeatureDTO.

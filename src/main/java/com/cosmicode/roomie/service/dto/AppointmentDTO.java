@@ -1,9 +1,12 @@
 package com.cosmicode.roomie.service.dto;
-import java.time.Instant;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.Objects;
+
 import com.cosmicode.roomie.domain.enumeration.AppointmentState;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Objects;
 
 /**
  * A DTO for the Appointment entity.

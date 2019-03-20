@@ -1,11 +1,10 @@
 package com.cosmicode.roomie.security;
 
 import com.cosmicode.roomie.config.Constants;
-
-import java.util.Optional;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * Implementation of AuditorAware based on Spring Security.

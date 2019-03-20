@@ -1,7 +1,9 @@
 package com.cosmicode.roomie.service.dto;
-import java.time.LocalDate;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**

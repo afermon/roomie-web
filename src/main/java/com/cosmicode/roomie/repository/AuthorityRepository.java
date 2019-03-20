@@ -1,7 +1,6 @@
 package com.cosmicode.roomie.repository;
 
 import com.cosmicode.roomie.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
