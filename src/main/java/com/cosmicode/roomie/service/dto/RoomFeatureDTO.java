@@ -1,9 +1,12 @@
 package com.cosmicode.roomie.service.dto;
-import javax.validation.constraints.*;
+
+import com.cosmicode.roomie.domain.enumeration.FeatureType;
+import com.cosmicode.roomie.domain.enumeration.Lang;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import com.cosmicode.roomie.domain.enumeration.Lang;
-import com.cosmicode.roomie.domain.enumeration.FeatureType;
 
 /**
  * A DTO for the RoomFeature entity.

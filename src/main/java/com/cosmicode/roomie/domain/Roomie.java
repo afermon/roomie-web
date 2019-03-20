@@ -1,21 +1,20 @@
 package com.cosmicode.roomie.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cosmicode.roomie.domain.enumeration.Gender;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import com.cosmicode.roomie.domain.enumeration.Gender;
+import java.util.Set;
 
 /**
  * A Roomie.

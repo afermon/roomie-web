@@ -1,9 +1,9 @@
 package com.cosmicode.roomie.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.cosmicode.roomie.domain.*;
 import com.cosmicode.roomie.repository.*;
 import com.cosmicode.roomie.repository.search.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.elasticsearch.ResourceAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

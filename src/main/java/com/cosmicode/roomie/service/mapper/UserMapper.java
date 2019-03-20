@@ -3,10 +3,12 @@ package com.cosmicode.roomie.service.mapper;
 import com.cosmicode.roomie.domain.Authority;
 import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.service.dto.UserDTO;
-
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

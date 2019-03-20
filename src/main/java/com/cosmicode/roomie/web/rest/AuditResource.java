@@ -2,7 +2,6 @@ package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.service.AuditEventService;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
-
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;

@@ -1,9 +1,9 @@
 package com.cosmicode.roomie.service.mapper;
 
-import com.cosmicode.roomie.domain.*;
+import com.cosmicode.roomie.domain.RoomExpenseSplit;
 import com.cosmicode.roomie.service.dto.RoomExpenseSplitDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity RoomExpenseSplit and its DTO RoomExpenseSplitDTO.

@@ -1,7 +1,6 @@
 package com.cosmicode.roomie.web.rest.errors;
 
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
-
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
