@@ -1,0 +1,10 @@
+{
+    "roomieApp": {
+        "AppointmentState": {
+            "null": "",
+            "ACCEPTED": "ACCEPTED",
+            "DECLINED": "DECLINED",
+            "PENDING": "PENDING"
+        }
+    }
+}

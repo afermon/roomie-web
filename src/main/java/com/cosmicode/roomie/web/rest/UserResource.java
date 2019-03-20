@@ -210,4 +210,12 @@ public class UserResource {
             .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @GetMapping("/users-email/{email}")
+    public ResponseEntity<UserDTO> getUserByEmail (@PathVariable String email) {
+        log.debug("REST request to get User : {}", email);
+        return ResponseUtil.wrapOrNotFound(
+            userService.getUserWithAuthoritiesByEmail(email)
+                .map(UserDTO::new));
+    }
 }

@@ -1,0 +1,10 @@
+{
+    "roomieApp": {
+        "RoomTaskState": {
+            "null": "",
+            "PENDING": "PENDING",
+            "COMPLETED": "COMPLETED",
+            "LATE": "LATE"
+        }
+    }
+}

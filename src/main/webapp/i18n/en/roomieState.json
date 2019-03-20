@@ -1,0 +1,23 @@
+{
+    "roomieApp": {
+        "roomieState": {
+            "home": {
+                "title": "Roomie States",
+                "createLabel": "Create a new Roomie State",
+                "createOrEditLabel": "Create or edit a Roomie State",
+                "search": "Search for Roomie State"
+            },
+            "created": "A new Roomie State is created with identifier {{ param }}",
+            "updated": "A Roomie State is updated with identifier {{ param }}",
+            "deleted": "A Roomie State is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Roomie State {{ id }}?"
+            },
+            "detail": {
+                "title": "Roomie State"
+            },
+            "state": "State",
+            "suspendedDate": "Suspended Date"
+        }
+    }
+}

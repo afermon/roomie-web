@@ -1,0 +1,25 @@
+{
+    "roomieApp": {
+        "roomExpenseSplit": {
+            "home": {
+                "title": "Room Expense Splits",
+                "createLabel": "Crear nuevo Room Expense Split",
+                "createOrEditLabel": "Crear o editar Room Expense Split",
+                "search": "Search for Room Expense Split"
+            },
+            "created": "Un nuevo Room Expense Split ha sido creado con el identificador {{ param }}",
+            "updated": "Un Room Expense Split ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Room Expense Split ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Room Expense Split {{ id }}?"
+            },
+            "detail": {
+                "title": "Room Expense Split"
+            },
+            "amount": "Amount",
+            "records": "Records",
+            "expense": "Expense",
+            "roomie": "Roomie"
+        }
+    }
+}

@@ -38,6 +38,36 @@ public class CacheConfiguration {
             cm.createCache(com.cosmicode.roomie.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Roomie.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Roomie.class.getName() + ".roomExpenseSplits", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Roomie.class.getName() + ".rooms", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Roomie.class.getName() + ".roomEvents", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Roomie.class.getName() + ".lifestyles", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomieState.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Address.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.UserPreferences.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomExpenses", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".pictures", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".appointments", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomTasks", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomEvents", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".roomies", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".features", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomPicture.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomFeature.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomExpense.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomExpense.class.getName() + ".splits", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomExpenseSplit.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomExpenseSplit.class.getName() + ".records", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomExpenseSplitRecord.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Appointment.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomTask.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.RoomEvent.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.UserReport.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Company.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Notification.class.getName(), jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".expenses", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

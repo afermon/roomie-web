@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-room-expense-split-heading" jhiTranslate="roomieApp.roomExpenseSplit.home.createOrEditLabel">Create or edit a Room Expense Split</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!roomExpenseSplit.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="roomExpenseSplit.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomExpenseSplit.amount" for="field_amount">Amount</label>
+                    <input type="number" class="form-control" name="amount" id="field_amount"
+                        [(ngModel)]="roomExpenseSplit.amount" required/>
+                    <div [hidden]="!(editForm.controls.amount?.dirty && editForm.controls.amount?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.amount?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.amount?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomExpenseSplit.expense" for="field_expense">Expense</label>
+                    <select class="form-control" id="field_expense" name="expense" [(ngModel)]="roomExpenseSplit.expenseId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="roomExpenseOption.id" *ngFor="let roomExpenseOption of roomexpenses; trackBy: trackRoomExpenseById">{{roomExpenseOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.roomExpenseSplit.roomie" for="field_roomie">Roomie</label>
+                    <select class="form-control" id="field_roomie" name="roomie" [(ngModel)]="roomExpenseSplit.roomieId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="roomieOption.id" *ngFor="let roomieOption of roomies; trackBy: trackRoomieById">{{roomieOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

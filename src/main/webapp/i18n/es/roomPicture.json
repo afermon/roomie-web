@@ -1,0 +1,24 @@
+{
+    "roomieApp": {
+        "roomPicture": {
+            "home": {
+                "title": "Room Pictures",
+                "createLabel": "Crear nuevo Room Picture",
+                "createOrEditLabel": "Crear o editar Room Picture",
+                "search": "Search for Room Picture"
+            },
+            "created": "Un nuevo Room Picture ha sido creado con el identificador {{ param }}",
+            "updated": "Un Room Picture ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Room Picture ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Room Picture {{ id }}?"
+            },
+            "detail": {
+                "title": "Room Picture"
+            },
+            "url": "Url",
+            "isMain": "Is Main",
+            "room": "Room"
+        }
+    }
+}

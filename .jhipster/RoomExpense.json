@@ -1,0 +1,86 @@
+{
+    "name": "RoomExpense",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMinlength": 4,
+            "fieldValidateRulesMaxlength": 100
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 4,
+            "fieldValidateRulesMaxlength": 500
+        },
+        {
+            "fieldName": "currency",
+            "fieldType": "CurrencyType",
+            "fieldValues": "COLON,DOLLAR",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "periodicity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "monthDay",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "startDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "finishDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "splits",
+            "otherEntityName": "roomExpenseSplit",
+            "otherEntityRelationshipName": "expense"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "room",
+            "otherEntityName": "room",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190228025451",
+    "entityTableName": "room_expense",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

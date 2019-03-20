@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="appointment">
+            <h2><span jhiTranslate="roomieApp.appointment.detail.title">Appointment</span> {{appointment.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.appointment.description">Description</span></dt>
+                <dd>
+                    <span>{{appointment.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.appointment.dateTime">Date Time</span></dt>
+                <dd>
+                    <span>{{appointment.dateTime}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.appointment.state">State</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.AppointmentState.' + appointment.state}}">{{appointment.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.appointment.petitioner">Petitioner</span></dt>
+                <dd>
+                    <div *ngIf="appointment.petitionerId">
+                        <a [routerLink]="['/roomie', appointment.petitionerId, 'view']">{{appointment.petitionerId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.appointment.room">Room</span></dt>
+                <dd>
+                    <div *ngIf="appointment.roomId">
+                        <a [routerLink]="['/room', appointment.roomId, 'view']">{{appointment.roomId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/appointment', appointment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
