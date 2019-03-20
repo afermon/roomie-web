@@ -1,0 +1,26 @@
+{
+    "roomieApp": {
+        "roomFeature": {
+            "home": {
+                "title": "Room Features",
+                "createLabel": "Create a new Room Feature",
+                "createOrEditLabel": "Create or edit a Room Feature",
+                "search": "Search for Room Feature"
+            },
+            "created": "A new Room Feature is created with identifier {{ param }}",
+            "updated": "A Room Feature is updated with identifier {{ param }}",
+            "deleted": "A Room Feature is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room Feature {{ id }}?"
+            },
+            "detail": {
+                "title": "Room Feature"
+            },
+            "lang": "Lang",
+            "type": "Type",
+            "name": "Name",
+            "icon": "Icon",
+            "description": "Description"
+        }
+    }
+}

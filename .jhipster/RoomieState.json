@@ -1,0 +1,27 @@
+{
+    "name": "RoomieState",
+    "fields": [
+        {
+            "fieldName": "state",
+            "fieldType": "AccountState",
+            "fieldValues": "ACTIVE,SUSPENDED,BANNED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "suspendedDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190228025445",
+    "entityTableName": "roomie_state",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

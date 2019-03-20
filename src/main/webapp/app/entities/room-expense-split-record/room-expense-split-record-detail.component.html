@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomExpenseSplitRecord">
+            <h2><span jhiTranslate="roomieApp.roomExpenseSplitRecord.detail.title">Room Expense Split Record</span> {{roomExpenseSplitRecord.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomExpenseSplitRecord.date">Date</span></dt>
+                <dd>
+                    <span>{{roomExpenseSplitRecord.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpenseSplitRecord.state">State</span></dt>
+                <dd>
+                    <span>{{roomExpenseSplitRecord.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpenseSplitRecord.split">Split</span></dt>
+                <dd>
+                    <div *ngIf="roomExpenseSplitRecord.splitId">
+                        <a [routerLink]="['/room-expense-split', roomExpenseSplitRecord.splitId, 'view']">{{roomExpenseSplitRecord.splitId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room-expense-split-record', roomExpenseSplitRecord.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

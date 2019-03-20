@@ -1,0 +1,26 @@
+{
+    "roomieApp": {
+        "userReport": {
+            "home": {
+                "title": "User Reports",
+                "createLabel": "Crear nuevo User Report",
+                "createOrEditLabel": "Crear o editar User Report",
+                "search": "Search for User Report"
+            },
+            "created": "Un nuevo User Report ha sido creado con el identificador {{ param }}",
+            "updated": "Un User Report ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un User Report ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar User Report {{ id }}?"
+            },
+            "detail": {
+                "title": "User Report"
+            },
+            "date": "Date",
+            "description": "Description",
+            "type": "Type",
+            "roomie": "Roomie",
+            "room": "Room"
+        }
+    }
+}

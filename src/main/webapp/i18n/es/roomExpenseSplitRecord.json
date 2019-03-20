@@ -1,0 +1,24 @@
+{
+    "roomieApp": {
+        "roomExpenseSplitRecord": {
+            "home": {
+                "title": "Room Expense Split Records",
+                "createLabel": "Crear nuevo Room Expense Split Record",
+                "createOrEditLabel": "Crear o editar Room Expense Split Record",
+                "search": "Search for Room Expense Split Record"
+            },
+            "created": "Un nuevo Room Expense Split Record ha sido creado con el identificador {{ param }}",
+            "updated": "Un Room Expense Split Record ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Room Expense Split Record ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Room Expense Split Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Room Expense Split Record"
+            },
+            "date": "Date",
+            "state": "State",
+            "split": "Split"
+        }
+    }
+}

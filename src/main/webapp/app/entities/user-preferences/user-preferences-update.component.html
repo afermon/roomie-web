@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-user-preferences-heading" jhiTranslate="roomieApp.userPreferences.home.createOrEditLabel">Create or edit a User Preferences</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!userPreferences.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="userPreferences.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.userPreferences.currency" for="field_currency">Currency</label>
+                    <select class="form-control" name="currency" [(ngModel)]="userPreferences.currency" id="field_currency" >
+                        <option value="COLON">{{'roomieApp.CurrencyType.COLON' | translate}}</option>
+                        <option value="DOLLAR">{{'roomieApp.CurrencyType.DOLLAR' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.userPreferences.todoListNotifications" for="field_todoListNotifications">Todo List Notifications</label>
+                    <input type="checkbox" class="form-control" name="todoListNotifications" id="field_todoListNotifications"
+                        [(ngModel)]="userPreferences.todoListNotifications" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.userPreferences.calendarNotifications" for="field_calendarNotifications">Calendar Notifications</label>
+                    <input type="checkbox" class="form-control" name="calendarNotifications" id="field_calendarNotifications"
+                        [(ngModel)]="userPreferences.calendarNotifications" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.userPreferences.paymentsNotifications" for="field_paymentsNotifications">Payments Notifications</label>
+                    <input type="checkbox" class="form-control" name="paymentsNotifications" id="field_paymentsNotifications"
+                        [(ngModel)]="userPreferences.paymentsNotifications" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.userPreferences.appointmentsNotifications" for="field_appointmentsNotifications">Appointments Notifications</label>
+                    <input type="checkbox" class="form-control" name="appointmentsNotifications" id="field_appointmentsNotifications"
+                        [(ngModel)]="userPreferences.appointmentsNotifications" />
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

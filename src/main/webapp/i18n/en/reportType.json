@@ -1,0 +1,10 @@
+{
+    "roomieApp": {
+        "ReportType": {
+            "null": "",
+            "USER": "USER",
+            "ROOM": "ROOM",
+            "APP": "APP"
+        }
+    }
+}

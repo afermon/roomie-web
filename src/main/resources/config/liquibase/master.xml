@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025444_added_entity_Roomie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025445_added_entity_RoomieState.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025446_added_entity_Address.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025447_added_entity_UserPreferences.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025448_added_entity_Room.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025449_added_entity_RoomPicture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025450_added_entity_RoomFeature.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025451_added_entity_RoomExpense.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025452_added_entity_RoomExpenseSplit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025453_added_entity_RoomExpenseSplitRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025454_added_entity_Appointment.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025455_added_entity_RoomTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025456_added_entity_RoomEvent.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025457_added_entity_UserReport.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025458_added_entity_Company.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025459_added_entity_Notification.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190228025444_added_entity_constraints_Roomie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025448_added_entity_constraints_Room.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025449_added_entity_constraints_RoomPicture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025451_added_entity_constraints_RoomExpense.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025452_added_entity_constraints_RoomExpenseSplit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025453_added_entity_constraints_RoomExpenseSplitRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025454_added_entity_constraints_Appointment.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025455_added_entity_constraints_RoomTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025456_added_entity_constraints_RoomEvent.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025457_added_entity_constraints_UserReport.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+</databaseChangeLog>

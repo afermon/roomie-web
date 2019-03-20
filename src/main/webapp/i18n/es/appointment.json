@@ -1,0 +1,26 @@
+{
+    "roomieApp": {
+        "appointment": {
+            "home": {
+                "title": "Appointments",
+                "createLabel": "Crear nuevo Appointment",
+                "createOrEditLabel": "Crear o editar Appointment",
+                "search": "Search for Appointment"
+            },
+            "created": "Un nuevo Appointment ha sido creado con el identificador {{ param }}",
+            "updated": "Un Appointment ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Appointment ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Appointment {{ id }}?"
+            },
+            "detail": {
+                "title": "Appointment"
+            },
+            "description": "Description",
+            "dateTime": "Date Time",
+            "state": "State",
+            "petitioner": "Petitioner",
+            "room": "Room"
+        }
+    }
+}

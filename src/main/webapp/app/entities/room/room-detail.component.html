@@ -1,0 +1,97 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="room">
+            <h2><span jhiTranslate="roomieApp.room.detail.title">Room</span> {{room.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.room.state">State</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.RoomState.' + room.state}}">{{room.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.created">Created</span></dt>
+                <dd>
+                    <span>{{room.created}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.published">Published</span></dt>
+                <dd>
+                    <span>{{room.published}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.title">Title</span></dt>
+                <dd>
+                    <span>{{room.title}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.description">Description</span></dt>
+                <dd>
+                    <span>{{room.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.rooms">Rooms</span></dt>
+                <dd>
+                    <span>{{room.rooms}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.roomType">Room Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.RoomType.' + room.roomType}}">{{room.roomType}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.apoinmentsNotes">Apoinments Notes</span></dt>
+                <dd>
+                    <span>{{room.apoinmentsNotes}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.lookingForRoomie">Looking For Roomie</span></dt>
+                <dd>
+                    <span>{{room.lookingForRoomie}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.availableFrom">Available From</span></dt>
+                <dd>
+                    <span>{{room.availableFrom}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.isPremium">Is Premium</span></dt>
+                <dd>
+                    <span>{{room.isPremium}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.address">Address</span></dt>
+                <dd>
+                    <div *ngIf="room.addressId">
+                        <a [routerLink]="['/address', room.addressId, 'view']">{{room.addressId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.price">Price</span></dt>
+                <dd>
+                    <div *ngIf="room.priceId">
+                        <a [routerLink]="['/room-expense', room.priceId, 'view']">{{room.priceId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.roomies">Roomies</span></dt>
+                <dd>
+                    <span *ngFor="let roomies of room.roomies; let last = last">
+                        <a [routerLink]="['/roomie', roomies?.id, 'view' ]">{{roomies.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.features">Features</span></dt>
+                <dd>
+                    <span *ngFor="let features of room.features; let last = last">
+                        <a [routerLink]="['/room-feature', features?.id, 'view' ]">{{features.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.room.owner">Owner</span></dt>
+                <dd>
+                    <div *ngIf="room.ownerId">
+                        <a [routerLink]="['/roomie', room.ownerId, 'view']">{{room.ownerId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room', room.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

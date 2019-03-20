@@ -1,0 +1,42 @@
+{
+    "roomieApp": {
+        "room": {
+            "home": {
+                "title": "Rooms",
+                "createLabel": "Create a new Room",
+                "createOrEditLabel": "Create or edit a Room",
+                "search": "Search for Room"
+            },
+            "created": "A new Room is created with identifier {{ param }}",
+            "updated": "A Room is updated with identifier {{ param }}",
+            "deleted": "A Room is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room {{ id }}?"
+            },
+            "detail": {
+                "title": "Room"
+            },
+            "state": "State",
+            "created": "Created",
+            "published": "Published",
+            "title": "Title",
+            "description": "Description",
+            "rooms": "Rooms",
+            "roomType": "Room Type",
+            "apoinmentsNotes": "Apoinments Notes",
+            "lookingForRoomie": "Looking For Roomie",
+            "availableFrom": "Available From",
+            "isPremium": "Is Premium",
+            "address": "Address",
+            "price": "Price",
+            "appointment": "Appointment",
+            "roomTask": "Room Task",
+            "roomEvent": "Room Event",
+            "roomies": "Roomies",
+            "features": "Features",
+            "owner": "Owner",
+            "expenses": "Expenses",
+            "pictures": "Pictures"
+        }
+    }
+}

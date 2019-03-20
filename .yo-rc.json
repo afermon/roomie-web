@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.cosmicode.roomie",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "5.7.2",
+    "applicationType": "monolith",
+    "baseName": "roomie",
+    "packageName": "com.cosmicode.roomie",
+    "packageFolder": "com/cosmicode/roomie",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NmI4NjA4NzEzM2Y4MGRmZjJhYTJhMDAwMGQ1MGRiNmVmZWQ3NzJmOTIyNTdiMDczNjVlNGViZjFiZDY4ZjE2ZjFjN2JmOGNmNGQwNDg5OTMzYzIzNDU0NGRhZDc1ZmFmNjNiODQxNDhiZWE1NDZiMjVkNmU3ZDQ0NzBkYzBlNjg=",
+    "clientFramework": "angularX",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en",
+      "es"
+    ],
+    "herokuAppName": "roomie-web",
+    "herokuDeployType": "git"
+  }
+}
