@@ -16,13 +16,12 @@
             <div class="col px-0">
                 <div class="row justify-content-md-center text-center" [ngSwitch]="isAuthenticated()">
                     <div class="col-lg-6" *ngSwitchCase="false">
-                        <h1 class="display-3 text-white">Your perfect roommate is a few clicks away!</span>
-                        </h1>
+                        <h1 class="display-3 text-white">Your perfect roommate is a few clicks away!</h1>
                         <p class="lead  text-white">It is easy, we will help you find the right one.</p>
                     </div>
                     <div class="col-lg-6" *ngSwitchCase="true">
-                        <h1 class="display-3 text-white" *ngIf="account" jhiTranslate="home.logged.message" translateValues="{username: '{{account.login}}'}">
-                            You are logged in as user "{{account.login}}".</h1>
+                        <h1 class="display-3 text-white" *ngIf="account" jhiTranslate="home.logged.message"
+                            [translateValues]="{username: account.login}"> Welcome {{account.login}}!</h1>
                     </div>
                 </div>
             </div>
