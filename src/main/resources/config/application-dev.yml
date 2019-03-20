@@ -59,9 +59,10 @@ spring:
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
 
     data:
-        jest:
-            uri: https://search-roomie-owqbxgbel3cm652qnqi4jhartm.us-east-2.es.amazonaws.com
-            aws-region: us-east-2
+        elasticsearch:
+            properties:
+                path:
+                    home: target/elasticsearch
     liquibase:
         contexts: dev
     mail:
