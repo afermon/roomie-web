@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomieStateService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomieStateResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/roomie-states")
-    @Timed
     public ResponseEntity<RoomieStateDTO> createRoomieState(@Valid @RequestBody RoomieStateDTO roomieStateDTO) throws URISyntaxException {
         log.debug("REST request to save RoomieState : {}", roomieStateDTO);
         if (roomieStateDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomieStateResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/roomie-states")
-    @Timed
     public ResponseEntity<RoomieStateDTO> updateRoomieState(@Valid @RequestBody RoomieStateDTO roomieStateDTO) throws URISyntaxException {
         log.debug("REST request to update RoomieState : {}", roomieStateDTO);
         if (roomieStateDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomieStateResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomieStates in body
      */
     @GetMapping("/roomie-states")
-    @Timed
     public ResponseEntity<List<RoomieStateDTO>> getAllRoomieStates(Pageable pageable) {
         log.debug("REST request to get a page of RoomieStates");
         Page<RoomieStateDTO> page = roomieStateService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomieStateResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomieStateDTO, or with status 404 (Not Found)
      */
     @GetMapping("/roomie-states/{id}")
-    @Timed
     public ResponseEntity<RoomieStateDTO> getRoomieState(@PathVariable Long id) {
         log.debug("REST request to get RoomieState : {}", id);
         Optional<RoomieStateDTO> roomieStateDTO = roomieStateService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomieStateResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/roomie-states/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomieState(@PathVariable Long id) {
         log.debug("REST request to delete RoomieState : {}", id);
         roomieStateService.delete(id);
@@ -137,12 +130,11 @@ public class RoomieStateResource {
      * @return the result of the search
      */
     @GetMapping("/_search/roomie-states")
-    @Timed
     public ResponseEntity<List<RoomieStateDTO>> searchRoomieStates(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomieStates for query {}", query);
         Page<RoomieStateDTO> page = roomieStateService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/roomie-states");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

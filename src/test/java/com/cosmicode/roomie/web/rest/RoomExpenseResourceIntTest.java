@@ -420,7 +420,7 @@ public class RoomExpenseResourceIntTest {
 
         int databaseSizeBeforeDelete = roomExpenseRepository.findAll().size();
 
-        // Get the roomExpense
+        // Delete the roomExpense
         restRoomExpenseMockMvc.perform(delete("/api/room-expenses/{id}", roomExpense.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

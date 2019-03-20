@@ -296,7 +296,7 @@ public class UserPreferencesResourceIntTest {
 
         int databaseSizeBeforeDelete = userPreferencesRepository.findAll().size();
 
-        // Get the userPreferences
+        // Delete the userPreferences
         restUserPreferencesMockMvc.perform(delete("/api/user-preferences/{id}", userPreferences.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

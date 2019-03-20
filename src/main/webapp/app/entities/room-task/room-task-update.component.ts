@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IRoomTask } from 'app/shared/model/room-task.model';
 import { RoomTaskService } from './room-task.service';
 import { IRoom } from 'app/shared/model/room.model';
@@ -37,12 +37,13 @@ export class RoomTaskUpdateComponent implements OnInit {
             this.created = this.roomTask.created != null ? this.roomTask.created.format(DATE_TIME_FORMAT) : null;
             this.deadline = this.roomTask.deadline != null ? this.roomTask.deadline.format(DATE_TIME_FORMAT) : null;
         });
-        this.roomService.query().subscribe(
-            (res: HttpResponse<IRoom[]>) => {
-                this.rooms = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.roomService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoom[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoom[]>) => response.body)
+            )
+            .subscribe((res: IRoom[]) => (this.rooms = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

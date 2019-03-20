@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -21,6 +20,7 @@ public class UserReportDTO implements Serializable {
     private String description;
 
     private ReportType type;
+
 
     private Long roomieId;
 

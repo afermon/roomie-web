@@ -355,7 +355,7 @@ public class RoomTaskResourceIntTest {
 
         int databaseSizeBeforeDelete = roomTaskRepository.findAll().size();
 
-        // Get the roomTask
+        // Delete the roomTask
         restRoomTaskMockMvc.perform(delete("/api/room-tasks/{id}", roomTask.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

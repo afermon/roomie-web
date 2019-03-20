@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -29,6 +28,7 @@ public class CompanyDTO implements Serializable {
 
     @NotNull
     private Double premiumCost;
+
 
     public Long getId() {
         return id;

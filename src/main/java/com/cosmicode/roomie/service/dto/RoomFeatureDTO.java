@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,6 +27,7 @@ public class RoomFeatureDTO implements Serializable {
 
     @Size(min = 4, max = 100)
     private String description;
+
 
     public Long getId() {
         return id;

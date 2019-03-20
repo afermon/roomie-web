@@ -17,7 +17,7 @@ import { IRoomExpenseSplit } from 'app/shared/model/room-expense-split.model';
 export class RoomExpenseSplitResolve implements Resolve<IRoomExpenseSplit> {
     constructor(private service: RoomExpenseSplitService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomExpenseSplit> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomExpenseSplit> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomExpenseSplitResolve implements Resolve<IRoomExpenseSplit> {
 
 export const roomExpenseSplitRoute: Routes = [
     {
-        path: 'room-expense-split',
+        path: '',
         component: RoomExpenseSplitComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomExpenseSplitRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense-split/:id/view',
+        path: ':id/view',
         component: RoomExpenseSplitDetailComponent,
         resolve: {
             roomExpenseSplit: RoomExpenseSplitResolve
@@ -56,7 +56,7 @@ export const roomExpenseSplitRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense-split/new',
+        path: 'new',
         component: RoomExpenseSplitUpdateComponent,
         resolve: {
             roomExpenseSplit: RoomExpenseSplitResolve
@@ -68,7 +68,7 @@ export const roomExpenseSplitRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-expense-split/:id/edit',
+        path: ':id/edit',
         component: RoomExpenseSplitUpdateComponent,
         resolve: {
             roomExpenseSplit: RoomExpenseSplitResolve
@@ -83,7 +83,7 @@ export const roomExpenseSplitRoute: Routes = [
 
 export const roomExpenseSplitPopupRoute: Routes = [
     {
-        path: 'room-expense-split/:id/delete',
+        path: ':id/delete',
         component: RoomExpenseSplitDeletePopupComponent,
         resolve: {
             roomExpenseSplit: RoomExpenseSplitResolve

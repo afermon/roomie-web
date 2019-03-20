@@ -373,7 +373,7 @@ public class RoomEventResourceIntTest {
 
         int databaseSizeBeforeDelete = roomEventRepository.findAll().size();
 
-        // Get the roomEvent
+        // Delete the roomEvent
         restRoomEventMockMvc.perform(delete("/api/room-events/{id}", roomEvent.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

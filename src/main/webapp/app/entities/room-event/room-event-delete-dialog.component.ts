@@ -51,11 +51,11 @@ export class RoomEventDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.roomEvent = roomEvent;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/room-event', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/room-event', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IRoomie } from 'app/shared/model/roomie.model';
@@ -24,7 +25,6 @@ export class RoomieComponent implements OnInit, OnDestroy {
     routeData: any;
     links: any;
     totalItems: any;
-    queryCount: any;
     itemsPerPage: any;
     page: any;
     predicate: any;
@@ -160,7 +160,6 @@ export class RoomieComponent implements OnInit, OnDestroy {
     protected paginateRoomies(data: IRoomie[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        this.queryCount = this.totalItems;
         this.roomies = data;
     }
 

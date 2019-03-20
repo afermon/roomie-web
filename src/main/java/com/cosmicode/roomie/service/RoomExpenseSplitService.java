@@ -46,7 +46,6 @@ public class RoomExpenseSplitService {
      */
     public RoomExpenseSplitDTO save(RoomExpenseSplitDTO roomExpenseSplitDTO) {
         log.debug("Request to save RoomExpenseSplit : {}", roomExpenseSplitDTO);
-
         RoomExpenseSplit roomExpenseSplit = roomExpenseSplitMapper.toEntity(roomExpenseSplitDTO);
         roomExpenseSplit = roomExpenseSplitRepository.save(roomExpenseSplit);
         RoomExpenseSplitDTO result = roomExpenseSplitMapper.toDto(roomExpenseSplit);

@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
@@ -52,6 +51,7 @@ public class RoomDTO implements Serializable {
 
     @NotNull
     private Boolean isPremium;
+
 
     private Long addressId;
 

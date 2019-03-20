@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -35,6 +34,7 @@ public class RoomExpenseDTO implements Serializable {
     private LocalDate startDate;
 
     private LocalDate finishDate;
+
 
     private Long roomId;
 

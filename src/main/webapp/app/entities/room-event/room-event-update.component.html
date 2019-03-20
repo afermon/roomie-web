@@ -19,11 +19,11 @@
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.title?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 4 }">
+                        [hidden]="!editForm.controls.title?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 4 }">
                         This field is required to be at least 4 characters.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.title?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 50 }">
+                        [hidden]="!editForm.controls.title?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 50 }">
                         This field cannot be longer than 50 characters.
                         </small>
                     </div>
@@ -34,11 +34,11 @@
                         [(ngModel)]="roomEvent.description" minlength="4" maxlength="500"/>
                     <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.description?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 4 }">
+                        [hidden]="!editForm.controls.description?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 4 }">
                         This field is required to be at least 4 characters.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 500 }">
+                        [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 500 }">
                         This field cannot be longer than 500 characters.
                         </small>
                     </div>
@@ -57,7 +57,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="roomieApp.roomEvent.startTime" for="field_startTime">Start Time</label>
                     <div class="d-flex">
-                        <input id="field_startTime" type="datetime-local" class="form-control" name="startTime" [(ngModel)]="startTime"
+                        <input id="field_startTime" type="datetime-local" class="form-control" name="startTime" [(ngModel)]="startTime" placeholder="YYYY-MM-DD HH:mm"
                         required/>
                     </div>
                     <div [hidden]="!(editForm.controls.startTime?.dirty && editForm.controls.startTime?.invalid)">
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="roomieApp.roomEvent.endTime" for="field_endTime">End Time</label>
                     <div class="d-flex">
-                        <input id="field_endTime" type="datetime-local" class="form-control" name="endTime" [(ngModel)]="endTime"
+                        <input id="field_endTime" type="datetime-local" class="form-control" name="endTime" [(ngModel)]="endTime" placeholder="YYYY-MM-DD HH:mm"
                         required/>
                     </div>
                     <div [hidden]="!(editForm.controls.endTime?.dirty && editForm.controls.endTime?.invalid)">

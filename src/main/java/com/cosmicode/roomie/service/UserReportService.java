@@ -46,7 +46,6 @@ public class UserReportService {
      */
     public UserReportDTO save(UserReportDTO userReportDTO) {
         log.debug("Request to save UserReport : {}", userReportDTO);
-
         UserReport userReport = userReportMapper.toEntity(userReportDTO);
         userReport = userReportRepository.save(userReport);
         UserReportDTO result = userReportMapper.toDto(userReport);

@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -17,6 +16,7 @@ public class RoomieStateDTO implements Serializable {
     private AccountState state;
 
     private LocalDate suspendedDate;
+
 
     public Long getId() {
         return id;

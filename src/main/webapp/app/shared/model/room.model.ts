@@ -1,11 +1,11 @@
 import { Moment } from 'moment';
-import { IAppointment } from 'app/shared/model//appointment.model';
-import { IRoomTask } from 'app/shared/model//room-task.model';
-import { IRoomEvent } from 'app/shared/model//room-event.model';
-import { IRoomie } from 'app/shared/model//roomie.model';
-import { IRoomFeature } from 'app/shared/model//room-feature.model';
-import { IRoomExpense } from 'app/shared/model//room-expense.model';
-import { IRoomPicture } from 'app/shared/model//room-picture.model';
+import { IAppointment } from 'app/shared/model/appointment.model';
+import { IRoomTask } from 'app/shared/model/room-task.model';
+import { IRoomEvent } from 'app/shared/model/room-event.model';
+import { IRoomie } from 'app/shared/model/roomie.model';
+import { IRoomFeature } from 'app/shared/model/room-feature.model';
+import { IRoomExpense } from 'app/shared/model/room-expense.model';
+import { IRoomPicture } from 'app/shared/model/room-picture.model';
 
 export const enum RoomState {
     SEARCH = 'SEARCH',

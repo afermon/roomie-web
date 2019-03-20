@@ -290,7 +290,7 @@ public class RoomieStateResourceIntTest {
 
         int databaseSizeBeforeDelete = roomieStateRepository.findAll().size();
 
-        // Get the roomieState
+        // Delete the roomieState
         restRoomieStateMockMvc.perform(delete("/api/roomie-states/{id}", roomieState.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

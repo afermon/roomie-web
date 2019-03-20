@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.CompanyService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class CompanyResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/companies")
-    @Timed
     public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
         log.debug("REST request to save Company : {}", companyDTO);
         if (companyDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class CompanyResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/companies")
-    @Timed
     public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
         log.debug("REST request to update Company : {}", companyDTO);
         if (companyDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class CompanyResource {
      * @return the ResponseEntity with status 200 (OK) and the list of companies in body
      */
     @GetMapping("/companies")
-    @Timed
     public ResponseEntity<List<CompanyDTO>> getAllCompanies(Pageable pageable) {
         log.debug("REST request to get a page of Companies");
         Page<CompanyDTO> page = companyService.findAll(pageable);
@@ -107,7 +102,6 @@ public class CompanyResource {
      * @return the ResponseEntity with status 200 (OK) and with body the companyDTO, or with status 404 (Not Found)
      */
     @GetMapping("/companies/{id}")
-    @Timed
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable Long id) {
         log.debug("REST request to get Company : {}", id);
         Optional<CompanyDTO> companyDTO = companyService.findOne(id);
@@ -121,7 +115,6 @@ public class CompanyResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/companies/{id}")
-    @Timed
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         log.debug("REST request to delete Company : {}", id);
         companyService.delete(id);
@@ -137,12 +130,11 @@ public class CompanyResource {
      * @return the result of the search
      */
     @GetMapping("/_search/companies")
-    @Timed
     public ResponseEntity<List<CompanyDTO>> searchCompanies(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Companies for query {}", query);
         Page<CompanyDTO> page = companyService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/companies");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

@@ -53,7 +53,6 @@ public class RoomService {
      */
     public RoomDTO save(RoomDTO roomDTO) {
         log.debug("Request to save Room : {}", roomDTO);
-
         Room room = roomMapper.toEntity(roomDTO);
         room = roomRepository.save(room);
         RoomDTO result = roomMapper.toDto(room);

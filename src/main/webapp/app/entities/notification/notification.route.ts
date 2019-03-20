@@ -17,7 +17,7 @@ import { INotification } from 'app/shared/model/notification.model';
 export class NotificationResolve implements Resolve<INotification> {
     constructor(private service: NotificationService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Notification> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<INotification> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class NotificationResolve implements Resolve<INotification> {
 
 export const notificationRoute: Routes = [
     {
-        path: 'notification',
+        path: '',
         component: NotificationComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const notificationRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'notification/:id/view',
+        path: ':id/view',
         component: NotificationDetailComponent,
         resolve: {
             notification: NotificationResolve
@@ -56,7 +56,7 @@ export const notificationRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'notification/new',
+        path: 'new',
         component: NotificationUpdateComponent,
         resolve: {
             notification: NotificationResolve
@@ -68,7 +68,7 @@ export const notificationRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'notification/:id/edit',
+        path: ':id/edit',
         component: NotificationUpdateComponent,
         resolve: {
             notification: NotificationResolve
@@ -83,7 +83,7 @@ export const notificationRoute: Routes = [
 
 export const notificationPopupRoute: Routes = [
     {
-        path: 'notification/:id/delete',
+        path: ':id/delete',
         component: NotificationDeletePopupComponent,
         resolve: {
             notification: NotificationResolve

@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomExpenseSplitRecordService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class RoomExpenseSplitRecordResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-expense-split-records")
-    @Timed
     public ResponseEntity<RoomExpenseSplitRecordDTO> createRoomExpenseSplitRecord(@Valid @RequestBody RoomExpenseSplitRecordDTO roomExpenseSplitRecordDTO) throws URISyntaxException {
         log.debug("REST request to save RoomExpenseSplitRecord : {}", roomExpenseSplitRecordDTO);
         if (roomExpenseSplitRecordDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class RoomExpenseSplitRecordResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-expense-split-records")
-    @Timed
     public ResponseEntity<RoomExpenseSplitRecordDTO> updateRoomExpenseSplitRecord(@Valid @RequestBody RoomExpenseSplitRecordDTO roomExpenseSplitRecordDTO) throws URISyntaxException {
         log.debug("REST request to update RoomExpenseSplitRecord : {}", roomExpenseSplitRecordDTO);
         if (roomExpenseSplitRecordDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class RoomExpenseSplitRecordResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomExpenseSplitRecords in body
      */
     @GetMapping("/room-expense-split-records")
-    @Timed
     public ResponseEntity<List<RoomExpenseSplitRecordDTO>> getAllRoomExpenseSplitRecords(Pageable pageable) {
         log.debug("REST request to get a page of RoomExpenseSplitRecords");
         Page<RoomExpenseSplitRecordDTO> page = roomExpenseSplitRecordService.findAll(pageable);
@@ -107,7 +102,6 @@ public class RoomExpenseSplitRecordResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomExpenseSplitRecordDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-expense-split-records/{id}")
-    @Timed
     public ResponseEntity<RoomExpenseSplitRecordDTO> getRoomExpenseSplitRecord(@PathVariable Long id) {
         log.debug("REST request to get RoomExpenseSplitRecord : {}", id);
         Optional<RoomExpenseSplitRecordDTO> roomExpenseSplitRecordDTO = roomExpenseSplitRecordService.findOne(id);
@@ -121,7 +115,6 @@ public class RoomExpenseSplitRecordResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-expense-split-records/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomExpenseSplitRecord(@PathVariable Long id) {
         log.debug("REST request to delete RoomExpenseSplitRecord : {}", id);
         roomExpenseSplitRecordService.delete(id);
@@ -137,12 +130,11 @@ public class RoomExpenseSplitRecordResource {
      * @return the result of the search
      */
     @GetMapping("/_search/room-expense-split-records")
-    @Timed
     public ResponseEntity<List<RoomExpenseSplitRecordDTO>> searchRoomExpenseSplitRecords(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of RoomExpenseSplitRecords for query {}", query);
         Page<RoomExpenseSplitRecordDTO> page = roomExpenseSplitRecordService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-expense-split-records");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

@@ -49,8 +49,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = RoomieApp.class)
 public class AddressResourceIntTest {
 
-    private static final String DEFAULT_LOCATION = "90, 180.0";
-    private static final String UPDATED_LOCATION = "90,+23.43";
+    private static final String DEFAULT_LOCATION = "9.19,180";
+    private static final String UPDATED_LOCATION = "+23,+85.02";
 
     private static final String DEFAULT_CITY = "AAAAAAAAAA";
     private static final String UPDATED_CITY = "BBBBBBBBBB";
@@ -343,7 +343,7 @@ public class AddressResourceIntTest {
 
         int databaseSizeBeforeDelete = addressRepository.findAll().size();
 
-        // Get the address
+        // Delete the address
         restAddressMockMvc.perform(delete("/api/addresses/{id}", address.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

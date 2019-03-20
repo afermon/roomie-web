@@ -17,7 +17,7 @@ import { IRoomEvent } from 'app/shared/model/room-event.model';
 export class RoomEventResolve implements Resolve<IRoomEvent> {
     constructor(private service: RoomEventService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RoomEvent> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomEvent> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomEventResolve implements Resolve<IRoomEvent> {
 
 export const roomEventRoute: Routes = [
     {
-        path: 'room-event',
+        path: '',
         component: RoomEventComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomEventRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-event/:id/view',
+        path: ':id/view',
         component: RoomEventDetailComponent,
         resolve: {
             roomEvent: RoomEventResolve
@@ -56,7 +56,7 @@ export const roomEventRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-event/new',
+        path: 'new',
         component: RoomEventUpdateComponent,
         resolve: {
             roomEvent: RoomEventResolve
@@ -68,7 +68,7 @@ export const roomEventRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'room-event/:id/edit',
+        path: ':id/edit',
         component: RoomEventUpdateComponent,
         resolve: {
             roomEvent: RoomEventResolve
@@ -83,7 +83,7 @@ export const roomEventRoute: Routes = [
 
 export const roomEventPopupRoute: Routes = [
     {
-        path: 'room-event/:id/delete',
+        path: ':id/delete',
         component: RoomEventDeletePopupComponent,
         resolve: {
             roomEvent: RoomEventResolve

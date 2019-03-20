@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <p id="jhi-delete-roomExpenseSplit-heading" jhiTranslate="roomieApp.roomExpenseSplit.delete.question" translateValues="{id: '{{roomExpenseSplit.id}}'}">Are you sure you want to delete this Room Expense Split?</p>
+        <p id="jhi-delete-roomExpenseSplit-heading" jhiTranslate="roomieApp.roomExpenseSplit.delete.question" [translateValues]="{id: roomExpenseSplit.id}">Are you sure you want to delete this Room Expense Split?</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

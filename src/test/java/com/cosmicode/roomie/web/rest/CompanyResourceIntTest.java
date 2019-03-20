@@ -390,7 +390,7 @@ public class CompanyResourceIntTest {
 
         int databaseSizeBeforeDelete = companyRepository.findAll().size();
 
-        // Get the company
+        // Delete the company
         restCompanyMockMvc.perform(delete("/api/companies/{id}", company.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

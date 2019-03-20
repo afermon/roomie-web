@@ -47,7 +47,6 @@ public class RoomTaskService {
      */
     public RoomTaskDTO save(RoomTaskDTO roomTaskDTO) {
         log.debug("Request to save RoomTask : {}", roomTaskDTO);
-
         RoomTask roomTask = roomTaskMapper.toEntity(roomTaskDTO);
         roomTask = roomTaskRepository.save(roomTask);
         RoomTaskDTO result = roomTaskMapper.toDto(roomTask);

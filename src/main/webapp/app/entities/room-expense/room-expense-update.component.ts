@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IRoomExpense } from 'app/shared/model/room-expense.model';
 import { RoomExpenseService } from './room-expense.service';
 import { IRoom } from 'app/shared/model/room.model';
@@ -34,12 +34,13 @@ export class RoomExpenseUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ roomExpense }) => {
             this.roomExpense = roomExpense;
         });
-        this.roomService.query().subscribe(
-            (res: HttpResponse<IRoom[]>) => {
-                this.rooms = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.roomService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoom[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoom[]>) => response.body)
+            )
+            .subscribe((res: IRoom[]) => (this.rooms = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

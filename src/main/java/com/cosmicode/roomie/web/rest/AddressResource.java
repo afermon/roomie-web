@@ -1,6 +1,4 @@
 package com.cosmicode.roomie.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.AddressService;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
@@ -51,7 +49,6 @@ public class AddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/addresses")
-    @Timed
     public ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressDTO addressDTO) throws URISyntaxException {
         log.debug("REST request to save Address : {}", addressDTO);
         if (addressDTO.getId() != null) {
@@ -73,7 +70,6 @@ public class AddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/addresses")
-    @Timed
     public ResponseEntity<AddressDTO> updateAddress(@Valid @RequestBody AddressDTO addressDTO) throws URISyntaxException {
         log.debug("REST request to update Address : {}", addressDTO);
         if (addressDTO.getId() == null) {
@@ -92,7 +88,6 @@ public class AddressResource {
      * @return the ResponseEntity with status 200 (OK) and the list of addresses in body
      */
     @GetMapping("/addresses")
-    @Timed
     public ResponseEntity<List<AddressDTO>> getAllAddresses(Pageable pageable) {
         log.debug("REST request to get a page of Addresses");
         Page<AddressDTO> page = addressService.findAll(pageable);
@@ -107,7 +102,6 @@ public class AddressResource {
      * @return the ResponseEntity with status 200 (OK) and with body the addressDTO, or with status 404 (Not Found)
      */
     @GetMapping("/addresses/{id}")
-    @Timed
     public ResponseEntity<AddressDTO> getAddress(@PathVariable Long id) {
         log.debug("REST request to get Address : {}", id);
         Optional<AddressDTO> addressDTO = addressService.findOne(id);
@@ -121,7 +115,6 @@ public class AddressResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/addresses/{id}")
-    @Timed
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         log.debug("REST request to delete Address : {}", id);
         addressService.delete(id);
@@ -137,12 +130,11 @@ public class AddressResource {
      * @return the result of the search
      */
     @GetMapping("/_search/addresses")
-    @Timed
     public ResponseEntity<List<AddressDTO>> searchAddresses(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Addresses for query {}", query);
         Page<AddressDTO> page = addressService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/addresses");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

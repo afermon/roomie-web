@@ -46,7 +46,6 @@ public class AppointmentService {
      */
     public AppointmentDTO save(AppointmentDTO appointmentDTO) {
         log.debug("Request to save Appointment : {}", appointmentDTO);
-
         Appointment appointment = appointmentMapper.toEntity(appointmentDTO);
         appointment = appointmentRepository.save(appointment);
         AppointmentDTO result = appointmentMapper.toDto(appointment);

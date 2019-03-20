@@ -1,5 +1,4 @@
 package com.cosmicode.roomie.service.dto;
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -27,6 +26,7 @@ public class RoomEventDTO implements Serializable {
 
     @NotNull
     private Instant endTime;
+
 
     private Long roomId;
 
