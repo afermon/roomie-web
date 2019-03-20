@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.cosmicode.roomie.domain.*;
 import com.cosmicode.roomie.repository.*;
 import com.cosmicode.roomie.repository.search.*;
-import com.github.vanroy.springdata.jest.JestElasticsearchTemplate;
 import org.elasticsearch.ResourceAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Async;
@@ -106,7 +106,7 @@ public class ElasticsearchIndexService {
 
     private final UserSearchRepository userSearchRepository;
 
-    private final JestElasticsearchTemplate elasticsearchTemplate;
+    private final ElasticsearchOperations elasticsearchTemplate;
 
     public ElasticsearchIndexService(
         UserRepository userRepository,
@@ -143,7 +143,7 @@ public class ElasticsearchIndexService {
         UserPreferencesSearchRepository userPreferencesSearchRepository,
         UserReportRepository userReportRepository,
         UserReportSearchRepository userReportSearchRepository,
-        JestElasticsearchTemplate elasticsearchTemplate) {
+        ElasticsearchOperations elasticsearchTemplate) {
         this.userRepository = userRepository;
         this.userSearchRepository = userSearchRepository;
         this.addressRepository = addressRepository;
