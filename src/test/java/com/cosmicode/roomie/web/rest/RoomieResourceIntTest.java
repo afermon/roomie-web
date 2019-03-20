@@ -1,9 +1,8 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Roomie;
-import com.cosmicode.roomie.domain.RoomieState;
+import com.cosmicode.roomie.domain.enumeration.Gender;
 import com.cosmicode.roomie.repository.RoomieRepository;
 import com.cosmicode.roomie.repository.search.RoomieSearchRepository;
 import com.cosmicode.roomie.service.AddressService;
@@ -13,7 +12,6 @@ import com.cosmicode.roomie.service.UserPreferencesService;
 import com.cosmicode.roomie.service.dto.RoomieDTO;
 import com.cosmicode.roomie.service.mapper.RoomieMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -47,8 +44,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.Gender;
 /**
  * Test class for the RoomieResource REST controller.
  *

@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Appointment;
+import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 import com.cosmicode.roomie.repository.AppointmentRepository;
-import com.cosmicode.roomie.repository.search.AppointmentSearchRepository;
 import com.cosmicode.roomie.service.AppointmentService;
 import com.cosmicode.roomie.service.dto.AppointmentDTO;
 import com.cosmicode.roomie.service.mapper.AppointmentMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,19 +26,13 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 /**
  * Test class for the AppointmentResource REST controller.
  *
@@ -69,14 +59,6 @@ public class AppointmentResourceIntTest {
 
     @Autowired
     private AppointmentService appointmentService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.AppointmentSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private AppointmentSearchRepository mockAppointmentSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -147,9 +129,6 @@ public class AppointmentResourceIntTest {
         assertThat(testAppointment.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAppointment.getDateTime()).isEqualTo(DEFAULT_DATE_TIME);
         assertThat(testAppointment.getState()).isEqualTo(DEFAULT_STATE);
-
-        // Validate the Appointment in Elasticsearch
-        verify(mockAppointmentSearchRepository, times(1)).save(testAppointment);
     }
 
     @Test
@@ -170,9 +149,6 @@ public class AppointmentResourceIntTest {
         // Validate the Appointment in the database
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Appointment in Elasticsearch
-        verify(mockAppointmentSearchRepository, times(0)).save(appointment);
     }
 
     @Test
@@ -302,9 +278,6 @@ public class AppointmentResourceIntTest {
         assertThat(testAppointment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAppointment.getDateTime()).isEqualTo(UPDATED_DATE_TIME);
         assertThat(testAppointment.getState()).isEqualTo(UPDATED_STATE);
-
-        // Validate the Appointment in Elasticsearch
-        verify(mockAppointmentSearchRepository, times(1)).save(testAppointment);
     }
 
     @Test
@@ -324,9 +297,6 @@ public class AppointmentResourceIntTest {
         // Validate the Appointment in the database
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Appointment in Elasticsearch
-        verify(mockAppointmentSearchRepository, times(0)).save(appointment);
     }
 
     @Test
@@ -345,26 +315,6 @@ public class AppointmentResourceIntTest {
         // Validate the database is empty
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Appointment in Elasticsearch
-        verify(mockAppointmentSearchRepository, times(1)).deleteById(appointment.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchAppointment() throws Exception {
-        // Initialize the database
-        appointmentRepository.saveAndFlush(appointment);
-        when(mockAppointmentSearchRepository.search(queryStringQuery("id:" + appointment.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(appointment), PageRequest.of(0, 1), 1));
-        // Search the appointment
-        restAppointmentMockMvc.perform(get("/api/_search/appointments?query=id:" + appointment.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(appointment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].dateTime").value(hasItem(DEFAULT_DATE_TIME.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test

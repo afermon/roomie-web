@@ -117,22 +117,6 @@ public class RoomTaskResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/room-tasks?query=:query : search for the roomTask corresponding
-     * to the query.
-     *
-     * @param query the query of the roomTask search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/room-tasks")
-    public ResponseEntity<List<RoomTaskDTO>> searchRoomTasks(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of RoomTasks for query {}", query);
-        Page<RoomTaskDTO> page = roomTaskService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-tasks");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
     @GetMapping("/tasksByRoom/{id}")
     public List<RoomTaskDTO> getRoomTasksByRoomId(@PathVariable Long id){
         return roomTaskService.findAllByRoom(id);

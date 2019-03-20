@@ -2,7 +2,6 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.RoomExpenseSplitRecord;
 import com.cosmicode.roomie.repository.RoomExpenseSplitRecordRepository;
-import com.cosmicode.roomie.repository.search.RoomExpenseSplitRecordSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomExpenseSplitRecordDTO;
 import com.cosmicode.roomie.service.mapper.RoomExpenseSplitRecordMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing RoomExpenseSplitRecord.
@@ -29,12 +26,9 @@ public class RoomExpenseSplitRecordService {
 
     private final RoomExpenseSplitRecordMapper roomExpenseSplitRecordMapper;
 
-    private final RoomExpenseSplitRecordSearchRepository roomExpenseSplitRecordSearchRepository;
-
-    public RoomExpenseSplitRecordService(RoomExpenseSplitRecordRepository roomExpenseSplitRecordRepository, RoomExpenseSplitRecordMapper roomExpenseSplitRecordMapper, RoomExpenseSplitRecordSearchRepository roomExpenseSplitRecordSearchRepository) {
+    public RoomExpenseSplitRecordService(RoomExpenseSplitRecordRepository roomExpenseSplitRecordRepository, RoomExpenseSplitRecordMapper roomExpenseSplitRecordMapper) {
         this.roomExpenseSplitRecordRepository = roomExpenseSplitRecordRepository;
         this.roomExpenseSplitRecordMapper = roomExpenseSplitRecordMapper;
-        this.roomExpenseSplitRecordSearchRepository = roomExpenseSplitRecordSearchRepository;
     }
 
     /**
@@ -48,7 +42,6 @@ public class RoomExpenseSplitRecordService {
         RoomExpenseSplitRecord roomExpenseSplitRecord = roomExpenseSplitRecordMapper.toEntity(roomExpenseSplitRecordDTO);
         roomExpenseSplitRecord = roomExpenseSplitRecordRepository.save(roomExpenseSplitRecord);
         RoomExpenseSplitRecordDTO result = roomExpenseSplitRecordMapper.toDto(roomExpenseSplitRecord);
-        roomExpenseSplitRecordSearchRepository.save(roomExpenseSplitRecord);
         return result;
     }
 
@@ -87,20 +80,5 @@ public class RoomExpenseSplitRecordService {
     public void delete(Long id) {
         log.debug("Request to delete RoomExpenseSplitRecord : {}", id);
         roomExpenseSplitRecordRepository.deleteById(id);
-        roomExpenseSplitRecordSearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the roomExpenseSplitRecord corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<RoomExpenseSplitRecordDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of RoomExpenseSplitRecords for query {}", query);
-        return roomExpenseSplitRecordSearchRepository.search(queryStringQuery(query), pageable)
-            .map(roomExpenseSplitRecordMapper::toDto);
     }
 }

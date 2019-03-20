@@ -117,20 +117,4 @@ public class RoomieStateResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/roomie-states?query=:query : search for the roomieState corresponding
-     * to the query.
-     *
-     * @param query the query of the roomieState search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/roomie-states")
-    public ResponseEntity<List<RoomieStateDTO>> searchRoomieStates(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of RoomieStates for query {}", query);
-        Page<RoomieStateDTO> page = roomieStateService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/roomie-states");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
 }

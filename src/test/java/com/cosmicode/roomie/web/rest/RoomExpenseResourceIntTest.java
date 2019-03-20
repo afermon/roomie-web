@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomExpense;
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.repository.RoomExpenseRepository;
-import com.cosmicode.roomie.repository.search.RoomExpenseSearchRepository;
 import com.cosmicode.roomie.service.RoomExpenseService;
 import com.cosmicode.roomie.service.dto.RoomExpenseDTO;
 import com.cosmicode.roomie.service.mapper.RoomExpenseMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,19 +26,13 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 /**
  * Test class for the RoomExpenseResource REST controller.
  *
@@ -84,14 +74,6 @@ public class RoomExpenseResourceIntTest {
 
     @Autowired
     private RoomExpenseService roomExpenseService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.RoomExpenseSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private RoomExpenseSearchRepository mockRoomExpenseSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -172,9 +154,6 @@ public class RoomExpenseResourceIntTest {
         assertThat(testRoomExpense.getMonthDay()).isEqualTo(DEFAULT_MONTH_DAY);
         assertThat(testRoomExpense.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testRoomExpense.getFinishDate()).isEqualTo(DEFAULT_FINISH_DATE);
-
-        // Validate the RoomExpense in Elasticsearch
-        verify(mockRoomExpenseSearchRepository, times(1)).save(testRoomExpense);
     }
 
     @Test
@@ -195,9 +174,6 @@ public class RoomExpenseResourceIntTest {
         // Validate the RoomExpense in the database
         List<RoomExpense> roomExpenseList = roomExpenseRepository.findAll();
         assertThat(roomExpenseList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the RoomExpense in Elasticsearch
-        verify(mockRoomExpenseSearchRepository, times(0)).save(roomExpense);
     }
 
     @Test
@@ -385,9 +361,6 @@ public class RoomExpenseResourceIntTest {
         assertThat(testRoomExpense.getMonthDay()).isEqualTo(UPDATED_MONTH_DAY);
         assertThat(testRoomExpense.getStartDate()).isEqualTo(UPDATED_START_DATE);
         assertThat(testRoomExpense.getFinishDate()).isEqualTo(UPDATED_FINISH_DATE);
-
-        // Validate the RoomExpense in Elasticsearch
-        verify(mockRoomExpenseSearchRepository, times(1)).save(testRoomExpense);
     }
 
     @Test
@@ -407,9 +380,6 @@ public class RoomExpenseResourceIntTest {
         // Validate the RoomExpense in the database
         List<RoomExpense> roomExpenseList = roomExpenseRepository.findAll();
         assertThat(roomExpenseList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the RoomExpense in Elasticsearch
-        verify(mockRoomExpenseSearchRepository, times(0)).save(roomExpense);
     }
 
     @Test
@@ -428,31 +398,6 @@ public class RoomExpenseResourceIntTest {
         // Validate the database is empty
         List<RoomExpense> roomExpenseList = roomExpenseRepository.findAll();
         assertThat(roomExpenseList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the RoomExpense in Elasticsearch
-        verify(mockRoomExpenseSearchRepository, times(1)).deleteById(roomExpense.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchRoomExpense() throws Exception {
-        // Initialize the database
-        roomExpenseRepository.saveAndFlush(roomExpense);
-        when(mockRoomExpenseSearchRepository.search(queryStringQuery("id:" + roomExpense.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(roomExpense), PageRequest.of(0, 1), 1));
-        // Search the roomExpense
-        restRoomExpenseMockMvc.perform(get("/api/_search/room-expenses?query=id:" + roomExpense.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(roomExpense.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
-            .andExpect(jsonPath("$.[*].periodicity").value(hasItem(DEFAULT_PERIODICITY)))
-            .andExpect(jsonPath("$.[*].monthDay").value(hasItem(DEFAULT_MONTH_DAY)))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].finishDate").value(hasItem(DEFAULT_FINISH_DATE.toString())));
     }
 
     @Test

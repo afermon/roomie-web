@@ -116,21 +116,4 @@ public class AppointmentResource {
         appointmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/appointments?query=:query : search for the appointment corresponding
-     * to the query.
-     *
-     * @param query the query of the appointment search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/appointments")
-    public ResponseEntity<List<AppointmentDTO>> searchAppointments(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Appointments for query {}", query);
-        Page<AppointmentDTO> page = appointmentService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/appointments");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
 }
