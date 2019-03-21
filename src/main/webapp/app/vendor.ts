@@ -40,7 +40,8 @@ import {
     faTrashAlt,
     faUser,
     faUserPlus,
-    faWrench
+    faWrench,
+    faMobileAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faBitbucket, faFacebook, faGithub, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -86,6 +87,7 @@ library.add(faChartLine);
 library.add(faFeather);
 library.add(faDotCircle);
 library.add(faBuilding);
+library.add(faMobileAlt);
 
 // Brand
 library.add(faTwitter);
