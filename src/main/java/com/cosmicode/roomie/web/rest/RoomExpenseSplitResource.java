@@ -117,20 +117,4 @@ public class RoomExpenseSplitResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/room-expense-splits?query=:query : search for the roomExpenseSplit corresponding
-     * to the query.
-     *
-     * @param query the query of the roomExpenseSplit search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/room-expense-splits")
-    public ResponseEntity<List<RoomExpenseSplitDTO>> searchRoomExpenseSplits(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of RoomExpenseSplits for query {}", query);
-        Page<RoomExpenseSplitDTO> page = roomExpenseSplitService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-expense-splits");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
 }

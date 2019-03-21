@@ -1,7 +1,6 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Address;
 import com.cosmicode.roomie.repository.AddressRepository;
 import com.cosmicode.roomie.repository.search.AddressSearchRepository;
@@ -9,7 +8,6 @@ import com.cosmicode.roomie.service.AddressService;
 import com.cosmicode.roomie.service.dto.AddressDTO;
 import com.cosmicode.roomie.service.mapper.AddressMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +28,6 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;

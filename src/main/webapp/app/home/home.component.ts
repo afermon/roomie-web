@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
         this.eventManager.subscribe('authenticationSuccess', message => {
             this.accountService.identity().then(account => {
                 this.account = account;
+                window.scroll(0, 0);
             });
         });
     }

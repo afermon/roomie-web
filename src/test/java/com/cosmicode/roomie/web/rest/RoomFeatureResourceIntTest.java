@@ -1,15 +1,15 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomFeature;
+import com.cosmicode.roomie.domain.enumeration.FeatureType;
+import com.cosmicode.roomie.domain.enumeration.Lang;
 import com.cosmicode.roomie.repository.RoomFeatureRepository;
 import com.cosmicode.roomie.repository.search.RoomFeatureSearchRepository;
 import com.cosmicode.roomie.service.RoomFeatureService;
 import com.cosmicode.roomie.service.dto.RoomFeatureDTO;
 import com.cosmicode.roomie.service.mapper.RoomFeatureMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,6 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -39,9 +38,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.Lang;
-import com.cosmicode.roomie.domain.enumeration.FeatureType;
 /**
  * Test class for the RoomFeatureResource REST controller.
  *

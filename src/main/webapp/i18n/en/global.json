@@ -149,5 +149,9 @@
         "idexists": "A new {{ entityName }} cannot already have an ID",
         "idnull": "Invalid ID"
     },
-    "footer": "All rights reserved. &copy; 2019 Cosmicode"
+    "footer": {
+        "copyright": "All rights reserved. &copy; 2019 Cosmicode",
+        "thanks": "Thank you for supporting us!",
+        "social": "Let's get in touch on any of these platforms"
+    }
 }

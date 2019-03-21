@@ -117,20 +117,4 @@ public class UserReportResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/user-reports?query=:query : search for the userReport corresponding
-     * to the query.
-     *
-     * @param query the query of the userReport search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/user-reports")
-    public ResponseEntity<List<UserReportDTO>> searchUserReports(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of UserReports for query {}", query);
-        Page<UserReportDTO> page = userReportService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/user-reports");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
 }

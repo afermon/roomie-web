@@ -117,20 +117,4 @@ public class CompanyResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/companies?query=:query : search for the company corresponding
-     * to the query.
-     *
-     * @param query the query of the company search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/companies")
-    public ResponseEntity<List<CompanyDTO>> searchCompanies(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Companies for query {}", query);
-        Page<CompanyDTO> page = companyService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/companies");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
 }

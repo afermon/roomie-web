@@ -1,23 +1,18 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Company;
 import com.cosmicode.roomie.repository.CompanyRepository;
-import com.cosmicode.roomie.repository.search.CompanySearchRepository;
 import com.cosmicode.roomie.service.CompanyService;
 import com.cosmicode.roomie.service.dto.CompanyDTO;
 import com.cosmicode.roomie.service.mapper.CompanyMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -28,15 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -72,14 +63,6 @@ public class CompanyResourceIntTest {
 
     @Autowired
     private CompanyService companyService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.CompanySearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private CompanySearchRepository mockCompanySearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -154,9 +137,6 @@ public class CompanyResourceIntTest {
         assertThat(testCompany.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testCompany.getPhone()).isEqualTo(DEFAULT_PHONE);
         assertThat(testCompany.getPremiumCost()).isEqualTo(DEFAULT_PREMIUM_COST);
-
-        // Validate the Company in Elasticsearch
-        verify(mockCompanySearchRepository, times(1)).save(testCompany);
     }
 
     @Test
@@ -177,9 +157,6 @@ public class CompanyResourceIntTest {
         // Validate the Company in the database
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Company in Elasticsearch
-        verify(mockCompanySearchRepository, times(0)).save(company);
     }
 
     @Test
@@ -355,9 +332,6 @@ public class CompanyResourceIntTest {
         assertThat(testCompany.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testCompany.getPhone()).isEqualTo(UPDATED_PHONE);
         assertThat(testCompany.getPremiumCost()).isEqualTo(UPDATED_PREMIUM_COST);
-
-        // Validate the Company in Elasticsearch
-        verify(mockCompanySearchRepository, times(1)).save(testCompany);
     }
 
     @Test
@@ -377,9 +351,6 @@ public class CompanyResourceIntTest {
         // Validate the Company in the database
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Company in Elasticsearch
-        verify(mockCompanySearchRepository, times(0)).save(company);
     }
 
     @Test
@@ -398,28 +369,6 @@ public class CompanyResourceIntTest {
         // Validate the database is empty
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Company in Elasticsearch
-        verify(mockCompanySearchRepository, times(1)).deleteById(company.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchCompany() throws Exception {
-        // Initialize the database
-        companyRepository.saveAndFlush(company);
-        when(mockCompanySearchRepository.search(queryStringQuery("id:" + company.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(company), PageRequest.of(0, 1), 1));
-        // Search the company
-        restCompanyMockMvc.perform(get("/api/_search/companies?query=id:" + company.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
-            .andExpect(jsonPath("$.[*].premiumCost").value(hasItem(DEFAULT_PREMIUM_COST.doubleValue())));
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.RoomieState;
 import com.cosmicode.roomie.repository.RoomieStateRepository;
-import com.cosmicode.roomie.repository.search.RoomieStateSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomieStateDTO;
 import com.cosmicode.roomie.service.mapper.RoomieStateMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing RoomieState.
@@ -29,12 +26,9 @@ public class RoomieStateService {
 
     private final RoomieStateMapper roomieStateMapper;
 
-    private final RoomieStateSearchRepository roomieStateSearchRepository;
-
-    public RoomieStateService(RoomieStateRepository roomieStateRepository, RoomieStateMapper roomieStateMapper, RoomieStateSearchRepository roomieStateSearchRepository) {
+    public RoomieStateService(RoomieStateRepository roomieStateRepository, RoomieStateMapper roomieStateMapper) {
         this.roomieStateRepository = roomieStateRepository;
         this.roomieStateMapper = roomieStateMapper;
-        this.roomieStateSearchRepository = roomieStateSearchRepository;
     }
 
     /**
@@ -48,7 +42,6 @@ public class RoomieStateService {
         RoomieState roomieState = roomieStateMapper.toEntity(roomieStateDTO);
         roomieState = roomieStateRepository.save(roomieState);
         RoomieStateDTO result = roomieStateMapper.toDto(roomieState);
-        roomieStateSearchRepository.save(roomieState);
         return result;
     }
 
@@ -87,20 +80,6 @@ public class RoomieStateService {
     public void delete(Long id) {
         log.debug("Request to delete RoomieState : {}", id);
         roomieStateRepository.deleteById(id);
-        roomieStateSearchRepository.deleteById(id);
     }
 
-    /**
-     * Search for the roomieState corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<RoomieStateDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of RoomieStates for query {}", query);
-        return roomieStateSearchRepository.search(queryStringQuery(query), pageable)
-            .map(roomieStateMapper::toDto);
-    }
 }

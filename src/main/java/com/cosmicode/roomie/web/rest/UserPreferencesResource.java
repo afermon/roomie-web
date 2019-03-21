@@ -116,20 +116,4 @@ public class UserPreferencesResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/user-preferences?query=:query : search for the userPreferences corresponding
-     * to the query.
-     *
-     * @param query the query of the userPreferences search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/user-preferences")
-    public ResponseEntity<List<UserPreferencesDTO>> searchUserPreferences(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of UserPreferences for query {}", query);
-        Page<UserPreferencesDTO> page = userPreferencesService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/user-preferences");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
 }

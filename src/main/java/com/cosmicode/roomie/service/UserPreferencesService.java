@@ -2,7 +2,6 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.UserPreferences;
 import com.cosmicode.roomie.repository.UserPreferencesRepository;
-import com.cosmicode.roomie.repository.search.UserPreferencesSearchRepository;
 import com.cosmicode.roomie.service.dto.UserPreferencesDTO;
 import com.cosmicode.roomie.service.mapper.UserPreferencesMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing UserPreferences.
@@ -29,12 +26,9 @@ public class UserPreferencesService {
 
     private final UserPreferencesMapper userPreferencesMapper;
 
-    private final UserPreferencesSearchRepository userPreferencesSearchRepository;
-
-    public UserPreferencesService(UserPreferencesRepository userPreferencesRepository, UserPreferencesMapper userPreferencesMapper, UserPreferencesSearchRepository userPreferencesSearchRepository) {
+    public UserPreferencesService(UserPreferencesRepository userPreferencesRepository, UserPreferencesMapper userPreferencesMapper) {
         this.userPreferencesRepository = userPreferencesRepository;
         this.userPreferencesMapper = userPreferencesMapper;
-        this.userPreferencesSearchRepository = userPreferencesSearchRepository;
     }
 
     /**
@@ -48,7 +42,6 @@ public class UserPreferencesService {
         UserPreferences userPreferences = userPreferencesMapper.toEntity(userPreferencesDTO);
         userPreferences = userPreferencesRepository.save(userPreferences);
         UserPreferencesDTO result = userPreferencesMapper.toDto(userPreferences);
-        userPreferencesSearchRepository.save(userPreferences);
         return result;
     }
 
@@ -87,20 +80,5 @@ public class UserPreferencesService {
     public void delete(Long id) {
         log.debug("Request to delete UserPreferences : {}", id);
         userPreferencesRepository.deleteById(id);
-        userPreferencesSearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the userPreferences corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<UserPreferencesDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of UserPreferences for query {}", query);
-        return userPreferencesSearchRepository.search(queryStringQuery(query), pageable)
-            .map(userPreferencesMapper::toDto);
     }
 }
