@@ -154,4 +154,17 @@ public class RoomService {
         return roomSearchRepository.search(searchQuery.getQuery(), pageable)
             .map(roomMapper::toDto);
     }
+
+    /**
+     * Reindex a room.
+     *
+     * @param id the id of the entity to reindex
+     * @return the persisted entity
+     */
+    public void reindex(Long id) {
+        log.debug("Request to reindex Room : {}", id);
+        Optional<Room> room = roomRepository.findOneWithEagerRelationships(id);
+        if(room.isPresent())
+            roomSearchRepository.save(room.get());
+    }
 }
