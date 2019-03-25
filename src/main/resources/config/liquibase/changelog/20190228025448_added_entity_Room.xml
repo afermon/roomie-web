@@ -100,10 +100,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="room_id, features_id" tableName="room_features"/>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/room.csv"
-                  separator=";"
-                  tableName="room"/>
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
