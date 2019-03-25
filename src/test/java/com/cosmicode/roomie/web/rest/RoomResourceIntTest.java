@@ -529,8 +529,6 @@ public class RoomResourceIntTest {
         assertThat(testRoom.getAvailableFrom()).isEqualTo(UPDATED_AVAILABLE_FROM);
         assertThat(testRoom.isIsPremium()).isEqualTo(UPDATED_IS_PREMIUM);
 
-        // Validate the Room in Elasticsearch
-        verify(mockRoomSearchRepository, times(1)).save(testRoom);
     }
 
     @Test
