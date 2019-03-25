@@ -1,0 +1,4 @@
+id;name;description;currency;amount;periodicity;month_day
+1;Rent 1;rent;COLON;200000;1;1
+2;Rent 2;rent;DOLLAR;300;1;1
+3;Rent 3;rent;DOLLAR;400;1;1
