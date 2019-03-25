@@ -1,6 +1,7 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Room;
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.repository.RoomRepository;
 import com.cosmicode.roomie.repository.search.RoomSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomDTO;
@@ -17,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Room.
@@ -143,12 +143,20 @@ public class RoomService {
      *     }
      */
     @Transactional(readOnly = true)
-    public Page<RoomDTO> search(Double latitude, Double longitude, int distance, Pageable pageable) {
+    public Page<RoomDTO> search(Optional<Double> latitude, Optional<Double> longitude, Optional<Integer> distance, Optional<Double> price, Optional<CurrencyType> currency, Optional<String> features, Pageable pageable) {
         log.debug("Request to search for a page of Rooms for location {} {} {} km", latitude, longitude, distance);
-        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-            .withQuery(geoDistanceQuery("address.location").point(latitude, longitude).distance(distance, DistanceUnit.KILOMETERS))
-            .build();
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
 
+        if(latitude.isPresent() && longitude.isPresent() && distance.isPresent())
+            queryBuilder.withQuery(geoDistanceQuery("address.location").point(latitude.get(), longitude.get()).distance(distance.get(), DistanceUnit.KILOMETERS));
+
+        price.ifPresent(aDouble -> queryBuilder.withQuery(termQuery("price.amount", aDouble)));
+
+        currency.ifPresent(currencyType -> queryBuilder.withQuery(matchQuery("price.currency", currencyType)));
+
+        if(features.isPresent()) {}
+
+        SearchQuery searchQuery = queryBuilder.build();
         log.debug(searchQuery.getQuery().toString());
 
         return roomSearchRepository.search(searchQuery.getQuery(), pageable)
