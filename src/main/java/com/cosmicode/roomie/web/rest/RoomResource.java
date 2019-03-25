@@ -153,7 +153,7 @@ public class RoomResource {
     @PostMapping("/_search/rooms/advanced")
     public ResponseEntity<List<RoomDTO>> searchRoomsAdvanced(@RequestBody SearchFilterDTO searchFilterDTO, Pageable pageable) {
         log.debug("REST request to search for a page of Rooms for: {}", searchFilterDTO.toString());
-        Page<RoomDTO> page = roomService.search(searchFilterDTO.getQuery(), pageable);
+        Page<RoomDTO> page = roomService.search(searchFilterDTO, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(searchFilterDTO.toString(), page, "/api/_search/rooms/advanced");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
