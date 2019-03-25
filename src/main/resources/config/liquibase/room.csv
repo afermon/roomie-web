@@ -1,4 +1,0 @@
-id;state;created;published;title;description;rooms;room_type;apoinments_notes;looking_for_roomie;available_from;is_premium;address_id;price_id
-1;SEARCH;2019-01-01 07:00:00.000000000;2019-01-01 07:00:00.000000000;Awesome room where you can do your homework!;Awesome room where you can do your homework! description;1;ROOM;Please call;0;2019-09-08;0;2;1
-2;SEARCH;2018-10-27 07:00:00.000000000;2018-10-29 07:00:00.000000000;Looking for a roomie, near all universities.;No Dogs allowed.;2;APARTMENT;Mornings preferred;0;2019-03-20;0;3;2
-3;SEARCH;2019-03-18 05:00:00.000000000;2019-03-18 05:00:00.000000000;Excellent location, all services included! Great deal for students;Dogs are allowed!;2;HOUSE;Please call.;0;2019-03-09;0;4;3
