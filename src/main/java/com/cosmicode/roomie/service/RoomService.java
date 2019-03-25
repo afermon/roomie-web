@@ -2,6 +2,7 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Room;
 import com.cosmicode.roomie.domain.enumeration.CurrencyType;
+import com.cosmicode.roomie.domain.enumeration.RoomState;
 import com.cosmicode.roomie.repository.RoomRepository;
 import com.cosmicode.roomie.repository.search.RoomSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomDTO;
@@ -53,7 +54,10 @@ public class RoomService {
         room = roomRepository.save(room);
         RoomDTO result = roomMapper.toDto(room);
         room = roomRepository.findOneWithEagerRelationships(room.getId()).get();
-        roomSearchRepository.save(room);
+        if(room.getState() == RoomState.SEARCH)
+            roomSearchRepository.save(room);
+        else
+            roomSearchRepository.deleteById(room.getId());
         return result;
     }
 
@@ -172,7 +176,7 @@ public class RoomService {
     public void reindex(Long id) {
         log.debug("Request to reindex Room : {}", id);
         Optional<Room> room = roomRepository.findOneWithEagerRelationships(id);
-        if(room.isPresent())
+        if(room.isPresent() && room.get().getState() == RoomState.SEARCH)
             roomSearchRepository.save(room.get());
     }
 }
