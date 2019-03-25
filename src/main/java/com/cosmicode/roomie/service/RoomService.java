@@ -1,13 +1,17 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Room;
+import com.cosmicode.roomie.domain.RoomFeature;
 import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.domain.enumeration.RoomState;
 import com.cosmicode.roomie.repository.RoomRepository;
 import com.cosmicode.roomie.repository.search.RoomSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomDTO;
+import com.cosmicode.roomie.service.dto.SearchFilterDTO;
 import com.cosmicode.roomie.service.mapper.RoomMapper;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,8 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -125,8 +131,7 @@ public class RoomService {
     /**
      * Search for the room corresponding to the query.
      *
-     * @param latitude the query of the search
-     * @param longitude the query of the search
+     * @param searchFilterDTO the query of the search
      * @param pageable the pagination information
      * @return the list of entities
      * GET room/_search
@@ -147,23 +152,43 @@ public class RoomService {
      *     }
      */
     @Transactional(readOnly = true)
-    public Page<RoomDTO> search(Optional<Double> latitude, Optional<Double> longitude, Optional<Integer> distance, Optional<Double> price, Optional<CurrencyType> currency, Optional<String> features, Pageable pageable) {
-        log.debug("Request to search for a page of Rooms for location {} {} {} km", latitude, longitude, distance);
-        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+    public Page<RoomDTO> search(SearchFilterDTO searchFilterDTO, Pageable pageable) {
+        log.debug("Request to search for a page of Rooms for location {}", searchFilterDTO.toString());
 
-        if(latitude.isPresent() && longitude.isPresent() && distance.isPresent())
-            queryBuilder.withQuery(geoDistanceQuery("address.location").point(latitude.get(), longitude.get()).distance(distance.get(), DistanceUnit.KILOMETERS));
+        int priceMinUSD, priceMaxUSD, priceMinCRC, priceMaxCRC;
+        int exchangeRateAproxCRC2USD = 600;
 
-        price.ifPresent(aDouble -> queryBuilder.withQuery(termQuery("price.amount", aDouble)));
+        List<String> features = new ArrayList<>();
+        if(searchFilterDTO.getFeatures() != null)
+            for (RoomFeature feature: searchFilterDTO.getFeatures())
+                features.add(feature.getName());
 
-        currency.ifPresent(currencyType -> queryBuilder.withQuery(matchQuery("price.currency", currencyType)));
+        if(searchFilterDTO.getCurrency() == CurrencyType.DOLLAR){
+            priceMinUSD = searchFilterDTO.getPriceMin();
+            priceMaxUSD = searchFilterDTO.getPriceMax();
+            priceMinCRC = priceMinUSD * exchangeRateAproxCRC2USD;
+            priceMaxCRC = priceMaxUSD * exchangeRateAproxCRC2USD;
+        } else {
+            priceMinCRC = searchFilterDTO.getPriceMin();
+            priceMaxCRC = searchFilterDTO.getPriceMax();
+            priceMinUSD = priceMinCRC / exchangeRateAproxCRC2USD;
+            priceMaxUSD = priceMaxCRC / exchangeRateAproxCRC2USD;
+        }
 
-        if(features.isPresent()) {}
+        QueryBuilder searchQueryBuilder = QueryBuilders.boolQuery()
+            .should(QueryBuilders.queryStringQuery(searchFilterDTO.getQuery()))
+            .should(QueryBuilders.rangeQuery("price.amount").lte(priceMaxCRC).gte(priceMinCRC))
+            .should(QueryBuilders.rangeQuery("price.amount").lte(priceMaxUSD).gte(priceMinUSD))
+            .should(QueryBuilders.termsQuery("features.name", features))
+            .minimumShouldMatch(1)
+            .filter(QueryBuilders.geoDistanceQuery("address.location").point(searchFilterDTO.getLatitude(), searchFilterDTO.getLongitude()).distance(searchFilterDTO.getDistance(), DistanceUnit.KILOMETERS));
 
-        SearchQuery searchQuery = queryBuilder.build();
-        log.debug(searchQuery.getQuery().toString());
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+            .withPageable(pageable)
+            .withQuery(searchQueryBuilder)
+            .build();
 
-        return roomSearchRepository.search(searchQuery.getQuery(), pageable)
+        return roomSearchRepository.search(searchQuery)
             .map(roomMapper::toDto);
     }
 
@@ -171,7 +196,6 @@ public class RoomService {
      * Reindex a room.
      *
      * @param id the id of the entity to reindex
-     * @return the persisted entity
      */
     public void reindex(Long id) {
         log.debug("Request to reindex Room : {}", id);
