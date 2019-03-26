@@ -134,22 +134,6 @@ public class RoomService {
      * @param searchFilterDTO the query of the search
      * @param pageable the pagination information
      * @return the list of entities
-     * GET room/_search
-     * {
-     *     "query": {
-     *         "bool" : {
-     *             "must" : {
-     *                 "match_all" : {}
-     *             },
-     *             "filter" : {
-     *                 "geo_distance" : {
-     *                     "distance" : "10km",
-     *                     "address.location": "9.932533,-84.031295"
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      */
     @Transactional(readOnly = true)
     public Page<RoomDTO> search(SearchFilterDTO searchFilterDTO, Pageable pageable) {
@@ -166,11 +150,13 @@ public class RoomService {
         if(searchFilterDTO.getCurrency() == CurrencyType.DOLLAR){
             priceMinUSD = searchFilterDTO.getPriceMin();
             priceMaxUSD = searchFilterDTO.getPriceMax();
+            if(priceMaxUSD == 1000) priceMaxUSD = priceMaxUSD * 10;
             priceMinCRC = priceMinUSD * exchangeRateAproxCRC2USD;
             priceMaxCRC = priceMaxUSD * exchangeRateAproxCRC2USD;
         } else {
             priceMinCRC = searchFilterDTO.getPriceMin();
             priceMaxCRC = searchFilterDTO.getPriceMax();
+            if(priceMaxCRC == 1000) priceMaxCRC = priceMaxCRC * 10;
             priceMinUSD = priceMinCRC / exchangeRateAproxCRC2USD;
             priceMaxUSD = priceMaxCRC / exchangeRateAproxCRC2USD;
         }
