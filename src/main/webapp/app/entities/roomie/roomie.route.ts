@@ -17,7 +17,7 @@ import { IRoomie } from 'app/shared/model/roomie.model';
 export class RoomieResolve implements Resolve<IRoomie> {
     constructor(private service: RoomieService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Roomie> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRoomie> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class RoomieResolve implements Resolve<IRoomie> {
 
 export const roomieRoute: Routes = [
     {
-        path: 'roomie',
+        path: '',
         component: RoomieComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const roomieRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'roomie/:id/view',
+        path: ':id/view',
         component: RoomieDetailComponent,
         resolve: {
             roomie: RoomieResolve
@@ -56,7 +56,7 @@ export const roomieRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'roomie/new',
+        path: 'new',
         component: RoomieUpdateComponent,
         resolve: {
             roomie: RoomieResolve
@@ -68,7 +68,7 @@ export const roomieRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'roomie/:id/edit',
+        path: ':id/edit',
         component: RoomieUpdateComponent,
         resolve: {
             roomie: RoomieResolve
@@ -83,7 +83,7 @@ export const roomieRoute: Routes = [
 
 export const roomiePopupRoute: Routes = [
     {
-        path: 'roomie/:id/delete',
+        path: ':id/delete',
         component: RoomieDeletePopupComponent,
         resolve: {
             roomie: RoomieResolve

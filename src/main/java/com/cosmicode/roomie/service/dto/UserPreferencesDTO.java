@@ -1,8 +1,9 @@
 package com.cosmicode.roomie.service.dto;
 
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
+
 import java.io.Serializable;
 import java.util.Objects;
-import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 
 /**
  * A DTO for the UserPreferences entity.
@@ -20,6 +21,7 @@ public class UserPreferencesDTO implements Serializable {
     private Boolean paymentsNotifications;
 
     private Boolean appointmentsNotifications;
+
 
     public Long getId() {
         return id;

@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Notification;
+import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.NotificationRepository;
-import com.cosmicode.roomie.repository.search.NotificationSearchRepository;
 import com.cosmicode.roomie.service.NotificationService;
 import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.mapper.NotificationMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -28,19 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.NotificationType;
 /**
  * Test class for the NotificationResource REST controller.
  *
@@ -70,14 +60,6 @@ public class NotificationResourceIntTest {
 
     @Autowired
     private NotificationService notificationService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.NotificationSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private NotificationSearchRepository mockNotificationSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -150,9 +132,6 @@ public class NotificationResourceIntTest {
         assertThat(testNotification.getBody()).isEqualTo(DEFAULT_BODY);
         assertThat(testNotification.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testNotification.getEntityId()).isEqualTo(DEFAULT_ENTITY_ID);
-
-        // Validate the Notification in Elasticsearch
-        verify(mockNotificationSearchRepository, times(1)).save(testNotification);
     }
 
     @Test
@@ -173,9 +152,6 @@ public class NotificationResourceIntTest {
         // Validate the Notification in the database
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Notification in Elasticsearch
-        verify(mockNotificationSearchRepository, times(0)).save(notification);
     }
 
     @Test
@@ -328,9 +304,6 @@ public class NotificationResourceIntTest {
         assertThat(testNotification.getBody()).isEqualTo(UPDATED_BODY);
         assertThat(testNotification.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testNotification.getEntityId()).isEqualTo(UPDATED_ENTITY_ID);
-
-        // Validate the Notification in Elasticsearch
-        verify(mockNotificationSearchRepository, times(1)).save(testNotification);
     }
 
     @Test
@@ -350,9 +323,6 @@ public class NotificationResourceIntTest {
         // Validate the Notification in the database
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Notification in Elasticsearch
-        verify(mockNotificationSearchRepository, times(0)).save(notification);
     }
 
     @Test
@@ -363,7 +333,7 @@ public class NotificationResourceIntTest {
 
         int databaseSizeBeforeDelete = notificationRepository.findAll().size();
 
-        // Get the notification
+        // Delete the notification
         restNotificationMockMvc.perform(delete("/api/notifications/{id}", notification.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -371,27 +341,6 @@ public class NotificationResourceIntTest {
         // Validate the database is empty
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Notification in Elasticsearch
-        verify(mockNotificationSearchRepository, times(1)).deleteById(notification.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchNotification() throws Exception {
-        // Initialize the database
-        notificationRepository.saveAndFlush(notification);
-        when(mockNotificationSearchRepository.search(queryStringQuery("id:" + notification.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(notification), PageRequest.of(0, 1), 1));
-        // Search the notification
-        restNotificationMockMvc.perform(get("/api/_search/notifications?query=id:" + notification.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(notification.getId().intValue())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].body").value(hasItem(DEFAULT_BODY)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].entityId").value(hasItem(DEFAULT_ENTITY_ID.intValue())));
     }
 
     @Test

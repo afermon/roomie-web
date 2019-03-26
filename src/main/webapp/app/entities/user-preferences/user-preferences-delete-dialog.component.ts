@@ -54,11 +54,11 @@ export class UserPreferencesDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.userPreferences = userPreferences;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/user-preferences', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/user-preferences', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

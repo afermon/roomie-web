@@ -1,8 +1,8 @@
 package com.cosmicode.roomie.config;
 
-import com.cosmicode.roomie.security.*;
-import com.cosmicode.roomie.security.jwt.*;
-
+import com.cosmicode.roomie.security.AuthoritiesConstants;
+import com.cosmicode.roomie.security.jwt.JWTConfigurer;
+import com.cosmicode.roomie.security.jwt.TokenProvider;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

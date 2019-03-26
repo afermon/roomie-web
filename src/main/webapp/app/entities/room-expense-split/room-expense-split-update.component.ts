@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IRoomExpenseSplit } from 'app/shared/model/room-expense-split.model';
 import { RoomExpenseSplitService } from './room-expense-split.service';
 import { IRoomExpense } from 'app/shared/model/room-expense.model';
@@ -36,18 +36,20 @@ export class RoomExpenseSplitUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ roomExpenseSplit }) => {
             this.roomExpenseSplit = roomExpenseSplit;
         });
-        this.roomExpenseService.query().subscribe(
-            (res: HttpResponse<IRoomExpense[]>) => {
-                this.roomexpenses = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomieService.query().subscribe(
-            (res: HttpResponse<IRoomie[]>) => {
-                this.roomies = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.roomExpenseService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomExpense[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomExpense[]>) => response.body)
+            )
+            .subscribe((res: IRoomExpense[]) => (this.roomexpenses = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.roomieService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomie[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomie[]>) => response.body)
+            )
+            .subscribe((res: IRoomie[]) => (this.roomies = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

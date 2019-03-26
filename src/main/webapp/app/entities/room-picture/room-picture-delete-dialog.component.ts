@@ -54,11 +54,11 @@ export class RoomPictureDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.roomPicture = roomPicture;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/room-picture', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/room-picture', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

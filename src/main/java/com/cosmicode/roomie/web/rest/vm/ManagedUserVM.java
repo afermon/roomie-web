@@ -1,6 +1,7 @@
 package com.cosmicode.roomie.web.rest.vm;
 
 import com.cosmicode.roomie.service.dto.UserDTO;
+
 import javax.validation.constraints.Size;
 
 /**

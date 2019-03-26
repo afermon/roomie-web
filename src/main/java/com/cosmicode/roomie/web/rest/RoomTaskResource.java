@@ -1,30 +1,24 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.RoomTaskService;
+import com.cosmicode.roomie.service.dto.RoomTaskDTO;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
-import com.cosmicode.roomie.service.dto.RoomTaskDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing RoomTask.
@@ -51,7 +45,6 @@ public class RoomTaskResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/room-tasks")
-    @Timed
     public ResponseEntity<RoomTaskDTO> createRoomTask(@Valid @RequestBody RoomTaskDTO roomTaskDTO) throws URISyntaxException {
         log.debug("REST request to save RoomTask : {}", roomTaskDTO);
         if (roomTaskDTO.getId() != null) {
@@ -73,7 +66,6 @@ public class RoomTaskResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/room-tasks")
-    @Timed
     public ResponseEntity<RoomTaskDTO> updateRoomTask(@Valid @RequestBody RoomTaskDTO roomTaskDTO) throws URISyntaxException {
         log.debug("REST request to update RoomTask : {}", roomTaskDTO);
         if (roomTaskDTO.getId() == null) {
@@ -92,7 +84,6 @@ public class RoomTaskResource {
      * @return the ResponseEntity with status 200 (OK) and the list of roomTasks in body
      */
     @GetMapping("/room-tasks")
-    @Timed
     public ResponseEntity<List<RoomTaskDTO>> getAllRoomTasks(Pageable pageable) {
         log.debug("REST request to get a page of RoomTasks");
         Page<RoomTaskDTO> page = roomTaskService.findAll(pageable);
@@ -107,7 +98,6 @@ public class RoomTaskResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomTaskDTO, or with status 404 (Not Found)
      */
     @GetMapping("/room-tasks/{id}")
-    @Timed
     public ResponseEntity<RoomTaskDTO> getRoomTask(@PathVariable Long id) {
         log.debug("REST request to get RoomTask : {}", id);
         Optional<RoomTaskDTO> roomTaskDTO = roomTaskService.findOne(id);
@@ -121,28 +111,10 @@ public class RoomTaskResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/room-tasks/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoomTask(@PathVariable Long id) {
         log.debug("REST request to delete RoomTask : {}", id);
         roomTaskService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/room-tasks?query=:query : search for the roomTask corresponding
-     * to the query.
-     *
-     * @param query the query of the roomTask search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/room-tasks")
-    @Timed
-    public ResponseEntity<List<RoomTaskDTO>> searchRoomTasks(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of RoomTasks for query {}", query);
-        Page<RoomTaskDTO> page = roomTaskService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/room-tasks");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/tasksByRoom/{id}")

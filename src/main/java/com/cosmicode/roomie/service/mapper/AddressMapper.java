@@ -1,9 +1,8 @@
 package com.cosmicode.roomie.service.mapper;
 
-import com.cosmicode.roomie.domain.*;
+import com.cosmicode.roomie.domain.Address;
 import com.cosmicode.roomie.service.dto.AddressDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity Address and its DTO AddressDTO.

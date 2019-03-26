@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.UserReport;
+import com.cosmicode.roomie.domain.enumeration.ReportType;
 import com.cosmicode.roomie.repository.UserReportRepository;
-import com.cosmicode.roomie.repository.search.UserReportSearchRepository;
 import com.cosmicode.roomie.service.UserReportService;
 import com.cosmicode.roomie.service.dto.UserReportDTO;
 import com.cosmicode.roomie.service.mapper.UserReportMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,19 +26,13 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.ReportType;
 /**
  * Test class for the UserReportResource REST controller.
  *
@@ -69,14 +59,6 @@ public class UserReportResourceIntTest {
 
     @Autowired
     private UserReportService userReportService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.UserReportSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private UserReportSearchRepository mockUserReportSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -147,9 +129,6 @@ public class UserReportResourceIntTest {
         assertThat(testUserReport.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testUserReport.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testUserReport.getType()).isEqualTo(DEFAULT_TYPE);
-
-        // Validate the UserReport in Elasticsearch
-        verify(mockUserReportSearchRepository, times(1)).save(testUserReport);
     }
 
     @Test
@@ -170,9 +149,6 @@ public class UserReportResourceIntTest {
         // Validate the UserReport in the database
         List<UserReport> userReportList = userReportRepository.findAll();
         assertThat(userReportList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the UserReport in Elasticsearch
-        verify(mockUserReportSearchRepository, times(0)).save(userReport);
     }
 
     @Test
@@ -283,9 +259,6 @@ public class UserReportResourceIntTest {
         assertThat(testUserReport.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testUserReport.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testUserReport.getType()).isEqualTo(UPDATED_TYPE);
-
-        // Validate the UserReport in Elasticsearch
-        verify(mockUserReportSearchRepository, times(1)).save(testUserReport);
     }
 
     @Test
@@ -305,9 +278,6 @@ public class UserReportResourceIntTest {
         // Validate the UserReport in the database
         List<UserReport> userReportList = userReportRepository.findAll();
         assertThat(userReportList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the UserReport in Elasticsearch
-        verify(mockUserReportSearchRepository, times(0)).save(userReport);
     }
 
     @Test
@@ -318,7 +288,7 @@ public class UserReportResourceIntTest {
 
         int databaseSizeBeforeDelete = userReportRepository.findAll().size();
 
-        // Get the userReport
+        // Delete the userReport
         restUserReportMockMvc.perform(delete("/api/user-reports/{id}", userReport.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -326,26 +296,6 @@ public class UserReportResourceIntTest {
         // Validate the database is empty
         List<UserReport> userReportList = userReportRepository.findAll();
         assertThat(userReportList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the UserReport in Elasticsearch
-        verify(mockUserReportSearchRepository, times(1)).deleteById(userReport.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchUserReport() throws Exception {
-        // Initialize the database
-        userReportRepository.saveAndFlush(userReport);
-        when(mockUserReportSearchRepository.search(queryStringQuery("id:" + userReport.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(userReport), PageRequest.of(0, 1), 1));
-        // Search the userReport
-        restUserReportMockMvc.perform(get("/api/_search/user-reports?query=id:" + userReport.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(userReport.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test

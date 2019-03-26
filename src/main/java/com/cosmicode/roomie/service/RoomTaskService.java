@@ -2,12 +2,10 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.RoomTask;
 import com.cosmicode.roomie.repository.RoomTaskRepository;
-import com.cosmicode.roomie.repository.search.RoomTaskSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomTaskDTO;
 import com.cosmicode.roomie.service.mapper.RoomTaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing RoomTask.
@@ -31,12 +27,10 @@ public class RoomTaskService {
 
     private final RoomTaskMapper roomTaskMapper;
 
-    private final RoomTaskSearchRepository roomTaskSearchRepository;
 
-    public RoomTaskService(RoomTaskRepository roomTaskRepository, RoomTaskMapper roomTaskMapper, RoomTaskSearchRepository roomTaskSearchRepository) {
+    public RoomTaskService(RoomTaskRepository roomTaskRepository, RoomTaskMapper roomTaskMapper) {
         this.roomTaskRepository = roomTaskRepository;
         this.roomTaskMapper = roomTaskMapper;
-        this.roomTaskSearchRepository = roomTaskSearchRepository;
     }
 
     /**
@@ -47,11 +41,9 @@ public class RoomTaskService {
      */
     public RoomTaskDTO save(RoomTaskDTO roomTaskDTO) {
         log.debug("Request to save RoomTask : {}", roomTaskDTO);
-
         RoomTask roomTask = roomTaskMapper.toEntity(roomTaskDTO);
         roomTask = roomTaskRepository.save(roomTask);
         RoomTaskDTO result = roomTaskMapper.toDto(roomTask);
-        roomTaskSearchRepository.save(roomTask);
         return result;
     }
 
@@ -90,21 +82,6 @@ public class RoomTaskService {
     public void delete(Long id) {
         log.debug("Request to delete RoomTask : {}", id);
         roomTaskRepository.deleteById(id);
-        roomTaskSearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the roomTask corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<RoomTaskDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of RoomTasks for query {}", query);
-        return roomTaskSearchRepository.search(queryStringQuery(query), pageable)
-            .map(roomTaskMapper::toDto);
     }
 
     @Transactional(readOnly = true)

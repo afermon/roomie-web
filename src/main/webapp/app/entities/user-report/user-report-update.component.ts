@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IUserReport } from 'app/shared/model/user-report.model';
 import { UserReportService } from './user-report.service';
 import { IRoomie } from 'app/shared/model/roomie.model';
@@ -38,36 +38,56 @@ export class UserReportUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ userReport }) => {
             this.userReport = userReport;
         });
-        this.roomieService.query({ filter: 'userreport-is-null' }).subscribe(
-            (res: HttpResponse<IRoomie[]>) => {
-                if (!this.userReport.roomieId) {
-                    this.roomies = res.body;
-                } else {
-                    this.roomieService.find(this.userReport.roomieId).subscribe(
-                        (subRes: HttpResponse<IRoomie>) => {
-                            this.roomies = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomService.query({ filter: 'userreport-is-null' }).subscribe(
-            (res: HttpResponse<IRoom[]>) => {
-                if (!this.userReport.roomId) {
-                    this.rooms = res.body;
-                } else {
-                    this.roomService.find(this.userReport.roomId).subscribe(
-                        (subRes: HttpResponse<IRoom>) => {
-                            this.rooms = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.roomieService
+            .query({ filter: 'userreport-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomie[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomie[]>) => response.body)
+            )
+            .subscribe(
+                (res: IRoomie[]) => {
+                    if (!this.userReport.roomieId) {
+                        this.roomies = res;
+                    } else {
+                        this.roomieService
+                            .find(this.userReport.roomieId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IRoomie>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IRoomie>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IRoomie) => (this.roomies = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.roomService
+            .query({ filter: 'userreport-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoom[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoom[]>) => response.body)
+            )
+            .subscribe(
+                (res: IRoom[]) => {
+                    if (!this.userReport.roomId) {
+                        this.rooms = res;
+                    } else {
+                        this.roomService
+                            .find(this.userReport.roomId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IRoom>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IRoom>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IRoom) => (this.rooms = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     previousState() {

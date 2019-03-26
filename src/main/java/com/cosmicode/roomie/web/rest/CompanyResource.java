@@ -1,30 +1,24 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.service.CompanyService;
+import com.cosmicode.roomie.service.dto.CompanyDTO;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
-import com.cosmicode.roomie.service.dto.CompanyDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Company.
@@ -51,7 +45,6 @@ public class CompanyResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/companies")
-    @Timed
     public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
         log.debug("REST request to save Company : {}", companyDTO);
         if (companyDTO.getId() != null) {
@@ -73,7 +66,6 @@ public class CompanyResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/companies")
-    @Timed
     public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
         log.debug("REST request to update Company : {}", companyDTO);
         if (companyDTO.getId() == null) {
@@ -92,7 +84,6 @@ public class CompanyResource {
      * @return the ResponseEntity with status 200 (OK) and the list of companies in body
      */
     @GetMapping("/companies")
-    @Timed
     public ResponseEntity<List<CompanyDTO>> getAllCompanies(Pageable pageable) {
         log.debug("REST request to get a page of Companies");
         Page<CompanyDTO> page = companyService.findAll(pageable);
@@ -107,7 +98,6 @@ public class CompanyResource {
      * @return the ResponseEntity with status 200 (OK) and with body the companyDTO, or with status 404 (Not Found)
      */
     @GetMapping("/companies/{id}")
-    @Timed
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable Long id) {
         log.debug("REST request to get Company : {}", id);
         Optional<CompanyDTO> companyDTO = companyService.findOne(id);
@@ -121,28 +111,10 @@ public class CompanyResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/companies/{id}")
-    @Timed
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         log.debug("REST request to delete Company : {}", id);
         companyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/companies?query=:query : search for the company corresponding
-     * to the query.
-     *
-     * @param query the query of the company search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/companies")
-    @Timed
-    public ResponseEntity<List<CompanyDTO>> searchCompanies(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Companies for query {}", query);
-        Page<CompanyDTO> page = companyService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/companies");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

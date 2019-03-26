@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.UserPreferences;
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.repository.UserPreferencesRepository;
-import com.cosmicode.roomie.repository.search.UserPreferencesSearchRepository;
 import com.cosmicode.roomie.service.UserPreferencesService;
 import com.cosmicode.roomie.service.dto.UserPreferencesDTO;
 import com.cosmicode.roomie.service.mapper.UserPreferencesMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -28,19 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 /**
  * Test class for the UserPreferencesResource REST controller.
  *
@@ -73,14 +63,6 @@ public class UserPreferencesResourceIntTest {
 
     @Autowired
     private UserPreferencesService userPreferencesService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.UserPreferencesSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private UserPreferencesSearchRepository mockUserPreferencesSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -155,9 +137,6 @@ public class UserPreferencesResourceIntTest {
         assertThat(testUserPreferences.isCalendarNotifications()).isEqualTo(DEFAULT_CALENDAR_NOTIFICATIONS);
         assertThat(testUserPreferences.isPaymentsNotifications()).isEqualTo(DEFAULT_PAYMENTS_NOTIFICATIONS);
         assertThat(testUserPreferences.isAppointmentsNotifications()).isEqualTo(DEFAULT_APPOINTMENTS_NOTIFICATIONS);
-
-        // Validate the UserPreferences in Elasticsearch
-        verify(mockUserPreferencesSearchRepository, times(1)).save(testUserPreferences);
     }
 
     @Test
@@ -178,9 +157,6 @@ public class UserPreferencesResourceIntTest {
         // Validate the UserPreferences in the database
         List<UserPreferences> userPreferencesList = userPreferencesRepository.findAll();
         assertThat(userPreferencesList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the UserPreferences in Elasticsearch
-        verify(mockUserPreferencesSearchRepository, times(0)).save(userPreferences);
     }
 
     @Test
@@ -261,9 +237,6 @@ public class UserPreferencesResourceIntTest {
         assertThat(testUserPreferences.isCalendarNotifications()).isEqualTo(UPDATED_CALENDAR_NOTIFICATIONS);
         assertThat(testUserPreferences.isPaymentsNotifications()).isEqualTo(UPDATED_PAYMENTS_NOTIFICATIONS);
         assertThat(testUserPreferences.isAppointmentsNotifications()).isEqualTo(UPDATED_APPOINTMENTS_NOTIFICATIONS);
-
-        // Validate the UserPreferences in Elasticsearch
-        verify(mockUserPreferencesSearchRepository, times(1)).save(testUserPreferences);
     }
 
     @Test
@@ -283,9 +256,6 @@ public class UserPreferencesResourceIntTest {
         // Validate the UserPreferences in the database
         List<UserPreferences> userPreferencesList = userPreferencesRepository.findAll();
         assertThat(userPreferencesList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the UserPreferences in Elasticsearch
-        verify(mockUserPreferencesSearchRepository, times(0)).save(userPreferences);
     }
 
     @Test
@@ -296,7 +266,7 @@ public class UserPreferencesResourceIntTest {
 
         int databaseSizeBeforeDelete = userPreferencesRepository.findAll().size();
 
-        // Get the userPreferences
+        // Delete the userPreferences
         restUserPreferencesMockMvc.perform(delete("/api/user-preferences/{id}", userPreferences.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -304,28 +274,6 @@ public class UserPreferencesResourceIntTest {
         // Validate the database is empty
         List<UserPreferences> userPreferencesList = userPreferencesRepository.findAll();
         assertThat(userPreferencesList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the UserPreferences in Elasticsearch
-        verify(mockUserPreferencesSearchRepository, times(1)).deleteById(userPreferences.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchUserPreferences() throws Exception {
-        // Initialize the database
-        userPreferencesRepository.saveAndFlush(userPreferences);
-        when(mockUserPreferencesSearchRepository.search(queryStringQuery("id:" + userPreferences.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(userPreferences), PageRequest.of(0, 1), 1));
-        // Search the userPreferences
-        restUserPreferencesMockMvc.perform(get("/api/_search/user-preferences?query=id:" + userPreferences.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(userPreferences.getId().intValue())))
-            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
-            .andExpect(jsonPath("$.[*].todoListNotifications").value(hasItem(DEFAULT_TODO_LIST_NOTIFICATIONS.booleanValue())))
-            .andExpect(jsonPath("$.[*].calendarNotifications").value(hasItem(DEFAULT_CALENDAR_NOTIFICATIONS.booleanValue())))
-            .andExpect(jsonPath("$.[*].paymentsNotifications").value(hasItem(DEFAULT_PAYMENTS_NOTIFICATIONS.booleanValue())))
-            .andExpect(jsonPath("$.[*].appointmentsNotifications").value(hasItem(DEFAULT_APPOINTMENTS_NOTIFICATIONS.booleanValue())));
     }
 
     @Test

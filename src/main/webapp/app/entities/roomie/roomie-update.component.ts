@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IRoomie } from 'app/shared/model/roomie.model';
 import { RoomieService } from './roomie.service';
 import { IUser, UserService } from 'app/core';
@@ -52,63 +52,95 @@ export class RoomieUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ roomie }) => {
             this.roomie = roomie;
         });
-        this.userService.query().subscribe(
-            (res: HttpResponse<IUser[]>) => {
-                this.users = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomieStateService.query({ filter: 'roomie-is-null' }).subscribe(
-            (res: HttpResponse<IRoomieState[]>) => {
-                if (!this.roomie.stateId) {
-                    this.states = res.body;
-                } else {
-                    this.roomieStateService.find(this.roomie.stateId).subscribe(
-                        (subRes: HttpResponse<IRoomieState>) => {
-                            this.states = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.addressService.query({ filter: 'roomie-is-null' }).subscribe(
-            (res: HttpResponse<IAddress[]>) => {
-                if (!this.roomie.addressId) {
-                    this.addresses = res.body;
-                } else {
-                    this.addressService.find(this.roomie.addressId).subscribe(
-                        (subRes: HttpResponse<IAddress>) => {
-                            this.addresses = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.userPreferencesService.query({ filter: 'roomie-is-null' }).subscribe(
-            (res: HttpResponse<IUserPreferences[]>) => {
-                if (!this.roomie.configurationId) {
-                    this.configurations = res.body;
-                } else {
-                    this.userPreferencesService.find(this.roomie.configurationId).subscribe(
-                        (subRes: HttpResponse<IUserPreferences>) => {
-                            this.configurations = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.roomFeatureService.query().subscribe(
-            (res: HttpResponse<IRoomFeature[]>) => {
-                this.roomfeatures = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.userService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IUser[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IUser[]>) => response.body)
+            )
+            .subscribe((res: IUser[]) => (this.users = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.roomieStateService
+            .query({ filter: 'roomie-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomieState[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomieState[]>) => response.body)
+            )
+            .subscribe(
+                (res: IRoomieState[]) => {
+                    if (!this.roomie.stateId) {
+                        this.states = res;
+                    } else {
+                        this.roomieStateService
+                            .find(this.roomie.stateId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IRoomieState>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IRoomieState>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IRoomieState) => (this.states = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.addressService
+            .query({ filter: 'roomie-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IAddress[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IAddress[]>) => response.body)
+            )
+            .subscribe(
+                (res: IAddress[]) => {
+                    if (!this.roomie.addressId) {
+                        this.addresses = res;
+                    } else {
+                        this.addressService
+                            .find(this.roomie.addressId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IAddress>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IAddress>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IAddress) => (this.addresses = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.userPreferencesService
+            .query({ filter: 'roomie-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<IUserPreferences[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IUserPreferences[]>) => response.body)
+            )
+            .subscribe(
+                (res: IUserPreferences[]) => {
+                    if (!this.roomie.configurationId) {
+                        this.configurations = res;
+                    } else {
+                        this.userPreferencesService
+                            .find(this.roomie.configurationId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<IUserPreferences>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<IUserPreferences>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: IUserPreferences) => (this.configurations = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.roomFeatureService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomFeature[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomFeature[]>) => response.body)
+            )
+            .subscribe((res: IRoomFeature[]) => (this.roomfeatures = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

@@ -10,8 +10,9 @@ import com.cosmicode.roomie.security.AuthoritiesConstants;
 import com.cosmicode.roomie.security.SecurityUtils;
 import com.cosmicode.roomie.service.dto.UserDTO;
 import com.cosmicode.roomie.service.util.RandomUtil;
-import com.cosmicode.roomie.web.rest.errors.*;
-
+import com.cosmicode.roomie.web.rest.errors.EmailAlreadyUsedException;
+import com.cosmicode.roomie.web.rest.errors.InvalidPasswordException;
+import com.cosmicode.roomie.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;

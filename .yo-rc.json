@@ -4,7 +4,7 @@
             "packageName": "com.cosmicode.roomie",
             "nativeLanguage": "en"
         },
-        "jhipsterVersion": "5.7.2",
+        "jhipsterVersion": "5.8.2",
         "applicationType": "monolith",
         "baseName": "roomie",
         "packageName": "com.cosmicode.roomie",
@@ -32,7 +32,9 @@
         "enableTranslation": true,
         "nativeLanguage": "en",
         "languages": ["en", "es"],
-        "herokuAppName": "roomie-web",
-        "herokuDeployType": "git"
+        "herokuAppName": "dev-roomie-web",
+        "herokuDeployType": "git",
+        "entitySuffix": "",
+        "dtoSuffix": "DTO"
     }
 }

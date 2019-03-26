@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomTask;
+import com.cosmicode.roomie.domain.enumeration.RoomTaskState;
 import com.cosmicode.roomie.repository.RoomTaskRepository;
-import com.cosmicode.roomie.repository.search.RoomTaskSearchRepository;
 import com.cosmicode.roomie.service.RoomTaskService;
 import com.cosmicode.roomie.service.dto.RoomTaskDTO;
 import com.cosmicode.roomie.service.mapper.RoomTaskMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,19 +26,13 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.RoomTaskState;
 /**
  * Test class for the RoomTaskResource REST controller.
  *
@@ -75,14 +65,6 @@ public class RoomTaskResourceIntTest {
 
     @Autowired
     private RoomTaskService roomTaskService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.RoomTaskSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private RoomTaskSearchRepository mockRoomTaskSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -157,9 +139,6 @@ public class RoomTaskResourceIntTest {
         assertThat(testRoomTask.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testRoomTask.getDeadline()).isEqualTo(DEFAULT_DEADLINE);
         assertThat(testRoomTask.getState()).isEqualTo(DEFAULT_STATE);
-
-        // Validate the RoomTask in Elasticsearch
-        verify(mockRoomTaskSearchRepository, times(1)).save(testRoomTask);
     }
 
     @Test
@@ -180,9 +159,6 @@ public class RoomTaskResourceIntTest {
         // Validate the RoomTask in the database
         List<RoomTask> roomTaskList = roomTaskRepository.findAll();
         assertThat(roomTaskList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the RoomTask in Elasticsearch
-        verify(mockRoomTaskSearchRepository, times(0)).save(roomTask);
     }
 
     @Test
@@ -320,9 +296,6 @@ public class RoomTaskResourceIntTest {
         assertThat(testRoomTask.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testRoomTask.getDeadline()).isEqualTo(UPDATED_DEADLINE);
         assertThat(testRoomTask.getState()).isEqualTo(UPDATED_STATE);
-
-        // Validate the RoomTask in Elasticsearch
-        verify(mockRoomTaskSearchRepository, times(1)).save(testRoomTask);
     }
 
     @Test
@@ -342,9 +315,6 @@ public class RoomTaskResourceIntTest {
         // Validate the RoomTask in the database
         List<RoomTask> roomTaskList = roomTaskRepository.findAll();
         assertThat(roomTaskList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the RoomTask in Elasticsearch
-        verify(mockRoomTaskSearchRepository, times(0)).save(roomTask);
     }
 
     @Test
@@ -355,7 +325,7 @@ public class RoomTaskResourceIntTest {
 
         int databaseSizeBeforeDelete = roomTaskRepository.findAll().size();
 
-        // Get the roomTask
+        // Delete the roomTask
         restRoomTaskMockMvc.perform(delete("/api/room-tasks/{id}", roomTask.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -363,28 +333,6 @@ public class RoomTaskResourceIntTest {
         // Validate the database is empty
         List<RoomTask> roomTaskList = roomTaskRepository.findAll();
         assertThat(roomTaskList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the RoomTask in Elasticsearch
-        verify(mockRoomTaskSearchRepository, times(1)).deleteById(roomTask.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchRoomTask() throws Exception {
-        // Initialize the database
-        roomTaskRepository.saveAndFlush(roomTask);
-        when(mockRoomTaskSearchRepository.search(queryStringQuery("id:" + roomTask.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(roomTask), PageRequest.of(0, 1), 1));
-        // Search the roomTask
-        restRoomTaskMockMvc.perform(get("/api/_search/room-tasks?query=id:" + roomTask.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(roomTask.getId().intValue())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].deadline").value(hasItem(DEFAULT_DEADLINE.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test

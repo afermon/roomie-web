@@ -7,7 +7,6 @@ import com.cosmicode.roomie.service.dto.RoomieDTO;
 import com.cosmicode.roomie.service.mapper.RoomieMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Roomie.
@@ -46,7 +45,6 @@ public class RoomieService {
      */
     public RoomieDTO save(RoomieDTO roomieDTO) {
         log.debug("Request to save Roomie : {}", roomieDTO);
-
         Roomie roomie = roomieMapper.toEntity(roomieDTO);
         roomie = roomieRepository.save(roomie);
         RoomieDTO result = roomieMapper.toDto(roomie);

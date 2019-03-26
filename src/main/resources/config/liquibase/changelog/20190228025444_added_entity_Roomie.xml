@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
-
+    
     <property name="now" value="now()" dbms="mysql"/>
     <property name="autoIncrement" value="true"/>
 
@@ -58,15 +58,15 @@
         </createTable>
         
         <createTable tableName="roomie_lifestyle">
-            <column name="lifestyles_id" type="bigint">
+            <column name="lifestyle_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="roomies_id" type="bigint">
+            <column name="roomie_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="roomies_id, lifestyles_id" tableName="roomie_lifestyle"/>
+        <addPrimaryKey columnNames="roomie_id, lifestyle_id" tableName="roomie_lifestyle"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

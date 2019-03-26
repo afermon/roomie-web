@@ -2,12 +2,10 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Notification;
 import com.cosmicode.roomie.repository.NotificationRepository;
-import com.cosmicode.roomie.repository.search.NotificationSearchRepository;
 import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.mapper.NotificationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Notification.
@@ -30,12 +28,9 @@ public class NotificationService {
 
     private final NotificationMapper notificationMapper;
 
-    private final NotificationSearchRepository notificationSearchRepository;
-
-    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper, NotificationSearchRepository notificationSearchRepository) {
+    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper) {
         this.notificationRepository = notificationRepository;
         this.notificationMapper = notificationMapper;
-        this.notificationSearchRepository = notificationSearchRepository;
     }
 
     /**
@@ -46,11 +41,9 @@ public class NotificationService {
      */
     public NotificationDTO save(NotificationDTO notificationDTO) {
         log.debug("Request to save Notification : {}", notificationDTO);
-
         Notification notification = notificationMapper.toEntity(notificationDTO);
         notification = notificationRepository.save(notification);
         NotificationDTO result = notificationMapper.toDto(notification);
-        notificationSearchRepository.save(notification);
         return result;
     }
 
@@ -89,20 +82,5 @@ public class NotificationService {
     public void delete(Long id) {
         log.debug("Request to delete Notification : {}", id);
         notificationRepository.deleteById(id);
-        notificationSearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the notification corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<NotificationDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Notifications for query {}", query);
-        return notificationSearchRepository.search(queryStringQuery(query), pageable)
-            .map(notificationMapper::toDto);
     }
 }

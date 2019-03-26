@@ -17,7 +17,7 @@ import { IAppointment } from 'app/shared/model/appointment.model';
 export class AppointmentResolve implements Resolve<IAppointment> {
     constructor(private service: AppointmentService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Appointment> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IAppointment> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class AppointmentResolve implements Resolve<IAppointment> {
 
 export const appointmentRoute: Routes = [
     {
-        path: 'appointment',
+        path: '',
         component: AppointmentComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const appointmentRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'appointment/:id/view',
+        path: ':id/view',
         component: AppointmentDetailComponent,
         resolve: {
             appointment: AppointmentResolve
@@ -56,7 +56,7 @@ export const appointmentRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'appointment/new',
+        path: 'new',
         component: AppointmentUpdateComponent,
         resolve: {
             appointment: AppointmentResolve
@@ -68,7 +68,7 @@ export const appointmentRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'appointment/:id/edit',
+        path: ':id/edit',
         component: AppointmentUpdateComponent,
         resolve: {
             appointment: AppointmentResolve
@@ -83,7 +83,7 @@ export const appointmentRoute: Routes = [
 
 export const appointmentPopupRoute: Routes = [
     {
-        path: 'appointment/:id/delete',
+        path: ':id/delete',
         component: AppointmentDeletePopupComponent,
         resolve: {
             appointment: AppointmentResolve

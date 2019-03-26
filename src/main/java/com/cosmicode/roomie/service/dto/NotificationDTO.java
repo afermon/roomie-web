@@ -1,9 +1,11 @@
 package com.cosmicode.roomie.service.dto;
 
-import javax.validation.constraints.*;
+import com.cosmicode.roomie.domain.enumeration.NotificationType;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import com.cosmicode.roomie.domain.enumeration.NotificationType;
 
 /**
  * A DTO for the Notification entity.
@@ -25,6 +27,7 @@ public class NotificationDTO implements Serializable {
 
     @NotNull
     private Long entityId;
+
 
     public Long getId() {
         return id;

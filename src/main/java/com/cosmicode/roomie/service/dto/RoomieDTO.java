@@ -1,12 +1,15 @@
 package com.cosmicode.roomie.service.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 import com.cosmicode.roomie.domain.enumeration.Gender;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Roomie entity.
@@ -34,6 +37,7 @@ public class RoomieDTO implements Serializable {
     @NotNull
     @Size(min = 0, max = 200)
     private String mobileDeviceID;
+
 
     private Long userId;
 

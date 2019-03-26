@@ -1,11 +1,12 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.service.RoomService;
+import com.cosmicode.roomie.service.dto.RoomDTO;
+import com.cosmicode.roomie.service.dto.SearchFilterDTO;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
-import com.cosmicode.roomie.service.dto.RoomDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +48,6 @@ public class RoomResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/rooms")
-    @Timed
     public ResponseEntity<RoomDTO> createRoom(@Valid @RequestBody RoomDTO roomDTO) throws URISyntaxException {
         log.debug("REST request to save Room : {}", roomDTO);
         if (roomDTO.getId() != null) {
@@ -70,7 +69,6 @@ public class RoomResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/rooms")
-    @Timed
     public ResponseEntity<RoomDTO> updateRoom(@Valid @RequestBody RoomDTO roomDTO) throws URISyntaxException {
         log.debug("REST request to update Room : {}", roomDTO);
         if (roomDTO.getId() == null) {
@@ -90,7 +88,6 @@ public class RoomResource {
      * @return the ResponseEntity with status 200 (OK) and the list of rooms in body
      */
     @GetMapping("/rooms")
-    @Timed
     public ResponseEntity<List<RoomDTO>> getAllRooms(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Rooms");
         Page<RoomDTO> page;
@@ -110,7 +107,6 @@ public class RoomResource {
      * @return the ResponseEntity with status 200 (OK) and with body the roomDTO, or with status 404 (Not Found)
      */
     @GetMapping("/rooms/{id}")
-    @Timed
     public ResponseEntity<RoomDTO> getRoom(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
         Optional<RoomDTO> roomDTO = roomService.findOne(id);
@@ -124,7 +120,6 @@ public class RoomResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/rooms/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         log.debug("REST request to delete Room : {}", id);
         roomService.delete(id);
@@ -140,29 +135,26 @@ public class RoomResource {
      * @return the result of the search
      */
     @GetMapping("/_search/rooms")
-    @Timed
     public ResponseEntity<List<RoomDTO>> searchRooms(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Rooms for query {}", query);
         Page<RoomDTO> page = roomService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/rooms");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * SEARCH  /_search/rooms?query=:query : search for the room corresponding
+     * SEARCH  /_search/rooms/advanced : search for the room corresponding
      * to the query.
      *
-     * @param latitude the query of the room search
-     * @param longitude the query of the room search
+     * @param searchFilterDTO the query of the room search
      * @param pageable the pagination information
      * @return the result of the search
      */
-    @GetMapping("/_search/rooms/geo")
-    @Timed
-    public ResponseEntity<List<RoomDTO>> searchRoomsLocation(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam int distance, Pageable pageable) {
-        log.debug("REST request to search for a page of Rooms for query {} {} {} km", latitude, longitude, distance);
-        Page<RoomDTO> page = roomService.search(latitude, longitude, distance, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(String.format("%s,%s", latitude, longitude), page, "/api/_search/rooms/geo");
+    @PostMapping("/_search/rooms/advanced")
+    public ResponseEntity<List<RoomDTO>> searchRoomsAdvanced(@RequestBody SearchFilterDTO searchFilterDTO, Pageable pageable) {
+        log.debug("REST request to search for a page of Rooms for: {}", searchFilterDTO.toString());
+        Page<RoomDTO> page = roomService.search(searchFilterDTO, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(searchFilterDTO.toString(), page, "/api/_search/rooms/advanced");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

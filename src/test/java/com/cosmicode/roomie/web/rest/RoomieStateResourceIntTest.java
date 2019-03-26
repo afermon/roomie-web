@@ -1,23 +1,19 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomieState;
+import com.cosmicode.roomie.domain.enumeration.AccountState;
 import com.cosmicode.roomie.repository.RoomieStateRepository;
-import com.cosmicode.roomie.repository.search.RoomieStateSearchRepository;
 import com.cosmicode.roomie.service.RoomieStateService;
 import com.cosmicode.roomie.service.dto.RoomieStateDTO;
 import com.cosmicode.roomie.service.mapper.RoomieStateMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,19 +26,13 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.AccountState;
 /**
  * Test class for the RoomieStateResource REST controller.
  *
@@ -66,14 +56,6 @@ public class RoomieStateResourceIntTest {
 
     @Autowired
     private RoomieStateService roomieStateService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.RoomieStateSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private RoomieStateSearchRepository mockRoomieStateSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -142,9 +124,6 @@ public class RoomieStateResourceIntTest {
         RoomieState testRoomieState = roomieStateList.get(roomieStateList.size() - 1);
         assertThat(testRoomieState.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testRoomieState.getSuspendedDate()).isEqualTo(DEFAULT_SUSPENDED_DATE);
-
-        // Validate the RoomieState in Elasticsearch
-        verify(mockRoomieStateSearchRepository, times(1)).save(testRoomieState);
     }
 
     @Test
@@ -165,9 +144,6 @@ public class RoomieStateResourceIntTest {
         // Validate the RoomieState in the database
         List<RoomieState> roomieStateList = roomieStateRepository.findAll();
         assertThat(roomieStateList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the RoomieState in Elasticsearch
-        verify(mockRoomieStateSearchRepository, times(0)).save(roomieState);
     }
 
     @Test
@@ -255,9 +231,6 @@ public class RoomieStateResourceIntTest {
         RoomieState testRoomieState = roomieStateList.get(roomieStateList.size() - 1);
         assertThat(testRoomieState.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testRoomieState.getSuspendedDate()).isEqualTo(UPDATED_SUSPENDED_DATE);
-
-        // Validate the RoomieState in Elasticsearch
-        verify(mockRoomieStateSearchRepository, times(1)).save(testRoomieState);
     }
 
     @Test
@@ -277,9 +250,6 @@ public class RoomieStateResourceIntTest {
         // Validate the RoomieState in the database
         List<RoomieState> roomieStateList = roomieStateRepository.findAll();
         assertThat(roomieStateList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the RoomieState in Elasticsearch
-        verify(mockRoomieStateSearchRepository, times(0)).save(roomieState);
     }
 
     @Test
@@ -290,7 +260,7 @@ public class RoomieStateResourceIntTest {
 
         int databaseSizeBeforeDelete = roomieStateRepository.findAll().size();
 
-        // Get the roomieState
+        // Delete the roomieState
         restRoomieStateMockMvc.perform(delete("/api/roomie-states/{id}", roomieState.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -298,25 +268,6 @@ public class RoomieStateResourceIntTest {
         // Validate the database is empty
         List<RoomieState> roomieStateList = roomieStateRepository.findAll();
         assertThat(roomieStateList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the RoomieState in Elasticsearch
-        verify(mockRoomieStateSearchRepository, times(1)).deleteById(roomieState.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchRoomieState() throws Exception {
-        // Initialize the database
-        roomieStateRepository.saveAndFlush(roomieState);
-        when(mockRoomieStateSearchRepository.search(queryStringQuery("id:" + roomieState.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(roomieState), PageRequest.of(0, 1), 1));
-        // Search the roomieState
-        restRoomieStateMockMvc.perform(get("/api/_search/roomie-states?query=id:" + roomieState.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(roomieState.getId().intValue())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].suspendedDate").value(hasItem(DEFAULT_SUSPENDED_DATE.toString())));
     }
 
     @Test

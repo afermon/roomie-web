@@ -1,7 +1,6 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomPicture;
 import com.cosmicode.roomie.repository.RoomPictureRepository;
 import com.cosmicode.roomie.repository.search.RoomPictureSearchRepository;
@@ -9,7 +8,6 @@ import com.cosmicode.roomie.service.RoomPictureService;
 import com.cosmicode.roomie.service.dto.RoomPictureDTO;
 import com.cosmicode.roomie.service.mapper.RoomPictureMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +28,6 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -306,7 +303,7 @@ public class RoomPictureResourceIntTest {
 
         int databaseSizeBeforeDelete = roomPictureRepository.findAll().size();
 
-        // Get the roomPicture
+        // Delete the roomPicture
         restRoomPictureMockMvc.perform(delete("/api/room-pictures/{id}", roomPicture.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

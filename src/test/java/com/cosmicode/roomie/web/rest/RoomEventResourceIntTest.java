@@ -1,23 +1,18 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomEvent;
 import com.cosmicode.roomie.repository.RoomEventRepository;
-import com.cosmicode.roomie.repository.search.RoomEventSearchRepository;
 import com.cosmicode.roomie.service.RoomEventService;
 import com.cosmicode.roomie.service.dto.RoomEventDTO;
 import com.cosmicode.roomie.service.mapper.RoomEventMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,15 +25,11 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -74,14 +65,6 @@ public class RoomEventResourceIntTest {
 
     @Autowired
     private RoomEventService roomEventService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.RoomEventSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private RoomEventSearchRepository mockRoomEventSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -156,9 +139,6 @@ public class RoomEventResourceIntTest {
         assertThat(testRoomEvent.isIsPrivate()).isEqualTo(DEFAULT_IS_PRIVATE);
         assertThat(testRoomEvent.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testRoomEvent.getEndTime()).isEqualTo(DEFAULT_END_TIME);
-
-        // Validate the RoomEvent in Elasticsearch
-        verify(mockRoomEventSearchRepository, times(1)).save(testRoomEvent);
     }
 
     @Test
@@ -179,9 +159,6 @@ public class RoomEventResourceIntTest {
         // Validate the RoomEvent in the database
         List<RoomEvent> roomEventList = roomEventRepository.findAll();
         assertThat(roomEventList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the RoomEvent in Elasticsearch
-        verify(mockRoomEventSearchRepository, times(0)).save(roomEvent);
     }
 
     @Test
@@ -338,9 +315,6 @@ public class RoomEventResourceIntTest {
         assertThat(testRoomEvent.isIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
         assertThat(testRoomEvent.getStartTime()).isEqualTo(UPDATED_START_TIME);
         assertThat(testRoomEvent.getEndTime()).isEqualTo(UPDATED_END_TIME);
-
-        // Validate the RoomEvent in Elasticsearch
-        verify(mockRoomEventSearchRepository, times(1)).save(testRoomEvent);
     }
 
     @Test
@@ -360,9 +334,6 @@ public class RoomEventResourceIntTest {
         // Validate the RoomEvent in the database
         List<RoomEvent> roomEventList = roomEventRepository.findAll();
         assertThat(roomEventList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the RoomEvent in Elasticsearch
-        verify(mockRoomEventSearchRepository, times(0)).save(roomEvent);
     }
 
     @Test
@@ -373,7 +344,7 @@ public class RoomEventResourceIntTest {
 
         int databaseSizeBeforeDelete = roomEventRepository.findAll().size();
 
-        // Get the roomEvent
+        // Delete the roomEvent
         restRoomEventMockMvc.perform(delete("/api/room-events/{id}", roomEvent.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -381,28 +352,6 @@ public class RoomEventResourceIntTest {
         // Validate the database is empty
         List<RoomEvent> roomEventList = roomEventRepository.findAll();
         assertThat(roomEventList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the RoomEvent in Elasticsearch
-        verify(mockRoomEventSearchRepository, times(1)).deleteById(roomEvent.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchRoomEvent() throws Exception {
-        // Initialize the database
-        roomEventRepository.saveAndFlush(roomEvent);
-        when(mockRoomEventSearchRepository.search(queryStringQuery("id:" + roomEvent.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(roomEvent), PageRequest.of(0, 1), 1));
-        // Search the roomEvent
-        restRoomEventMockMvc.perform(get("/api/_search/room-events?query=id:" + roomEvent.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(roomEvent.getId().intValue())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())))
-            .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())));
     }
 
     @Test

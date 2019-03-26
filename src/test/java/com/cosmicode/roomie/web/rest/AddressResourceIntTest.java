@@ -1,7 +1,6 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Address;
 import com.cosmicode.roomie.repository.AddressRepository;
 import com.cosmicode.roomie.repository.search.AddressSearchRepository;
@@ -9,7 +8,6 @@ import com.cosmicode.roomie.service.AddressService;
 import com.cosmicode.roomie.service.dto.AddressDTO;
 import com.cosmicode.roomie.service.mapper.AddressMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +29,6 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -49,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = RoomieApp.class)
 public class AddressResourceIntTest {
 
-    private static final String DEFAULT_LOCATION = "90, 180.0";
-    private static final String UPDATED_LOCATION = "90,+23.43";
+    private static final String DEFAULT_LOCATION = "9.19,180";
+    private static final String UPDATED_LOCATION = "+23,+85.02";
 
     private static final String DEFAULT_CITY = "AAAAAAAAAA";
     private static final String UPDATED_CITY = "BBBBBBBBBB";
@@ -343,7 +340,7 @@ public class AddressResourceIntTest {
 
         int databaseSizeBeforeDelete = addressRepository.findAll().size();
 
-        // Get the address
+        // Delete the address
         restAddressMockMvc.perform(delete("/api/addresses/{id}", address.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

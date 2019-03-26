@@ -1,6 +1,5 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.cosmicode.roomie.security.AuthoritiesConstants;
 import com.cosmicode.roomie.security.SecurityUtils;
 import com.cosmicode.roomie.service.ElasticsearchIndexService;
@@ -34,7 +33,6 @@ public class ElasticsearchIndexResource {
      * POST  /elasticsearch/index -> Reindex all Elasticsearch documents
      */
     @PostMapping("/elasticsearch/index")
-    @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> reindexAll() throws URISyntaxException {
         log.info("REST request to reindex Elasticsearch by user : {}", SecurityUtils.getCurrentUserLogin());

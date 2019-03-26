@@ -41,6 +41,7 @@ spring:
         username: roomie
         password:
         hikari:
+            poolName: Hikari
             auto-commit: false
     h2:
         console:
@@ -58,9 +59,10 @@ spring:
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
 
     data:
-        jest:
-            uri: https://search-roomie-owqbxgbel3cm652qnqi4jhartm.us-east-2.es.amazonaws.com
-            aws-region: us-east-2
+        elasticsearch:
+            properties:
+                path:
+                    home: target/elasticsearch
     liquibase:
         contexts: dev
     mail:
@@ -114,12 +116,8 @@ jhipster:
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: hello@dev-roomie-web.herokuapp.com
         base-url: http://127.0.0.1:8080
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx:
-            enabled: true
-        prometheus:
-            enabled: false #expose metrics via prometheus
-        logs: # Reports Dropwizard metrics in the logs
+    metrics:
+        logs: # Reports metrics in the logs
             enabled: false
             report-frequency: 60 # in seconds
     logging:

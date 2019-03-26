@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IRoom } from 'app/shared/model/room.model';
@@ -24,7 +25,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     routeData: any;
     links: any;
     totalItems: any;
-    queryCount: any;
     itemsPerPage: any;
     page: any;
     predicate: any;
@@ -160,7 +160,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     protected paginateRooms(data: IRoom[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        this.queryCount = this.totalItems;
         this.rooms = data;
     }
 

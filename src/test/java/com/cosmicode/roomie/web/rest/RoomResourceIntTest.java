@@ -1,15 +1,15 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.Room;
+import com.cosmicode.roomie.domain.enumeration.RoomState;
+import com.cosmicode.roomie.domain.enumeration.RoomType;
 import com.cosmicode.roomie.repository.RoomRepository;
 import com.cosmicode.roomie.repository.search.RoomSearchRepository;
 import com.cosmicode.roomie.service.RoomService;
 import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.mapper.RoomMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,14 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,9 +44,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.cosmicode.roomie.domain.enumeration.RoomState;
-import com.cosmicode.roomie.domain.enumeration.RoomType;
 /**
  * Test class for the RoomResource REST controller.
  *
@@ -533,8 +529,6 @@ public class RoomResourceIntTest {
         assertThat(testRoom.getAvailableFrom()).isEqualTo(UPDATED_AVAILABLE_FROM);
         assertThat(testRoom.isIsPremium()).isEqualTo(UPDATED_IS_PREMIUM);
 
-        // Validate the Room in Elasticsearch
-        verify(mockRoomSearchRepository, times(1)).save(testRoom);
     }
 
     @Test
@@ -567,7 +561,7 @@ public class RoomResourceIntTest {
 
         int databaseSizeBeforeDelete = roomRepository.findAll().size();
 
-        // Get the room
+        // Delete the room
         restRoomMockMvc.perform(delete("/api/rooms/{id}", room.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

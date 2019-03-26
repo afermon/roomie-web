@@ -1,26 +1,24 @@
 package com.cosmicode.roomie.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.cosmicode.roomie.domain.enumeration.RoomState;
+import com.cosmicode.roomie.domain.enumeration.RoomType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import com.cosmicode.roomie.domain.enumeration.RoomState;
-
-import com.cosmicode.roomie.domain.enumeration.RoomType;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import java.util.Set;
 
 /**
  * A Room.
@@ -32,7 +30,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -85,10 +83,12 @@ public class Room implements Serializable {
     private Boolean isPremium;
 
     @Field(type = FieldType.Object)
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private Address address;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private RoomExpense price;
 
     @OneToMany(mappedBy = "room")
@@ -103,14 +103,14 @@ public class Room implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "room_roomies",
-               joinColumns = @JoinColumn(name = "rooms_id", referencedColumnName = "id"),
+               joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "roomies_id", referencedColumnName = "id"))
     private Set<Roomie> roomies = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "room_features",
-               joinColumns = @JoinColumn(name = "rooms_id", referencedColumnName = "id"),
+               joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "features_id", referencedColumnName = "id"))
     private Set<RoomFeature> features = new HashSet<>();
 

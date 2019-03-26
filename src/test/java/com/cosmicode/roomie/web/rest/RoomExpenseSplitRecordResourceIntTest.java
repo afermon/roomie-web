@@ -1,23 +1,18 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomExpenseSplitRecord;
 import com.cosmicode.roomie.repository.RoomExpenseSplitRecordRepository;
-import com.cosmicode.roomie.repository.search.RoomExpenseSplitRecordSearchRepository;
 import com.cosmicode.roomie.service.RoomExpenseSplitRecordService;
 import com.cosmicode.roomie.service.dto.RoomExpenseSplitRecordDTO;
 import com.cosmicode.roomie.service.mapper.RoomExpenseSplitRecordMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,15 +25,11 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -65,14 +56,6 @@ public class RoomExpenseSplitRecordResourceIntTest {
 
     @Autowired
     private RoomExpenseSplitRecordService roomExpenseSplitRecordService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.RoomExpenseSplitRecordSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private RoomExpenseSplitRecordSearchRepository mockRoomExpenseSplitRecordSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -141,9 +124,6 @@ public class RoomExpenseSplitRecordResourceIntTest {
         RoomExpenseSplitRecord testRoomExpenseSplitRecord = roomExpenseSplitRecordList.get(roomExpenseSplitRecordList.size() - 1);
         assertThat(testRoomExpenseSplitRecord.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testRoomExpenseSplitRecord.getState()).isEqualTo(DEFAULT_STATE);
-
-        // Validate the RoomExpenseSplitRecord in Elasticsearch
-        verify(mockRoomExpenseSplitRecordSearchRepository, times(1)).save(testRoomExpenseSplitRecord);
     }
 
     @Test
@@ -164,9 +144,6 @@ public class RoomExpenseSplitRecordResourceIntTest {
         // Validate the RoomExpenseSplitRecord in the database
         List<RoomExpenseSplitRecord> roomExpenseSplitRecordList = roomExpenseSplitRecordRepository.findAll();
         assertThat(roomExpenseSplitRecordList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the RoomExpenseSplitRecord in Elasticsearch
-        verify(mockRoomExpenseSplitRecordSearchRepository, times(0)).save(roomExpenseSplitRecord);
     }
 
     @Test
@@ -273,9 +250,6 @@ public class RoomExpenseSplitRecordResourceIntTest {
         RoomExpenseSplitRecord testRoomExpenseSplitRecord = roomExpenseSplitRecordList.get(roomExpenseSplitRecordList.size() - 1);
         assertThat(testRoomExpenseSplitRecord.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testRoomExpenseSplitRecord.getState()).isEqualTo(UPDATED_STATE);
-
-        // Validate the RoomExpenseSplitRecord in Elasticsearch
-        verify(mockRoomExpenseSplitRecordSearchRepository, times(1)).save(testRoomExpenseSplitRecord);
     }
 
     @Test
@@ -295,9 +269,6 @@ public class RoomExpenseSplitRecordResourceIntTest {
         // Validate the RoomExpenseSplitRecord in the database
         List<RoomExpenseSplitRecord> roomExpenseSplitRecordList = roomExpenseSplitRecordRepository.findAll();
         assertThat(roomExpenseSplitRecordList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the RoomExpenseSplitRecord in Elasticsearch
-        verify(mockRoomExpenseSplitRecordSearchRepository, times(0)).save(roomExpenseSplitRecord);
     }
 
     @Test
@@ -308,7 +279,7 @@ public class RoomExpenseSplitRecordResourceIntTest {
 
         int databaseSizeBeforeDelete = roomExpenseSplitRecordRepository.findAll().size();
 
-        // Get the roomExpenseSplitRecord
+        // Delete the roomExpenseSplitRecord
         restRoomExpenseSplitRecordMockMvc.perform(delete("/api/room-expense-split-records/{id}", roomExpenseSplitRecord.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -316,25 +287,6 @@ public class RoomExpenseSplitRecordResourceIntTest {
         // Validate the database is empty
         List<RoomExpenseSplitRecord> roomExpenseSplitRecordList = roomExpenseSplitRecordRepository.findAll();
         assertThat(roomExpenseSplitRecordList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the RoomExpenseSplitRecord in Elasticsearch
-        verify(mockRoomExpenseSplitRecordSearchRepository, times(1)).deleteById(roomExpenseSplitRecord.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchRoomExpenseSplitRecord() throws Exception {
-        // Initialize the database
-        roomExpenseSplitRecordRepository.saveAndFlush(roomExpenseSplitRecord);
-        when(mockRoomExpenseSplitRecordSearchRepository.search(queryStringQuery("id:" + roomExpenseSplitRecord.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(roomExpenseSplitRecord), PageRequest.of(0, 1), 1));
-        // Search the roomExpenseSplitRecord
-        restRoomExpenseSplitRecordMockMvc.perform(get("/api/_search/room-expense-split-records?query=id:" + roomExpenseSplitRecord.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(roomExpenseSplitRecord.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE)));
     }
 
     @Test

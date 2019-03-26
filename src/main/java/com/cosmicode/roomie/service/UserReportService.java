@@ -2,20 +2,16 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.UserReport;
 import com.cosmicode.roomie.repository.UserReportRepository;
-import com.cosmicode.roomie.repository.search.UserReportSearchRepository;
 import com.cosmicode.roomie.service.dto.UserReportDTO;
 import com.cosmicode.roomie.service.mapper.UserReportMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing UserReport.
@@ -30,12 +26,9 @@ public class UserReportService {
 
     private final UserReportMapper userReportMapper;
 
-    private final UserReportSearchRepository userReportSearchRepository;
-
-    public UserReportService(UserReportRepository userReportRepository, UserReportMapper userReportMapper, UserReportSearchRepository userReportSearchRepository) {
+    public UserReportService(UserReportRepository userReportRepository, UserReportMapper userReportMapper) {
         this.userReportRepository = userReportRepository;
         this.userReportMapper = userReportMapper;
-        this.userReportSearchRepository = userReportSearchRepository;
     }
 
     /**
@@ -46,11 +39,9 @@ public class UserReportService {
      */
     public UserReportDTO save(UserReportDTO userReportDTO) {
         log.debug("Request to save UserReport : {}", userReportDTO);
-
         UserReport userReport = userReportMapper.toEntity(userReportDTO);
         userReport = userReportRepository.save(userReport);
         UserReportDTO result = userReportMapper.toDto(userReport);
-        userReportSearchRepository.save(userReport);
         return result;
     }
 
@@ -89,20 +80,6 @@ public class UserReportService {
     public void delete(Long id) {
         log.debug("Request to delete UserReport : {}", id);
         userReportRepository.deleteById(id);
-        userReportSearchRepository.deleteById(id);
     }
 
-    /**
-     * Search for the userReport corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<UserReportDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of UserReports for query {}", query);
-        return userReportSearchRepository.search(queryStringQuery(query), pageable)
-            .map(userReportMapper::toDto);
-    }
 }

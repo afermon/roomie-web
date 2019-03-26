@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IRoomPicture } from 'app/shared/model/room-picture.model';
 import { RoomPictureService } from './room-picture.service';
 import { IRoom } from 'app/shared/model/room.model';
@@ -31,12 +31,13 @@ export class RoomPictureUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ roomPicture }) => {
             this.roomPicture = roomPicture;
         });
-        this.roomService.query().subscribe(
-            (res: HttpResponse<IRoom[]>) => {
-                this.rooms = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.roomService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoom[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoom[]>) => response.body)
+            )
+            .subscribe((res: IRoom[]) => (this.rooms = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

@@ -1,23 +1,18 @@
 package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
-
 import com.cosmicode.roomie.domain.RoomExpenseSplit;
 import com.cosmicode.roomie.repository.RoomExpenseSplitRepository;
-import com.cosmicode.roomie.repository.search.RoomExpenseSplitSearchRepository;
 import com.cosmicode.roomie.service.RoomExpenseSplitService;
 import com.cosmicode.roomie.service.dto.RoomExpenseSplitDTO;
 import com.cosmicode.roomie.service.mapper.RoomExpenseSplitMapper;
 import com.cosmicode.roomie.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -28,15 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
-
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -60,14 +51,6 @@ public class RoomExpenseSplitResourceIntTest {
 
     @Autowired
     private RoomExpenseSplitService roomExpenseSplitService;
-
-    /**
-     * This repository is mocked in the com.cosmicode.roomie.repository.search test package.
-     *
-     * @see com.cosmicode.roomie.repository.search.RoomExpenseSplitSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private RoomExpenseSplitSearchRepository mockRoomExpenseSplitSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -134,9 +117,6 @@ public class RoomExpenseSplitResourceIntTest {
         assertThat(roomExpenseSplitList).hasSize(databaseSizeBeforeCreate + 1);
         RoomExpenseSplit testRoomExpenseSplit = roomExpenseSplitList.get(roomExpenseSplitList.size() - 1);
         assertThat(testRoomExpenseSplit.getAmount()).isEqualTo(DEFAULT_AMOUNT);
-
-        // Validate the RoomExpenseSplit in Elasticsearch
-        verify(mockRoomExpenseSplitSearchRepository, times(1)).save(testRoomExpenseSplit);
     }
 
     @Test
@@ -157,9 +137,6 @@ public class RoomExpenseSplitResourceIntTest {
         // Validate the RoomExpenseSplit in the database
         List<RoomExpenseSplit> roomExpenseSplitList = roomExpenseSplitRepository.findAll();
         assertThat(roomExpenseSplitList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the RoomExpenseSplit in Elasticsearch
-        verify(mockRoomExpenseSplitSearchRepository, times(0)).save(roomExpenseSplit);
     }
 
     @Test
@@ -243,9 +220,6 @@ public class RoomExpenseSplitResourceIntTest {
         assertThat(roomExpenseSplitList).hasSize(databaseSizeBeforeUpdate);
         RoomExpenseSplit testRoomExpenseSplit = roomExpenseSplitList.get(roomExpenseSplitList.size() - 1);
         assertThat(testRoomExpenseSplit.getAmount()).isEqualTo(UPDATED_AMOUNT);
-
-        // Validate the RoomExpenseSplit in Elasticsearch
-        verify(mockRoomExpenseSplitSearchRepository, times(1)).save(testRoomExpenseSplit);
     }
 
     @Test
@@ -265,9 +239,6 @@ public class RoomExpenseSplitResourceIntTest {
         // Validate the RoomExpenseSplit in the database
         List<RoomExpenseSplit> roomExpenseSplitList = roomExpenseSplitRepository.findAll();
         assertThat(roomExpenseSplitList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the RoomExpenseSplit in Elasticsearch
-        verify(mockRoomExpenseSplitSearchRepository, times(0)).save(roomExpenseSplit);
     }
 
     @Test
@@ -278,7 +249,7 @@ public class RoomExpenseSplitResourceIntTest {
 
         int databaseSizeBeforeDelete = roomExpenseSplitRepository.findAll().size();
 
-        // Get the roomExpenseSplit
+        // Delete the roomExpenseSplit
         restRoomExpenseSplitMockMvc.perform(delete("/api/room-expense-splits/{id}", roomExpenseSplit.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
@@ -286,24 +257,6 @@ public class RoomExpenseSplitResourceIntTest {
         // Validate the database is empty
         List<RoomExpenseSplit> roomExpenseSplitList = roomExpenseSplitRepository.findAll();
         assertThat(roomExpenseSplitList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the RoomExpenseSplit in Elasticsearch
-        verify(mockRoomExpenseSplitSearchRepository, times(1)).deleteById(roomExpenseSplit.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchRoomExpenseSplit() throws Exception {
-        // Initialize the database
-        roomExpenseSplitRepository.saveAndFlush(roomExpenseSplit);
-        when(mockRoomExpenseSplitSearchRepository.search(queryStringQuery("id:" + roomExpenseSplit.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(roomExpenseSplit), PageRequest.of(0, 1), 1));
-        // Search the roomExpenseSplit
-        restRoomExpenseSplitMockMvc.perform(get("/api/_search/room-expense-splits?query=id:" + roomExpenseSplit.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(roomExpenseSplit.getId().intValue())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())));
     }
 
     @Test

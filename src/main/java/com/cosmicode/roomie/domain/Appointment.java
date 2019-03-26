@@ -1,18 +1,18 @@
 package com.cosmicode.roomie.domain;
 
+
+import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
-
-import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 
 /**
  * A Appointment.
@@ -24,7 +24,7 @@ import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 public class Appointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,7 +44,7 @@ public class Appointment implements Serializable {
     private AppointmentState state;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("appointments")
     private Roomie petitioner;
 
     @ManyToOne

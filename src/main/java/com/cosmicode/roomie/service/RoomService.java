@@ -1,25 +1,28 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Room;
+import com.cosmicode.roomie.domain.RoomFeature;
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
+import com.cosmicode.roomie.domain.enumeration.RoomState;
 import com.cosmicode.roomie.repository.RoomRepository;
 import com.cosmicode.roomie.repository.search.RoomSearchRepository;
 import com.cosmicode.roomie.service.dto.RoomDTO;
+import com.cosmicode.roomie.service.dto.SearchFilterDTO;
 import com.cosmicode.roomie.service.mapper.RoomMapper;
-import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.rmi.runtime.Log;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -53,12 +56,14 @@ public class RoomService {
      */
     public RoomDTO save(RoomDTO roomDTO) {
         log.debug("Request to save Room : {}", roomDTO);
-
         Room room = roomMapper.toEntity(roomDTO);
         room = roomRepository.save(room);
         RoomDTO result = roomMapper.toDto(room);
         room = roomRepository.findOneWithEagerRelationships(room.getId()).get();
-        roomSearchRepository.save(room);
+        if(room.getState() == RoomState.SEARCH)
+            roomSearchRepository.save(room);
+        else
+            roomSearchRepository.deleteById(room.getId());
         return result;
     }
 
@@ -126,37 +131,62 @@ public class RoomService {
     /**
      * Search for the room corresponding to the query.
      *
-     * @param latitude the query of the search
-     * @param longitude the query of the search
+     * @param searchFilterDTO the query of the search
      * @param pageable the pagination information
      * @return the list of entities
-     * GET room/_search
-     * {
-     *     "query": {
-     *         "bool" : {
-     *             "must" : {
-     *                 "match_all" : {}
-     *             },
-     *             "filter" : {
-     *                 "geo_distance" : {
-     *                     "distance" : "10km",
-     *                     "address.location": "9.932533,-84.031295"
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      */
     @Transactional(readOnly = true)
-    public Page<RoomDTO> search(Double latitude, Double longitude, int distance, Pageable pageable) {
-        log.debug("Request to search for a page of Rooms for location {} {} {} km", latitude, longitude, distance);
+    public Page<RoomDTO> search(SearchFilterDTO searchFilterDTO, Pageable pageable) {
+        log.debug("Request to search for a page of Rooms for location {}", searchFilterDTO.toString());
+
+        int priceMinUSD, priceMaxUSD, priceMinCRC, priceMaxCRC;
+        int exchangeRateAproxCRC2USD = 600;
+
+        List<String> features = new ArrayList<>();
+        if(searchFilterDTO.getFeatures() != null)
+            for (RoomFeature feature: searchFilterDTO.getFeatures())
+                features.add(feature.getName());
+
+        if(searchFilterDTO.getCurrency() == CurrencyType.DOLLAR){
+            priceMinUSD = searchFilterDTO.getPriceMin();
+            priceMaxUSD = searchFilterDTO.getPriceMax();
+            if(priceMaxUSD == 1000) priceMaxUSD = priceMaxUSD * 10;
+            priceMinCRC = priceMinUSD * exchangeRateAproxCRC2USD;
+            priceMaxCRC = priceMaxUSD * exchangeRateAproxCRC2USD;
+        } else {
+            priceMinCRC = searchFilterDTO.getPriceMin();
+            priceMaxCRC = searchFilterDTO.getPriceMax();
+            if(priceMaxCRC == 1000) priceMaxCRC = priceMaxCRC * 10;
+            priceMinUSD = priceMinCRC / exchangeRateAproxCRC2USD;
+            priceMaxUSD = priceMaxCRC / exchangeRateAproxCRC2USD;
+        }
+
+        QueryBuilder searchQueryBuilder = QueryBuilders.boolQuery()
+            .should(QueryBuilders.queryStringQuery(searchFilterDTO.getQuery()))
+            .should(QueryBuilders.rangeQuery("price.amount").lte(priceMaxCRC).gte(priceMinCRC))
+            .should(QueryBuilders.rangeQuery("price.amount").lte(priceMaxUSD).gte(priceMinUSD))
+            .should(QueryBuilders.termsQuery("features.name", features))
+            .minimumShouldMatch(1)
+            .filter(QueryBuilders.geoDistanceQuery("address.location").point(searchFilterDTO.getLatitude(), searchFilterDTO.getLongitude()).distance(searchFilterDTO.getDistance(), DistanceUnit.KILOMETERS));
+
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
-            .withQuery(geoDistanceQuery("address.location").point(latitude, longitude).distance(distance, DistanceUnit.KILOMETERS))
+            .withPageable(pageable)
+            .withQuery(searchQueryBuilder)
             .build();
 
-        log.debug(searchQuery.getQuery().toString());
-
-        return roomSearchRepository.search(searchQuery.getQuery(), pageable)
+        return roomSearchRepository.search(searchQuery)
             .map(roomMapper::toDto);
+    }
+
+    /**
+     * Reindex a room.
+     *
+     * @param id the id of the entity to reindex
+     */
+    public void reindex(Long id) {
+        log.debug("Request to reindex Room : {}", id);
+        Optional<Room> room = roomRepository.findOneWithEagerRelationships(id);
+        if(room.isPresent() && room.get().getState() == RoomState.SEARCH)
+            roomSearchRepository.save(room.get());
     }
 }

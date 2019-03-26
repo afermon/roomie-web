@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { INotification } from 'app/shared/model/notification.model';
@@ -24,7 +25,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     routeData: any;
     links: any;
     totalItems: any;
-    queryCount: any;
     itemsPerPage: any;
     page: any;
     predicate: any;
@@ -160,7 +160,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     protected paginateNotifications(data: INotification[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        this.queryCount = this.totalItems;
         this.notifications = data;
     }
 

@@ -20,9 +20,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="room_expense"/>
 
-        <addForeignKeyConstraint baseColumnNames="rooms_id"
+        <addForeignKeyConstraint baseColumnNames="room_id"
                                  baseTableName="room_roomies"
-                                 constraintName="fk_room_roomies_rooms_id"
+                                 constraintName="fk_room_roomies_room_id"
                                  referencedColumnNames="id"
                                  referencedTableName="room"/>
         <addForeignKeyConstraint baseColumnNames="roomies_id"
@@ -31,9 +31,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="roomie"/>
         
-        <addForeignKeyConstraint baseColumnNames="rooms_id"
+        <addForeignKeyConstraint baseColumnNames="room_id"
                                  baseTableName="room_features"
-                                 constraintName="fk_room_features_rooms_id"
+                                 constraintName="fk_room_features_room_id"
                                  referencedColumnNames="id"
                                  referencedTableName="room"/>
         <addForeignKeyConstraint baseColumnNames="features_id"

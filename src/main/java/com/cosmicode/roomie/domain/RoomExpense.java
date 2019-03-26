@@ -1,21 +1,20 @@
 package com.cosmicode.roomie.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import com.cosmicode.roomie.domain.enumeration.CurrencyType;
+import java.util.Set;
 
 /**
  * A RoomExpense.
@@ -27,7 +26,7 @@ import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 public class RoomExpense implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

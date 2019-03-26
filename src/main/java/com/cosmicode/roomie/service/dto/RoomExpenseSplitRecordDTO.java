@@ -1,8 +1,9 @@
 package com.cosmicode.roomie.service.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,7 @@ public class RoomExpenseSplitRecordDTO implements Serializable {
     @NotNull
     @Size(min = 4, max = 25)
     private String state;
+
 
     private Long splitId;
 

@@ -7,15 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
-
 import org.springframework.core.env.Environment;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.SQLException;
-import java.lang.NumberFormatException;
 
 @Configuration
 @EnableJpaRepositories("com.cosmicode.roomie.repository")
@@ -46,7 +44,7 @@ public class DatabaseConfiguration {
         return H2ConfigurationHelper.createServer(port);
     }
 	
-    private String getValidPortForH2() throws NumberFormatException {
+    private String getValidPortForH2() {
         int port = Integer.parseInt(env.getProperty("server.port"));
         if (port < 10000) {
             port = 10000 + port;
