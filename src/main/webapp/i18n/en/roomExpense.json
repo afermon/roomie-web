@@ -1,0 +1,31 @@
+{
+    "roomieApp": {
+        "roomExpense": {
+            "home": {
+                "title": "Room Expenses",
+                "createLabel": "Create a new Room Expense",
+                "createOrEditLabel": "Create or edit a Room Expense",
+                "search": "Search for Room Expense"
+            },
+            "created": "A new Room Expense is created with identifier {{ param }}",
+            "updated": "A Room Expense is updated with identifier {{ param }}",
+            "deleted": "A Room Expense is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room Expense {{ id }}?"
+            },
+            "detail": {
+                "title": "Room Expense"
+            },
+            "name": "Name",
+            "description": "Description",
+            "currency": "Currency",
+            "amount": "Amount",
+            "periodicity": "Periodicity",
+            "monthDay": "Month Day",
+            "startDate": "Start Date",
+            "finishDate": "Finish Date",
+            "splits": "Splits",
+            "room": "Room"
+        }
+    }
+}

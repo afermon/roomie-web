@@ -1,0 +1,27 @@
+{
+    "roomieApp": {
+        "roomTask": {
+            "home": {
+                "title": "Room Tasks",
+                "createLabel": "Create a new Room Task",
+                "createOrEditLabel": "Create or edit a Room Task",
+                "search": "Search for Room Task"
+            },
+            "created": "A new Room Task is created with identifier {{ param }}",
+            "updated": "A Room Task is updated with identifier {{ param }}",
+            "deleted": "A Room Task is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room Task {{ id }}?"
+            },
+            "detail": {
+                "title": "Room Task"
+            },
+            "created": "Created",
+            "title": "Title",
+            "description": "Description",
+            "deadline": "Deadline",
+            "state": "State",
+            "room": "Room"
+        }
+    }
+}

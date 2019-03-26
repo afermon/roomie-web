@@ -20,4 +20,5 @@ spring:
             maximumPoolSize: 8
     data:
         jest:
-            uri: ${BONSAI_URL}
+            uri: ${AWS_ES_URL}
+            aws-region: ${AWS_ES_REGION}

@@ -1,17 +1,16 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import com.cosmicode.roomie.domain.User;
+import com.cosmicode.roomie.security.jwt.JWTFilter;
+import com.cosmicode.roomie.security.jwt.TokenProvider;
+import com.cosmicode.roomie.service.UserService;
+import com.cosmicode.roomie.service.dto.UserDTO;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.cosmicode.roomie.domain.User;
-import com.cosmicode.roomie.security.jwt.JWTFilter;
-import com.cosmicode.roomie.security.jwt.TokenProvider;
-import com.cosmicode.roomie.service.UserService;
-import com.cosmicode.roomie.service.dto.UserDTO;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -23,13 +22,15 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.*;
 
 @RestController
@@ -48,7 +49,6 @@ public class SocialLoginResource {
 
 
     @PostMapping("/authenticate/facebook")
-    @Timed
     public ResponseEntity authorizeClientFromFacebook(@RequestBody String token, HttpServletResponse response) throws IOException {
 
         token=token.replace("\"","");
@@ -120,7 +120,6 @@ public class SocialLoginResource {
     }
 
     @PostMapping("/authenticate/google")
-    @Timed
     public ResponseEntity authorizeClientFromGoogle(@RequestBody String token, HttpServletResponse response) throws IOException {
 
         Reader fileReader = null;

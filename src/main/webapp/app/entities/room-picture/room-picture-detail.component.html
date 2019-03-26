@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomPicture">
+            <h2><span jhiTranslate="roomieApp.roomPicture.detail.title">Room Picture</span> {{roomPicture.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomPicture.url">Url</span></dt>
+                <dd>
+                    <span>{{roomPicture.url}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomPicture.isMain">Is Main</span></dt>
+                <dd>
+                    <span>{{roomPicture.isMain}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomPicture.room">Room</span></dt>
+                <dd>
+                    <div *ngIf="roomPicture.roomId">
+                        <a [routerLink]="['/room', roomPicture.roomId, 'view']">{{roomPicture.roomId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room-picture', roomPicture.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

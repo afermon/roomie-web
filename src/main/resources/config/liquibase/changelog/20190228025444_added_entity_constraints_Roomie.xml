@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Roomie.
+    -->
+    <changeSet id="20190228025444-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="roomie"
+                                 constraintName="fk_roomie_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="state_id"
+                                 baseTableName="roomie"
+                                 constraintName="fk_roomie_state_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roomie_state"/>
+
+        <addForeignKeyConstraint baseColumnNames="address_id"
+                                 baseTableName="roomie"
+                                 constraintName="fk_roomie_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="configuration_id"
+                                 baseTableName="roomie"
+                                 constraintName="fk_roomie_configuration_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_preferences"/>
+
+        <addForeignKeyConstraint baseColumnNames="roomie_id"
+                                 baseTableName="roomie_lifestyle"
+                                 constraintName="fk_roomie_lifestyle_roomie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roomie"/>
+        <addForeignKeyConstraint baseColumnNames="lifestyle_id"
+                                 baseTableName="roomie_lifestyle"
+                                 constraintName="fk_roomie_lifestyle_lifestyle_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room_feature"/>
+        
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,9 @@
+{
+    "roomieApp": {
+        "CurrencyType": {
+            "null": "",
+            "COLON": "COLON",
+            "DOLLAR": "DOLLAR"
+        }
+    }
+}

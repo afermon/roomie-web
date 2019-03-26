@@ -50,6 +50,102 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+                        <li>
+                        <a class="dropdown-item" routerLink="roomie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomie">Roomie</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="roomie-state" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomieState">Roomie State</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="address" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.address">Address</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="user-preferences" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.userPreferences">User Preferences</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.room">Room</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-picture" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomPicture">Room Picture</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-feature" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomFeature">Room Feature</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-expense" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomExpense">Room Expense</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-expense-split" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomExpenseSplit">Room Expense Split</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-expense-split-record" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomExpenseSplitRecord">Room Expense Split Record</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="appointment" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.appointment">Appointment</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-task" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomTask">Room Task</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="room-event" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.roomEvent">Room Event</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="user-report" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.userReport">User Report</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="company" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.company">Company</span>
+                        </a>
+                    </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="notification" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.notification">Notification</span>
+                        </a>
+                    </li>
                         <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                     </ul>
                 </li>
@@ -103,6 +199,12 @@
                                 <span jhiTranslate="global.menu.admin.apidocs">API</span>
                             </a>
                         </li>
+                        <li>
+                        <a class="dropdown-item" routerLink="admin/elasticsearch-reindex" routerLinkActive="active" (click)="collapseNavbar()">
+                            <fa-icon [icon]="'search'" [fixedWidth]="true"></fa-icon>&nbsp;
+                            <span jhiTranslate="global.menu.admin.elasticsearch-reindex">Elasticsearch Reindex</span>
+                        </a>
+                    </li>
                         <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                         <li *ngIf="!inProduction">
                             <a class="dropdown-item" href='./h2-console' target="_tab" (click)="collapseNavbar()">

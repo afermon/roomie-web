@@ -41,6 +41,7 @@ spring:
         username: roomie
         password:
         hikari:
+            poolName: Hikari
             auto-commit: false
     h2:
         console:
@@ -56,6 +57,7 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
+
     data:
         elasticsearch:
             properties:
@@ -114,12 +116,8 @@ jhipster:
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: hello@dev-roomie-web.herokuapp.com
         base-url: http://127.0.0.1:8080
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx:
-            enabled: true
-        prometheus:
-            enabled: false #expose metrics via prometheus
-        logs: # Reports Dropwizard metrics in the logs
+    metrics:
+        logs: # Reports metrics in the logs
             enabled: false
             report-frequency: 60 # in seconds
     logging:

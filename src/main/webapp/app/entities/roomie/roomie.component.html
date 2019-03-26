@@ -1,0 +1,109 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="roomieApp.roomie.home.title">Roomies</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-roomie" [routerLink]="['/roomie/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="roomieApp.roomie.home.createLabel">
+            Create new Roomie
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'roomieApp.roomie.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="roomies">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="birthDate"><span jhiTranslate="roomieApp.roomie.birthDate">Birth Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="biography"><span jhiTranslate="roomieApp.roomie.biography">Biography</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="picture"><span jhiTranslate="roomieApp.roomie.picture">Picture</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gender"><span jhiTranslate="roomieApp.roomie.gender">Gender</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="phone"><span jhiTranslate="roomieApp.roomie.phone">Phone</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mobileDeviceID"><span jhiTranslate="roomieApp.roomie.mobileDeviceID">Mobile Device ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userId"><span jhiTranslate="roomieApp.roomie.user">User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="stateId"><span jhiTranslate="roomieApp.roomie.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="addressId"><span jhiTranslate="roomieApp.roomie.address">Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="configurationId"><span jhiTranslate="roomieApp.roomie.configuration">Configuration</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let roomie of roomies ;trackBy: trackId">
+                <td><a [routerLink]="['/roomie', roomie.id, 'view' ]">{{roomie.id}}</a></td>
+                <td>{{roomie.birthDate | date:'mediumDate'}}</td>
+                <td>{{roomie.biography}}</td>
+                <td>{{roomie.picture}}</td>
+                <td jhiTranslate="{{'roomieApp.Gender.' + roomie.gender}}">{{roomie.gender}}</td>
+                <td>{{roomie.phone}}</td>
+                <td>{{roomie.mobileDeviceID}}</td>
+                <td>
+                    {{roomie.userId}}
+                </td>
+                <td>
+                    <div *ngIf="roomie.stateId">
+                        <a [routerLink]="['../roomie-state', roomie.stateId , 'view' ]" >{{roomie.stateId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="roomie.addressId">
+                        <a [routerLink]="['../address', roomie.addressId , 'view' ]" >{{roomie.addressId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="roomie.configurationId">
+                        <a [routerLink]="['../user-preferences', roomie.configurationId , 'view' ]" >{{roomie.configurationId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/roomie', roomie.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/roomie', roomie.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'roomie', { outlets: { popup: roomie.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="roomies && roomies.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

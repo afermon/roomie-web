@@ -1,0 +1,36 @@
+{
+    "name": "UserPreferences",
+    "fields": [
+        {
+            "fieldName": "currency",
+            "fieldType": "CurrencyType",
+            "fieldValues": "COLON,DOLLAR"
+        },
+        {
+            "fieldName": "todoListNotifications",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "calendarNotifications",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "paymentsNotifications",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "appointmentsNotifications",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190228025447",
+    "entityTableName": "user_preferences",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

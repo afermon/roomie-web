@@ -7,6 +7,22 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "roomie": "Roomie",
+                "roomieState": "Roomie State",
+                "address": "Address",
+                "userPreferences": "User Preferences",
+                "room": "Room",
+                "roomPicture": "Room Picture",
+                "roomFeature": "Room Feature",
+                "roomExpense": "Room Expense",
+                "roomExpenseSplit": "Room Expense Split",
+                "roomExpenseSplitRecord": "Room Expense Split Record",
+                "appointment": "Appointment",
+                "roomTask": "Room Task",
+                "roomEvent": "Room Event",
+                "userReport": "User Report",
+                "company": "Company",
+                "notification": "Notification",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -29,6 +45,7 @@
                 "audits": "Audits",
                 "apidocs": "API",
                 "database": "Database",
+                "elasticsearch-reindex": "Reindex Elasticsearch",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
             "language": "Language"
@@ -132,5 +149,9 @@
         "idexists": "A new {{ entityName }} cannot already have an ID",
         "idnull": "Invalid ID"
     },
-    "footer": "All rights reserved. &copy; 2019 Cosmicode"
+    "footer": {
+        "copyright": "All rights reserved. &copy; 2019 Cosmicode",
+        "thanks": "Thank you for supporting us!",
+        "social": "Let's get in touch on any of these platforms"
+    }
 }

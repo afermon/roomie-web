@@ -1,8 +1,8 @@
 package com.cosmicode.roomie.config;
 
-import com.cosmicode.roomie.security.*;
-import com.cosmicode.roomie.security.jwt.*;
-
+import com.cosmicode.roomie.security.AuthoritiesConstants;
+import com.cosmicode.roomie.security.jwt.JWTConfigurer;
+import com.cosmicode.roomie.security.jwt.TokenProvider;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -108,6 +108,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/authenticate/facebook").permitAll()
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
+            .antMatchers("/api/roomies").permitAll()
+            .antMatchers("/api/users-email/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()

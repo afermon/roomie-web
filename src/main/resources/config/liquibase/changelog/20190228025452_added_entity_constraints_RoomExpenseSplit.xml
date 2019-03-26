@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity RoomExpenseSplit.
+    -->
+    <changeSet id="20190228025452-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="expense_id"
+                                 baseTableName="room_expense_split"
+                                 constraintName="fk_room_expense_split_expense_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room_expense"/>
+
+        <addForeignKeyConstraint baseColumnNames="roomie_id"
+                                 baseTableName="room_expense_split"
+                                 constraintName="fk_room_expense_split_roomie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roomie"/>
+
+    </changeSet>
+</databaseChangeLog>

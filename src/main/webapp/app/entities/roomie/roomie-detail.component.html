@@ -1,0 +1,75 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomie">
+            <h2><span jhiTranslate="roomieApp.roomie.detail.title">Roomie</span> {{roomie.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomie.birthDate">Birth Date</span></dt>
+                <dd>
+                    <span>{{roomie.birthDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.biography">Biography</span></dt>
+                <dd>
+                    <span>{{roomie.biography}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.picture">Picture</span></dt>
+                <dd>
+                    <span>{{roomie.picture}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.gender">Gender</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.Gender.' + roomie.gender}}">{{roomie.gender}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.phone">Phone</span></dt>
+                <dd>
+                    <span>{{roomie.phone}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.mobileDeviceID">Mobile Device ID</span></dt>
+                <dd>
+                    <span>{{roomie.mobileDeviceID}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.user">User</span></dt>
+                <dd>
+                    {{roomie.userId}}
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.state">State</span></dt>
+                <dd>
+                    <div *ngIf="roomie.stateId">
+                        <a [routerLink]="['/roomie-state', roomie.stateId, 'view']">{{roomie.stateId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.address">Address</span></dt>
+                <dd>
+                    <div *ngIf="roomie.addressId">
+                        <a [routerLink]="['/address', roomie.addressId, 'view']">{{roomie.addressId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.configuration">Configuration</span></dt>
+                <dd>
+                    <div *ngIf="roomie.configurationId">
+                        <a [routerLink]="['/user-preferences', roomie.configurationId, 'view']">{{roomie.configurationId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomie.lifestyle">Lifestyle</span></dt>
+                <dd>
+                    <span *ngFor="let lifestyle of roomie.lifestyles; let last = last">
+                        <a [routerLink]="['/room-feature', lifestyle?.id, 'view' ]">{{lifestyle.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/roomie', roomie.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

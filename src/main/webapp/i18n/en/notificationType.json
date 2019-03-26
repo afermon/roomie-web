@@ -1,0 +1,11 @@
+{
+    "roomieApp": {
+        "NotificationType": {
+            "null": "",
+            "APPOINTMENT": "APPOINTMENT",
+            "EXPENSE": "EXPENSE",
+            "TODO": "TODO",
+            "EVENT": "EVENT"
+        }
+    }
+}

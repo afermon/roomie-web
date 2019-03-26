@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomExpenseSplit">
+            <h2><span jhiTranslate="roomieApp.roomExpenseSplit.detail.title">Room Expense Split</span> {{roomExpenseSplit.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomExpenseSplit.amount">Amount</span></dt>
+                <dd>
+                    <span>{{roomExpenseSplit.amount}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpenseSplit.expense">Expense</span></dt>
+                <dd>
+                    <div *ngIf="roomExpenseSplit.expenseId">
+                        <a [routerLink]="['/room-expense', roomExpenseSplit.expenseId, 'view']">{{roomExpenseSplit.expenseId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpenseSplit.roomie">Roomie</span></dt>
+                <dd>
+                    <div *ngIf="roomExpenseSplit.roomieId">
+                        <a [routerLink]="['/roomie', roomExpenseSplit.roomieId, 'view']">{{roomExpenseSplit.roomieId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room-expense-split', roomExpenseSplit.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

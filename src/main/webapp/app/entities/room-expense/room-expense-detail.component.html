@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="roomExpense">
+            <h2><span jhiTranslate="roomieApp.roomExpense.detail.title">Room Expense</span> {{roomExpense.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.roomExpense.name">Name</span></dt>
+                <dd>
+                    <span>{{roomExpense.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.description">Description</span></dt>
+                <dd>
+                    <span>{{roomExpense.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.currency">Currency</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.CurrencyType.' + roomExpense.currency}}">{{roomExpense.currency}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.amount">Amount</span></dt>
+                <dd>
+                    <span>{{roomExpense.amount}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.periodicity">Periodicity</span></dt>
+                <dd>
+                    <span>{{roomExpense.periodicity}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.monthDay">Month Day</span></dt>
+                <dd>
+                    <span>{{roomExpense.monthDay}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.startDate">Start Date</span></dt>
+                <dd>
+                    <span>{{roomExpense.startDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.finishDate">Finish Date</span></dt>
+                <dd>
+                    <span>{{roomExpense.finishDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.roomExpense.room">Room</span></dt>
+                <dd>
+                    <div *ngIf="roomExpense.roomId">
+                        <a [routerLink]="['/room', roomExpense.roomId, 'view']">{{roomExpense.roomId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/room-expense', roomExpense.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
