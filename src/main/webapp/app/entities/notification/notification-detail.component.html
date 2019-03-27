@@ -21,6 +21,12 @@
                 <dd>
                     <span>{{notification.entityId}}</span>
                 </dd>
+                <dt><span jhiTranslate="roomieApp.notification.recipient">Recipient</span></dt>
+                <dd>
+                    <div *ngIf="notification.recipientId">
+                        <a [routerLink]="['/roomie', notification.recipientId, 'view']">{{notification.recipientId}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

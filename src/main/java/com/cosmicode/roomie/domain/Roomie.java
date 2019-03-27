@@ -80,6 +80,9 @@ public class Roomie implements Serializable {
     @OneToMany(mappedBy = "owner")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Room> rooms = new HashSet<>();
+    @OneToMany(mappedBy = "recipient")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Notification> notifications = new HashSet<>();
     @OneToMany(mappedBy = "organizer")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<RoomEvent> roomEvents = new HashSet<>();
@@ -277,6 +280,31 @@ public class Roomie implements Serializable {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public Roomie notifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+        return this;
+    }
+
+    public Roomie addNotification(Notification notification) {
+        this.notifications.add(notification);
+        notification.setRecipient(this);
+        return this;
+    }
+
+    public Roomie removeNotification(Notification notification) {
+        this.notifications.remove(notification);
+        notification.setRecipient(null);
+        return this;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     public Set<RoomEvent> getRoomEvents() {

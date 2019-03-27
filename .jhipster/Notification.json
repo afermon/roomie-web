@@ -39,7 +39,15 @@
             ]
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "roomie",
+            "otherEntityRelationshipName": "notification",
+            "relationshipName": "recipient",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20190228025459",
     "entityTableName": "notification",
     "dto": "mapstruct",

@@ -19,6 +19,7 @@
             <th jhiSortBy="body"><span jhiTranslate="roomieApp.notification.body">Body</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="type"><span jhiTranslate="roomieApp.notification.type">Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="entityId"><span jhiTranslate="roomieApp.notification.entityId">Entity Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="recipientId"><span jhiTranslate="roomieApp.notification.recipient">Recipient</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -29,6 +30,11 @@
                 <td>{{notification.body}}</td>
                 <td jhiTranslate="{{'roomieApp.NotificationType.' + notification.type}}">{{notification.type}}</td>
                 <td>{{notification.entityId}}</td>
+                <td>
+                    <div *ngIf="notification.recipientId">
+                        <a [routerLink]="['../roomie', notification.recipientId , 'view' ]" >{{notification.recipientId}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -78,6 +78,13 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.notification.recipient" for="field_recipient">Recipient</label>
+                    <select class="form-control" id="field_recipient" name="recipient" [(ngModel)]="notification.recipientId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="roomieOption.id" *ngFor="let roomieOption of roomies; trackBy: trackRoomieById">{{roomieOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

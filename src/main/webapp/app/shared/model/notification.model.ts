@@ -11,6 +11,7 @@ export interface INotification {
     body?: string;
     type?: NotificationType;
     entityId?: number;
+    recipientId?: number;
 }
 
 export class Notification implements INotification {
@@ -19,6 +20,7 @@ export class Notification implements INotification {
         public title?: string,
         public body?: string,
         public type?: NotificationType,
-        public entityId?: number
+        public entityId?: number,
+        public recipientId?: number
     ) {}
 }

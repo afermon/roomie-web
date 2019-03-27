@@ -1,6 +1,7 @@
 import { Moment } from 'moment';
 import { IRoomExpenseSplit } from 'app/shared/model/room-expense-split.model';
 import { IRoom } from 'app/shared/model/room.model';
+import { INotification } from 'app/shared/model/notification.model';
 import { IRoomEvent } from 'app/shared/model/room-event.model';
 import { IRoomFeature } from 'app/shared/model/room-feature.model';
 
@@ -24,6 +25,7 @@ export interface IRoomie {
     configurationId?: number;
     roomExpenseSplits?: IRoomExpenseSplit[];
     rooms?: IRoom[];
+    notifications?: INotification[];
     roomEvents?: IRoomEvent[];
     lifestyles?: IRoomFeature[];
 }
@@ -43,6 +45,7 @@ export class Roomie implements IRoomie {
         public configurationId?: number,
         public roomExpenseSplits?: IRoomExpenseSplit[],
         public rooms?: IRoom[],
+        public notifications?: INotification[],
         public roomEvents?: IRoomEvent[],
         public lifestyles?: IRoomFeature[]
     ) {}

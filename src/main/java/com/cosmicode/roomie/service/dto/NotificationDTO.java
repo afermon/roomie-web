@@ -29,6 +29,8 @@ public class NotificationDTO implements Serializable {
     private Long entityId;
 
 
+    private Long recipientId;
+
     public Long getId() {
         return id;
     }
@@ -69,6 +71,14 @@ public class NotificationDTO implements Serializable {
         this.entityId = entityId;
     }
 
+    public Long getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(Long roomieId) {
+        this.recipientId = roomieId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -98,6 +108,7 @@ public class NotificationDTO implements Serializable {
             ", body='" + getBody() + "'" +
             ", type='" + getType() + "'" +
             ", entityId=" + getEntityId() +
+            ", recipient=" + getRecipientId() +
             "}";
     }
 }

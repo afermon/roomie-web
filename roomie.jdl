@@ -186,6 +186,7 @@ relationship ManyToOne {
 
 relationship OneToMany {
     Roomie to Room{owner}
+    Roomie to Notification{recipient}
 }
 
 relationship ManyToOne {

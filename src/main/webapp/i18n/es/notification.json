@@ -19,7 +19,8 @@
             "title": "Title",
             "body": "Body",
             "type": "Type",
-            "entityId": "Entity Id"
+            "entityId": "Entity Id",
+            "recipient": "Recipient"
         }
     }
 }

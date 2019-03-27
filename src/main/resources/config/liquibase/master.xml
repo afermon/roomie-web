@@ -32,5 +32,6 @@
     <include file="config/liquibase/changelog/20190228025455_added_entity_constraints_RoomTask.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190228025456_added_entity_constraints_RoomEvent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190228025457_added_entity_constraints_UserReport.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190228025459_added_entity_constraints_Notification.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

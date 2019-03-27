@@ -2,6 +2,7 @@ package com.cosmicode.roomie.domain;
 
 
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -45,6 +46,10 @@ public class Notification implements Serializable {
     @NotNull
     @Column(name = "entity_id", nullable = false)
     private Long entityId;
+
+    @ManyToOne
+    @JsonIgnoreProperties("notifications")
+    private Roomie recipient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -105,6 +110,19 @@ public class Notification implements Serializable {
 
     public void setEntityId(Long entityId) {
         this.entityId = entityId;
+    }
+
+    public Roomie getRecipient() {
+        return recipient;
+    }
+
+    public Notification recipient(Roomie roomie) {
+        this.recipient = roomie;
+        return this;
+    }
+
+    public void setRecipient(Roomie roomie) {
+        this.recipient = roomie;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

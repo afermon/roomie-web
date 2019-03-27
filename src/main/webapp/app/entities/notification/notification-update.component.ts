@@ -3,8 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { JhiAlertService } from 'ng-jhipster';
 import { INotification } from 'app/shared/model/notification.model';
 import { NotificationService } from './notification.service';
+import { IRoomie } from 'app/shared/model/roomie.model';
+import { RoomieService } from 'app/entities/roomie';
 
 @Component({
     selector: 'jhi-notification-update',
@@ -14,13 +17,27 @@ export class NotificationUpdateComponent implements OnInit {
     notification: INotification;
     isSaving: boolean;
 
-    constructor(protected notificationService: NotificationService, protected activatedRoute: ActivatedRoute) {}
+    roomies: IRoomie[];
+
+    constructor(
+        protected jhiAlertService: JhiAlertService,
+        protected notificationService: NotificationService,
+        protected roomieService: RoomieService,
+        protected activatedRoute: ActivatedRoute
+    ) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ notification }) => {
             this.notification = notification;
         });
+        this.roomieService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IRoomie[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IRoomie[]>) => response.body)
+            )
+            .subscribe((res: IRoomie[]) => (this.roomies = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {
@@ -47,5 +64,13 @@ export class NotificationUpdateComponent implements OnInit {
 
     protected onSaveError() {
         this.isSaving = false;
+    }
+
+    protected onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    trackRoomieById(index: number, item: IRoomie) {
+        return item.id;
     }
 }
