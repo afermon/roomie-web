@@ -144,4 +144,7 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    average-exchange-rate-crc-to-usd: 600
+    firebase-cloud-messaging-key: AAAArqGdBF0:APA91bGyrm2um8yDl4iqWkHkSgCY9GHf0GiynvM65kUHYrsAqZTaLHRRqpgJOijdMrtrLZVGAekEllBQdqI9Pq084NG7Ppj8eWR4sKn2kuzEY2UyDCe67s6in7NFegUdraxMH95jWB43
+    firebase-cloud-messaging-url: https://fcm.googleapis.com/fcm/send
