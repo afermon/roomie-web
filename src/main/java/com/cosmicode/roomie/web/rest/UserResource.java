@@ -210,4 +210,12 @@ public class UserResource {
             userService.getUserWithAuthoritiesByEmail(email)
                 .map(UserDTO::new));
     }
+
+    @GetMapping("/users-id/{id}")
+    public ResponseEntity<UserDTO> getUserById (@PathVariable Long id) {
+        log.debug("REST request to get User : {}", id);
+        return ResponseUtil.wrapOrNotFound(
+            userService.getUserWithAuthorities(id)
+                .map(UserDTO::new));
+    }
 }
