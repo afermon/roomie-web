@@ -39,8 +39,12 @@ enum ReportType{
     USER, ROOM, APP
 }
 
-enum NotificationType{
+enum NotificationType {
     APPOINTMENT, EXPENSE, TODO, EVENT
+}
+
+enum NotificationState {
+    NEW, READ
 }
 
 entity Roomie {
@@ -158,10 +162,12 @@ entity Company{
 }
 
 entity Notification{
+    created Instant,
     title String required minlength(4) maxlength(50)
     body String required minlength(4) maxlength(200)
     type NotificationType required
-    entityId Long required
+    state NotificationState required
+    entityId Long
 }
 
 relationship OneToMany {

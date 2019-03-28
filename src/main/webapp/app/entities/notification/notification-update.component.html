@@ -10,6 +10,13 @@
                         [(ngModel)]="notification.id" readonly />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.notification.created" for="field_created">Created</label>
+                    <div class="d-flex">
+                        <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="created" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="roomieApp.notification.title" for="field_title">Title</label>
                     <input type="text" class="form-control" name="title" id="field_title"
                         [(ngModel)]="notification.title" required minlength="4" maxlength="50"/>
@@ -63,19 +70,22 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="roomieApp.notification.entityId" for="field_entityId">Entity Id</label>
-                    <input type="number" class="form-control" name="entityId" id="field_entityId"
-                        [(ngModel)]="notification.entityId" required/>
-                    <div [hidden]="!(editForm.controls.entityId?.dirty && editForm.controls.entityId?.invalid)">
+                    <label class="form-control-label" jhiTranslate="roomieApp.notification.state" for="field_state">State</label>
+                    <select class="form-control" name="state" [(ngModel)]="notification.state" id="field_state"  required>
+                        <option value="NEW">{{'roomieApp.NotificationState.NEW' | translate}}</option>
+                        <option value="READ">{{'roomieApp.NotificationState.READ' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.state?.dirty && editForm.controls.state?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.entityId?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.state?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.entityId?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="roomieApp.notification.entityId" for="field_entityId">Entity Id</label>
+                    <input type="number" class="form-control" name="entityId" id="field_entityId"
+                        [(ngModel)]="notification.entityId" />
                 </div>
 
                 <div class="form-group">

@@ -5,6 +5,10 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="roomieApp.notification.created">Created</span></dt>
+                <dd>
+                    <span>{{notification.created}}</span>
+                </dd>
                 <dt><span jhiTranslate="roomieApp.notification.title">Title</span></dt>
                 <dd>
                     <span>{{notification.title}}</span>
@@ -16,6 +20,10 @@
                 <dt><span jhiTranslate="roomieApp.notification.type">Type</span></dt>
                 <dd>
                     <span jhiTranslate="{{'roomieApp.NotificationType.' + notification.type}}">{{notification.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="roomieApp.notification.state">State</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'roomieApp.NotificationState.' + notification.state}}">{{notification.state}}</span>
                 </dd>
                 <dt><span jhiTranslate="roomieApp.notification.entityId">Entity Id</span></dt>
                 <dd>

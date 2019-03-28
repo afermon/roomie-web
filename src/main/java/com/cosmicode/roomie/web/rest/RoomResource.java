@@ -1,6 +1,5 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.service.RoomService;
 import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.dto.SearchFilterDTO;

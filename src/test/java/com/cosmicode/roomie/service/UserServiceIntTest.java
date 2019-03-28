@@ -3,11 +3,10 @@ package com.cosmicode.roomie.service;
 import com.cosmicode.roomie.RoomieApp;
 import com.cosmicode.roomie.config.Constants;
 import com.cosmicode.roomie.domain.User;
-import com.cosmicode.roomie.repository.search.UserSearchRepository;
 import com.cosmicode.roomie.repository.UserRepository;
+import com.cosmicode.roomie.repository.search.UserSearchRepository;
 import com.cosmicode.roomie.service.dto.UserDTO;
 import com.cosmicode.roomie.service.util.RandomUtil;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,15 +22,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Test class for the UserResource REST controller.

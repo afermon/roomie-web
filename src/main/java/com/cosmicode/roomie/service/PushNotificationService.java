@@ -1,7 +1,7 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.config.ApplicationProperties;
-import com.cosmicode.roomie.service.dto.NotificationDTO;
+import com.cosmicode.roomie.domain.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -16,16 +16,15 @@ import org.springframework.web.client.RestTemplate;
 @Transactional(readOnly = true)
 public class PushNotificationService {
 
-    private final Logger log = LoggerFactory.getLogger(RoomService.class);
+    private final Logger log = LoggerFactory.getLogger(PushNotificationService.class);
     private final ApplicationProperties applicationProperties;
 
     public PushNotificationService(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 
-    public void send(NotificationDTO notification){
+    public void send(Notification notification){
         try {
-            String deviceToken = "test";
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Authorization", "key=" + applicationProperties.getFirebaseCloudMessagingKey());
@@ -33,12 +32,12 @@ public class PushNotificationService {
             JSONObject msg = new JSONObject();
             JSONObject json = new JSONObject();
 
-            msg.put("title", "Title");
-            msg.put("body", "Message");
-            msg.put("notificationType", "Test");
+            msg.put("title", notification.getTitle());
+            msg.put("body", notification.getBody());
+            msg.put("notificationType", notification.getType());
 
             json.put("data", msg);
-            json.put("to", deviceToken);
+            json.put("to", notification.getRecipient().getMobileDeviceID());
 
             HttpEntity<String> httpEntity = new HttpEntity<>(json.toString(), httpHeaders);
             String response = restTemplate.postForObject(applicationProperties.getFirebaseCloudMessagingUrl(),httpEntity,String.class);

@@ -2,6 +2,7 @@ package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
 import com.cosmicode.roomie.domain.Notification;
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.NotificationRepository;
 import com.cosmicode.roomie.service.NotificationService;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.cosmicode.roomie.web.rest.TestUtil.createFormattingConversionService;
@@ -40,6 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = RoomieApp.class)
 public class NotificationResourceIntTest {
 
+    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
@@ -48,6 +54,9 @@ public class NotificationResourceIntTest {
 
     private static final NotificationType DEFAULT_TYPE = NotificationType.APPOINTMENT;
     private static final NotificationType UPDATED_TYPE = NotificationType.EXPENSE;
+
+    private static final NotificationState DEFAULT_STATE = NotificationState.NEW;
+    private static final NotificationState UPDATED_STATE = NotificationState.READ;
 
     private static final Long DEFAULT_ENTITY_ID = 1L;
     private static final Long UPDATED_ENTITY_ID = 2L;
@@ -100,9 +109,11 @@ public class NotificationResourceIntTest {
      */
     public static Notification createEntity(EntityManager em) {
         Notification notification = new Notification()
+            .created(DEFAULT_CREATED)
             .title(DEFAULT_TITLE)
             .body(DEFAULT_BODY)
             .type(DEFAULT_TYPE)
+            .state(DEFAULT_STATE)
             .entityId(DEFAULT_ENTITY_ID);
         return notification;
     }
@@ -128,10 +139,13 @@ public class NotificationResourceIntTest {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeCreate + 1);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
+        assertThat(testNotification.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testNotification.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testNotification.getBody()).isEqualTo(DEFAULT_BODY);
         assertThat(testNotification.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testNotification.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testNotification.getEntityId()).isEqualTo(DEFAULT_ENTITY_ID);
+
     }
 
     @Test
@@ -213,10 +227,10 @@ public class NotificationResourceIntTest {
 
     @Test
     @Transactional
-    public void checkEntityIdIsRequired() throws Exception {
+    public void checkStateIsRequired() throws Exception {
         int databaseSizeBeforeTest = notificationRepository.findAll().size();
         // set the field null
-        notification.setEntityId(null);
+        notification.setState(null);
 
         // Create the Notification, which fails.
         NotificationDTO notificationDTO = notificationMapper.toDto(notification);
@@ -241,9 +255,11 @@ public class NotificationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(notification.getId().intValue())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].body").value(hasItem(DEFAULT_BODY.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].entityId").value(hasItem(DEFAULT_ENTITY_ID.intValue())));
     }
     
@@ -258,9 +274,11 @@ public class NotificationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(notification.getId().intValue()))
+            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.body").value(DEFAULT_BODY.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
             .andExpect(jsonPath("$.entityId").value(DEFAULT_ENTITY_ID.intValue()));
     }
 
@@ -285,9 +303,11 @@ public class NotificationResourceIntTest {
         // Disconnect from session so that the updates on updatedNotification are not directly saved in db
         em.detach(updatedNotification);
         updatedNotification
+            .created(UPDATED_CREATED)
             .title(UPDATED_TITLE)
             .body(UPDATED_BODY)
             .type(UPDATED_TYPE)
+            .state(UPDATED_STATE)
             .entityId(UPDATED_ENTITY_ID);
         NotificationDTO notificationDTO = notificationMapper.toDto(updatedNotification);
 
@@ -300,10 +320,13 @@ public class NotificationResourceIntTest {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
+        assertThat(testNotification.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testNotification.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testNotification.getBody()).isEqualTo(UPDATED_BODY);
         assertThat(testNotification.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testNotification.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testNotification.getEntityId()).isEqualTo(UPDATED_ENTITY_ID);
+
     }
 
     @Test

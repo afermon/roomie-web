@@ -3,7 +3,6 @@ package com.cosmicode.roomie.security;
 import com.cosmicode.roomie.RoomieApp;
 import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.repository.UserRepository;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;

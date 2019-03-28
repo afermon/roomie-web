@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService } from 'ng-jhipster';
 import { INotification } from 'app/shared/model/notification.model';
 import { NotificationService } from './notification.service';
@@ -18,6 +20,7 @@ export class NotificationUpdateComponent implements OnInit {
     isSaving: boolean;
 
     roomies: IRoomie[];
+    created: string;
 
     constructor(
         protected jhiAlertService: JhiAlertService,
@@ -30,6 +33,7 @@ export class NotificationUpdateComponent implements OnInit {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ notification }) => {
             this.notification = notification;
+            this.created = this.notification.created != null ? this.notification.created.format(DATE_TIME_FORMAT) : null;
         });
         this.roomieService
             .query()
@@ -46,6 +50,7 @@ export class NotificationUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.notification.created = this.created != null ? moment(this.created, DATE_TIME_FORMAT) : null;
         if (this.notification.id !== undefined) {
             this.subscribeToSaveResponse(this.notificationService.update(this.notification));
         } else {

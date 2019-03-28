@@ -1,10 +1,12 @@
 package com.cosmicode.roomie.service.dto;
 
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -13,6 +15,8 @@ import java.util.Objects;
 public class NotificationDTO implements Serializable {
 
     private Long id;
+
+    private Instant created;
 
     @NotNull
     @Size(min = 4, max = 50)
@@ -26,6 +30,8 @@ public class NotificationDTO implements Serializable {
     private NotificationType type;
 
     @NotNull
+    private NotificationState state;
+
     private Long entityId;
 
 
@@ -37,6 +43,14 @@ public class NotificationDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
     }
 
     public String getTitle() {
@@ -61,6 +75,14 @@ public class NotificationDTO implements Serializable {
 
     public void setType(NotificationType type) {
         this.type = type;
+    }
+
+    public NotificationState getState() {
+        return state;
+    }
+
+    public void setState(NotificationState state) {
+        this.state = state;
     }
 
     public Long getEntityId() {
@@ -104,9 +126,11 @@ public class NotificationDTO implements Serializable {
     public String toString() {
         return "NotificationDTO{" +
             "id=" + getId() +
+            ", created='" + getCreated() + "'" +
             ", title='" + getTitle() + "'" +
             ", body='" + getBody() + "'" +
             ", type='" + getType() + "'" +
+            ", state='" + getState() + "'" +
             ", entityId=" + getEntityId() +
             ", recipient=" + getRecipientId() +
             "}";

@@ -15,9 +15,11 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="created"><span jhiTranslate="roomieApp.notification.created">Created</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="title"><span jhiTranslate="roomieApp.notification.title">Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="body"><span jhiTranslate="roomieApp.notification.body">Body</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="type"><span jhiTranslate="roomieApp.notification.type">Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="state"><span jhiTranslate="roomieApp.notification.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="entityId"><span jhiTranslate="roomieApp.notification.entityId">Entity Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="recipientId"><span jhiTranslate="roomieApp.notification.recipient">Recipient</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
@@ -26,9 +28,11 @@
             <tbody>
             <tr *ngFor="let notification of notifications ;trackBy: trackId">
                 <td><a [routerLink]="['/notification', notification.id, 'view' ]">{{notification.id}}</a></td>
+                <td>{{notification.created | date:'medium'}}</td>
                 <td>{{notification.title}}</td>
                 <td>{{notification.body}}</td>
                 <td jhiTranslate="{{'roomieApp.NotificationType.' + notification.type}}">{{notification.type}}</td>
+                <td jhiTranslate="{{'roomieApp.NotificationState.' + notification.state}}">{{notification.state}}</td>
                 <td>{{notification.entityId}}</td>
                 <td>
                     <div *ngIf="notification.recipientId">

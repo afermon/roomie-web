@@ -2,6 +2,10 @@
     "name": "Notification",
     "fields": [
         {
+            "fieldName": "created",
+            "fieldType": "Instant"
+        },
+        {
             "fieldName": "title",
             "fieldType": "String",
             "fieldValidateRules": [
@@ -32,11 +36,16 @@
             ]
         },
         {
-            "fieldName": "entityId",
-            "fieldType": "Long",
+            "fieldName": "state",
+            "fieldType": "NotificationState",
+            "fieldValues": "NEW,READ",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "entityId",
+            "fieldType": "Long"
         }
     ],
     "relationships": [

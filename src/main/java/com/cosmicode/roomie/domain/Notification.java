@@ -1,6 +1,7 @@
 package com.cosmicode.roomie.domain;
 
 
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -28,6 +30,9 @@ public class Notification implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "created")
+    private Instant created;
+
     @NotNull
     @Size(min = 4, max = 50)
     @Column(name = "title", length = 50, nullable = false)
@@ -44,7 +49,11 @@ public class Notification implements Serializable {
     private NotificationType type;
 
     @NotNull
-    @Column(name = "entity_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false)
+    private NotificationState state;
+
+    @Column(name = "entity_id")
     private Long entityId;
 
     @ManyToOne
@@ -58,6 +67,19 @@ public class Notification implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public Notification created(Instant created) {
+        this.created = created;
+        return this;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
     }
 
     public String getTitle() {
@@ -97,6 +119,19 @@ public class Notification implements Serializable {
 
     public void setType(NotificationType type) {
         this.type = type;
+    }
+
+    public NotificationState getState() {
+        return state;
+    }
+
+    public Notification state(NotificationState state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(NotificationState state) {
+        this.state = state;
     }
 
     public Long getEntityId() {
@@ -150,9 +185,11 @@ public class Notification implements Serializable {
     public String toString() {
         return "Notification{" +
             "id=" + getId() +
+            ", created='" + getCreated() + "'" +
             ", title='" + getTitle() + "'" +
             ", body='" + getBody() + "'" +
             ", type='" + getType() + "'" +
+            ", state='" + getState() + "'" +
             ", entityId=" + getEntityId() +
             "}";
     }
