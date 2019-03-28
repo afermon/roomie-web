@@ -4,7 +4,8 @@ export const enum NotificationType {
     APPOINTMENT = 'APPOINTMENT',
     EXPENSE = 'EXPENSE',
     TODO = 'TODO',
-    EVENT = 'EVENT'
+    EVENT = 'EVENT',
+    APP = 'APP'
 }
 
 export const enum NotificationState {

@@ -40,7 +40,7 @@ enum ReportType{
 }
 
 enum NotificationType {
-    APPOINTMENT, EXPENSE, TODO, EVENT
+    APPOINTMENT, EXPENSE, TODO, EVENT, APP
 }
 
 enum NotificationState {

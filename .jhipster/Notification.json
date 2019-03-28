@@ -30,7 +30,7 @@
         {
             "fieldName": "type",
             "fieldType": "NotificationType",
-            "fieldValues": "APPOINTMENT,EXPENSE,TODO,EVENT",
+            "fieldValues": "APPOINTMENT,EXPENSE,TODO,EVENT,APP",
             "fieldValidateRules": [
                 "required"
             ]
