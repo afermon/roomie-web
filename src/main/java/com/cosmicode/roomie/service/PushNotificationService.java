@@ -24,11 +24,8 @@ public class PushNotificationService {
     }
 
     public void send(Notification notification){
+        if(notification.getRecipient() == null) return;
         try {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.set("Authorization", "key=" + applicationProperties.getFirebaseCloudMessagingKey());
-            httpHeaders.set("Content-Type", "application/json");
             JSONObject notificationJSON = new JSONObject();
             JSONObject dataJSON = new JSONObject();
             JSONObject requestJSON = new JSONObject();
@@ -36,7 +33,9 @@ public class PushNotificationService {
             notificationJSON.put("title", notification.getTitle());
             notificationJSON.put("body", notification.getBody());
 
+            dataJSON.put("id", notification.getId());
             dataJSON.put("type", notification.getType());
+            dataJSON.put("roomie", notification.getRecipient().getId());
             dataJSON.put("entity", notification.getEntityId().toString());
             dataJSON.put("created", notification.getCreated().toString());
 
@@ -45,13 +44,19 @@ public class PushNotificationService {
             requestJSON.put("data", dataJSON);
 
             log.debug("Notification request {}", requestJSON.toString() );
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("Authorization", "key=" + applicationProperties.getFirebaseCloudMessagingKey());
+            httpHeaders.set("Content-Type", "application/json");
             HttpEntity<String> httpEntity = new HttpEntity<>(requestJSON.toString(), httpHeaders);
             String response = restTemplate.postForObject(applicationProperties.getFirebaseCloudMessagingUrl(),httpEntity,String.class);
 
             log.debug("Response from firebase: {}", response);
         } catch (JSONException e) {
-            e.printStackTrace();
             log.error("Error in request: {}", e.toString());
+        } catch (NullPointerException e) {
+            log.error("Invalid notification: {}", e.toString());
         }
     }
 
