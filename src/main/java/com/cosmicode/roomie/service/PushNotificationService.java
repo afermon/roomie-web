@@ -2,6 +2,8 @@ package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.config.ApplicationProperties;
 import com.cosmicode.roomie.domain.Notification;
+import com.cosmicode.roomie.domain.UserPreferences;
+import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -24,8 +26,18 @@ public class PushNotificationService {
     }
 
     public void send(Notification notification){
-        if(notification.getRecipient() == null) return;
         try {
+            UserPreferences preferences = notification.getRecipient().getConfiguration();
+
+            if( (notification.getType().equals(NotificationType.APPOINTMENT) && !preferences.isAppointmentsNotifications()) ||
+                (notification.getType().equals(NotificationType.TODO) && !preferences.isTodoListNotifications()) ||
+                (notification.getType().equals(NotificationType.EXPENSE) && !preferences.isPaymentsNotifications()) ||
+                (notification.getType().equals(NotificationType.EVENT) && !preferences.isCalendarNotifications())
+                ){
+                log.info("Notification disabled for {} for this user.", notification.getType().name());
+                return;
+            }
+
             JSONObject notificationJSON = new JSONObject();
             JSONObject dataJSON = new JSONObject();
             JSONObject requestJSON = new JSONObject();
