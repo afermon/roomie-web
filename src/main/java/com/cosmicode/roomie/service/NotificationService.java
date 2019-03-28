@@ -1,6 +1,7 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Notification;
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.repository.NotificationRepository;
 import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.mapper.NotificationMapper;
@@ -26,9 +27,12 @@ public class NotificationService {
 
     private final NotificationMapper notificationMapper;
 
-    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper) {
+    private final PushNotificationService pushNotificationService;
+
+    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper, PushNotificationService pushNotificationService) {
         this.notificationRepository = notificationRepository;
         this.notificationMapper = notificationMapper;
+        this.pushNotificationService = pushNotificationService;
     }
 
     /**
@@ -41,6 +45,8 @@ public class NotificationService {
         log.debug("Request to save Notification : {}", notificationDTO);
         Notification notification = notificationMapper.toEntity(notificationDTO);
         notification = notificationRepository.save(notification);
+        if(notification.getState() == NotificationState.NEW)
+            pushNotificationService.send(notification);
         NotificationDTO result = notificationMapper.toDto(notification);
         return result;
     }
@@ -80,5 +86,18 @@ public class NotificationService {
     public void delete(Long id) {
         log.debug("Request to delete Notification : {}", id);
         notificationRepository.deleteById(id);
+    }
+
+    /**
+     * Get all the notifications for current roomie.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<NotificationDTO> findAllCurrentRoomie(Pageable pageable) {
+        log.debug("Request to get all Notifications for current roomie");
+        return notificationRepository.findCurrentlyLoggedRoomie(pageable)
+            .map(notificationMapper::toDto);
     }
 }
