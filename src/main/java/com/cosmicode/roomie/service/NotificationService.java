@@ -45,8 +45,10 @@ public class NotificationService {
         log.debug("Request to save Notification : {}", notificationDTO);
         Notification notification = notificationMapper.toEntity(notificationDTO);
         notification = notificationRepository.save(notification);
+
         if(notification.getState() == NotificationState.NEW)
-            pushNotificationService.send(notification);
+            pushNotificationService.send(notificationRepository.findById(notification.getId()).get());
+
         NotificationDTO result = notificationMapper.toDto(notification);
         return result;
     }

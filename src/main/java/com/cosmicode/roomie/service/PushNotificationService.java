@@ -29,23 +29,29 @@ public class PushNotificationService {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Authorization", "key=" + applicationProperties.getFirebaseCloudMessagingKey());
             httpHeaders.set("Content-Type", "application/json");
-            JSONObject msg = new JSONObject();
-            JSONObject json = new JSONObject();
+            JSONObject notificationJSON = new JSONObject();
+            JSONObject dataJSON = new JSONObject();
+            JSONObject requestJSON = new JSONObject();
 
-            msg.put("title", notification.getTitle());
-            msg.put("body", notification.getBody());
-            msg.put("notificationType", notification.getType());
+            notificationJSON.put("title", notification.getTitle());
+            notificationJSON.put("body", notification.getBody());
 
-            json.put("data", msg);
-            json.put("to", notification.getRecipient().getMobileDeviceID());
+            dataJSON.put("type", notification.getType());
+            dataJSON.put("entity", notification.getEntityId().toString());
+            dataJSON.put("created", notification.getCreated().toString());
 
-            HttpEntity<String> httpEntity = new HttpEntity<>(json.toString(), httpHeaders);
+            requestJSON.put("to", notification.getRecipient().getMobileDeviceID());
+            requestJSON.put("notification", notificationJSON);
+            requestJSON.put("data", dataJSON);
+
+            log.debug("Notification request {}", requestJSON.toString() );
+            HttpEntity<String> httpEntity = new HttpEntity<>(requestJSON.toString(), httpHeaders);
             String response = restTemplate.postForObject(applicationProperties.getFirebaseCloudMessagingUrl(),httpEntity,String.class);
 
             log.debug("Response from firebase: {}", response);
         } catch (JSONException e) {
             e.printStackTrace();
-            log.error("Error in request: {}", e.getMessage());
+            log.error("Error in request: {}", e.toString());
         }
     }
 
