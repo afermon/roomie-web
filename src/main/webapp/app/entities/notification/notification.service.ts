@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
@@ -17,20 +20,30 @@ export class NotificationService {
     constructor(protected http: HttpClient) {}
 
     create(notification: INotification): Observable<EntityResponseType> {
-        return this.http.post<INotification>(this.resourceUrl, notification, { observe: 'response' });
+        const copy = this.convertDateFromClient(notification);
+        return this.http
+            .post<INotification>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     update(notification: INotification): Observable<EntityResponseType> {
-        return this.http.put<INotification>(this.resourceUrl, notification, { observe: 'response' });
+        const copy = this.convertDateFromClient(notification);
+        return this.http
+            .put<INotification>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<INotification>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+        return this.http
+            .get<INotification>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<INotification[]>(this.resourceUrl, { params: options, observe: 'response' });
+        return this.http
+            .get<INotification[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
@@ -39,6 +52,31 @@ export class NotificationService {
 
     search(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<INotification[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+        return this.http
+            .get<INotification[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
+    protected convertDateFromClient(notification: INotification): INotification {
+        const copy: INotification = Object.assign({}, notification, {
+            created: notification.created != null && notification.created.isValid() ? notification.created.toJSON() : null
+        });
+        return copy;
+    }
+
+    protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        if (res.body) {
+            res.body.created = res.body.created != null ? moment(res.body.created) : null;
+        }
+        return res;
+    }
+
+    protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        if (res.body) {
+            res.body.forEach((notification: INotification) => {
+                notification.created = notification.created != null ? moment(notification.created) : null;
+            });
+        }
+        return res;
     }
 }

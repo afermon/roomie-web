@@ -1,5 +1,6 @@
 package com.cosmicode.roomie.service;
 
+import com.cosmicode.roomie.config.ApplicationProperties;
 import com.cosmicode.roomie.domain.Room;
 import com.cosmicode.roomie.domain.RoomFeature;
 import com.cosmicode.roomie.domain.enumeration.CurrencyType;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Room.
@@ -42,10 +43,13 @@ public class RoomService {
 
     private final RoomSearchRepository roomSearchRepository;
 
-    public RoomService(RoomRepository roomRepository, RoomMapper roomMapper, RoomSearchRepository roomSearchRepository) {
+    private final ApplicationProperties applicationProperties;
+
+    public RoomService(RoomRepository roomRepository, RoomMapper roomMapper, RoomSearchRepository roomSearchRepository, ApplicationProperties applicationProperties) {
         this.roomRepository = roomRepository;
         this.roomMapper = roomMapper;
         this.roomSearchRepository = roomSearchRepository;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -140,7 +144,7 @@ public class RoomService {
         log.debug("Request to search for a page of Rooms for location {}", searchFilterDTO.toString());
 
         int priceMinUSD, priceMaxUSD, priceMinCRC, priceMaxCRC;
-        int exchangeRateAproxCRC2USD = 600;
+        int exchangeRateAproxCRC2USD = applicationProperties.getAverageExchangeRateCrcToUsd();
 
         List<String> features = new ArrayList<>();
         if(searchFilterDTO.getFeatures() != null)

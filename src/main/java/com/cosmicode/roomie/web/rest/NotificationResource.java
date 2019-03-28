@@ -117,4 +117,17 @@ public class NotificationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    /**
+     * GET  /notifications : get all the notifications.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of notifications in body
+     */
+    @GetMapping("/notifications/roomie")
+    public ResponseEntity<List<NotificationDTO>> getCurrentUserNotifications(Pageable pageable) {
+        log.debug("REST request to get a page of Notifications");
+        Page<NotificationDTO> page = notificationService.findAllCurrentRoomie(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notifications/roomie");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }
