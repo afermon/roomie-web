@@ -92,7 +92,11 @@ public class RoomService {
     public Page<RoomDTO> findAllWithEagerRelationships(Pageable pageable) {
         return roomRepository.findAllWithEagerRelationships(pageable).map(roomMapper::toDto);
     }
-    
+
+    public List<RoomDTO> findAllByOwner(Long id){
+        return roomMapper.toDto(roomRepository.findRoomsByOwnerId(id));
+    }
+
 
     /**
      * Get one room by id.
