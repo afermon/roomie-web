@@ -157,4 +157,10 @@ public class RoomResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/owned-rooms/{id}")
+    public List<RoomDTO> getRoomsByOwner(@PathVariable Long id){
+        return roomService.findAllByOwner(id);
+    }
+
+
 }
