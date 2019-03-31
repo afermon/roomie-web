@@ -1,8 +1,12 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Appointment;
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
+import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.AppointmentRepository;
 import com.cosmicode.roomie.service.dto.AppointmentDTO;
+import com.cosmicode.roomie.service.dto.NotificationDTO;
+import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.mapper.AppointmentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -26,9 +31,15 @@ public class AppointmentService {
 
     private final AppointmentMapper appointmentMapper;
 
-    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper) {
+    private final NotificationService notificationService;
+
+    private final RoomService roomService;
+
+    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper, RoomService roomieService, NotificationService notificationService) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentMapper = appointmentMapper;
+        this.notificationService = notificationService;
+        this.roomService = roomieService;
     }
 
     /**
@@ -41,8 +52,38 @@ public class AppointmentService {
         log.debug("Request to save Appointment : {}", appointmentDTO);
         Appointment appointment = appointmentMapper.toEntity(appointmentDTO);
         appointment = appointmentRepository.save(appointment);
-        AppointmentDTO result = appointmentMapper.toDto(appointment);
-        return result;
+
+        appointment = appointmentRepository.findById(appointment.getId()).get();
+        NotificationDTO notification = new NotificationDTO();
+        notification.setCreated(Instant.now());
+        notification.setState(NotificationState.NEW);
+        notification.setType(NotificationType.APPOINTMENT);
+        notification.setEntityId(appointment.getId());
+
+        switch (appointment.getState()){
+            case ACCEPTED:
+                notification.setRecipientId(appointment.getPetitioner().getId());
+                notification.setTitle("Your appointment request has been accepted!");
+                notification.setBody("Yay! the owner accepted your appointment request. See you there!");
+                break;
+            case DECLINED:
+                notification.setRecipientId(appointment.getPetitioner().getId());
+                notification.setTitle("Sorry, the owner can't make it!");
+                notification.setBody("Unfortunately the owner declined your appointment request!");
+                break;
+            case PENDING:
+                Optional<RoomDTO> room = roomService.findOne(appointment.getRoom().getId());
+                if(room.isPresent()) {
+                    notification.setRecipientId(room.get().getOwnerId());
+                    notification.setTitle("New appointment request!");
+                    notification.setBody("You got a new appointment request for your room.");
+                }
+                break;
+        }
+
+        notificationService.save(notification);
+
+        return appointmentMapper.toDto(appointment);
     }
 
     /**
