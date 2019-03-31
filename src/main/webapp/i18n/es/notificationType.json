@@ -5,7 +5,8 @@
             "APPOINTMENT": "APPOINTMENT",
             "EXPENSE": "EXPENSE",
             "TODO": "TODO",
-            "EVENT": "EVENT"
+            "EVENT": "EVENT",
+            "APP": "APP"
         }
     }
 }

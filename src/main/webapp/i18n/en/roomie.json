@@ -28,6 +28,7 @@
             "configuration": "Configuration",
             "roomExpenseSplit": "Room Expense Split",
             "room": "Room",
+            "notification": "Notification",
             "roomEvent": "Room Event",
             "lifestyle": "Lifestyle"
         }

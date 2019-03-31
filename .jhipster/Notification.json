@@ -2,6 +2,10 @@
     "name": "Notification",
     "fields": [
         {
+            "fieldName": "created",
+            "fieldType": "Instant"
+        },
+        {
             "fieldName": "title",
             "fieldType": "String",
             "fieldValidateRules": [
@@ -26,20 +30,33 @@
         {
             "fieldName": "type",
             "fieldType": "NotificationType",
-            "fieldValues": "APPOINTMENT,EXPENSE,TODO,EVENT",
+            "fieldValues": "APPOINTMENT,EXPENSE,TODO,EVENT,APP",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "NotificationState",
+            "fieldValues": "NEW,READ",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
             "fieldName": "entityId",
-            "fieldType": "Long",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Long"
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "roomie",
+            "otherEntityRelationshipName": "notification",
+            "relationshipName": "recipient",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20190228025459",
     "entityTableName": "notification",
     "dto": "mapstruct",

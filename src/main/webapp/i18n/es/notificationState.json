@@ -1,0 +1,9 @@
+{
+    "roomieApp": {
+        "NotificationState": {
+            "null": "",
+            "NEW": "NEW",
+            "READ": "READ"
+        }
+    }
+}

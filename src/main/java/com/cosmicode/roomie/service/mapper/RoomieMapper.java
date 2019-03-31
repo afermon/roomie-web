@@ -23,6 +23,7 @@ public interface RoomieMapper extends EntityMapper<RoomieDTO, Roomie> {
     @Mapping(source = "configurationId", target = "configuration")
     @Mapping(target = "roomExpenseSplits", ignore = true)
     @Mapping(target = "rooms", ignore = true)
+    @Mapping(target = "notifications", ignore = true)
     @Mapping(target = "roomEvents", ignore = true)
     Roomie toEntity(RoomieDTO roomieDTO);
 

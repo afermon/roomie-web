@@ -10,5 +10,34 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+    private int averageExchangeRateCrcToUsd;
+    private String firebaseCloudMessagingKey;
+    private String firebaseCloudMessagingUrl;
 
+    public ApplicationProperties() {
+    }
+
+    public int getAverageExchangeRateCrcToUsd() {
+        return averageExchangeRateCrcToUsd;
+    }
+
+    public void setAverageExchangeRateCrcToUsd(int averageExchangeRateCrcToUsd) {
+        this.averageExchangeRateCrcToUsd = averageExchangeRateCrcToUsd;
+    }
+
+    public String getFirebaseCloudMessagingKey() {
+        return firebaseCloudMessagingKey;
+    }
+
+    public void setFirebaseCloudMessagingKey(String firebaseCloudMessagingKey) {
+        this.firebaseCloudMessagingKey = firebaseCloudMessagingKey;
+    }
+
+    public String getFirebaseCloudMessagingUrl() {
+        return firebaseCloudMessagingUrl;
+    }
+
+    public void setFirebaseCloudMessagingUrl(String firebaseCloudMessagingUrl) {
+        this.firebaseCloudMessagingUrl = firebaseCloudMessagingUrl;
+    }
 }

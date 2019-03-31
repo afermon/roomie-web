@@ -4,8 +4,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { NotificationService } from 'app/entities/notification/notification.service';
-import { INotification, Notification, NotificationType } from 'app/shared/model/notification.model';
+import { INotification, Notification, NotificationType, NotificationState } from 'app/shared/model/notification.model';
 
 describe('Service Tests', () => {
     describe('Notification Service', () => {
@@ -13,6 +15,7 @@ describe('Service Tests', () => {
         let service: NotificationService;
         let httpMock: HttpTestingController;
         let elemDefault: INotification;
+        let currentDate: moment.Moment;
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [HttpClientTestingModule]
@@ -20,13 +23,19 @@ describe('Service Tests', () => {
             injector = getTestBed();
             service = injector.get(NotificationService);
             httpMock = injector.get(HttpTestingController);
+            currentDate = moment();
 
-            elemDefault = new Notification(0, 'AAAAAAA', 'AAAAAAA', NotificationType.APPOINTMENT, 0);
+            elemDefault = new Notification(0, currentDate, 'AAAAAAA', 'AAAAAAA', NotificationType.APPOINTMENT, NotificationState.NEW, 0);
         });
 
         describe('Service methods', async () => {
             it('should find an element', async () => {
-                const returnedFromService = Object.assign({}, elemDefault);
+                const returnedFromService = Object.assign(
+                    {
+                        created: currentDate.format(DATE_TIME_FORMAT)
+                    },
+                    elemDefault
+                );
                 service
                     .find(123)
                     .pipe(take(1))
@@ -39,11 +48,17 @@ describe('Service Tests', () => {
             it('should create a Notification', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        id: 0
+                        id: 0,
+                        created: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
-                const expected = Object.assign({}, returnedFromService);
+                const expected = Object.assign(
+                    {
+                        created: currentDate
+                    },
+                    returnedFromService
+                );
                 service
                     .create(new Notification(null))
                     .pipe(take(1))
@@ -55,15 +70,22 @@ describe('Service Tests', () => {
             it('should update a Notification', async () => {
                 const returnedFromService = Object.assign(
                     {
+                        created: currentDate.format(DATE_TIME_FORMAT),
                         title: 'BBBBBB',
                         body: 'BBBBBB',
                         type: 'BBBBBB',
+                        state: 'BBBBBB',
                         entityId: 1
                     },
                     elemDefault
                 );
 
-                const expected = Object.assign({}, returnedFromService);
+                const expected = Object.assign(
+                    {
+                        created: currentDate
+                    },
+                    returnedFromService
+                );
                 service
                     .update(expected)
                     .pipe(take(1))
@@ -75,14 +97,21 @@ describe('Service Tests', () => {
             it('should return a list of Notification', async () => {
                 const returnedFromService = Object.assign(
                     {
+                        created: currentDate.format(DATE_TIME_FORMAT),
                         title: 'BBBBBB',
                         body: 'BBBBBB',
                         type: 'BBBBBB',
+                        state: 'BBBBBB',
                         entityId: 1
                     },
                     elemDefault
                 );
-                const expected = Object.assign({}, returnedFromService);
+                const expected = Object.assign(
+                    {
+                        created: currentDate
+                    },
+                    returnedFromService
+                );
                 service
                     .query(expected)
                     .pipe(
