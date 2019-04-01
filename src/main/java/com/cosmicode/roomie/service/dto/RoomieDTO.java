@@ -1,6 +1,5 @@
 package com.cosmicode.roomie.service.dto;
 
-import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.domain.enumeration.Gender;
 
 import javax.validation.constraints.NotNull;
