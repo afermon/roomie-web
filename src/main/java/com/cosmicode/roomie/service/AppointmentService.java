@@ -122,4 +122,17 @@ public class AppointmentService {
         log.debug("Request to delete Appointment : {}", id);
         appointmentRepository.deleteById(id);
     }
+
+    /**
+     * Get all the appointments for roomie.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<AppointmentDTO> findAllRoomie(Pageable pageable) {
+        log.debug("Request to get all Appointments for roomie");
+        return appointmentRepository.findAllRoomie(pageable)
+            .map(appointmentMapper::toDto);
+    }
 }

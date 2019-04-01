@@ -116,4 +116,19 @@ public class AppointmentResource {
         appointmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+    /**
+     * GET  /appointments/roomie : get all the appointments for roomie.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of appointments in body
+     */
+    @GetMapping("/appointments/roomie")
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentsRoomie(Pageable pageable) {
+        log.debug("REST request to get a page of Appointments for roomie");
+        Page<AppointmentDTO> page = appointmentService.findAllRoomie(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/appointments/roomie");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }
