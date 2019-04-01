@@ -41,6 +41,8 @@ public class RoomieDTO implements Serializable {
 
     private Long userId;
 
+    private UserDTO user;
+
     private Long stateId;
 
     private Long addressId;
@@ -143,6 +145,14 @@ public class RoomieDTO implements Serializable {
 
     public void setLifestyles(Set<RoomFeatureDTO> roomFeatures) {
         this.lifestyles = roomFeatures;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     @Override
