@@ -31,6 +31,8 @@ public class AppointmentDTO implements Serializable {
 
     private Long roomId;
 
+    private RoomDTO room;
+
     public Long getId() {
         return id;
     }
@@ -77,6 +79,14 @@ public class AppointmentDTO implements Serializable {
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
+    }
+
+    public RoomDTO getRoom() {
+        return room;
+    }
+
+    public void setRoom(RoomDTO room) {
+        this.room = room;
     }
 
     public RoomieDTO getPetitioner() {
