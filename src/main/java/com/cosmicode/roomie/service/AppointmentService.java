@@ -54,34 +54,38 @@ public class AppointmentService {
         appointment = appointmentRepository.save(appointment);
 
         appointment = appointmentRepository.findById(appointment.getId()).get();
-        NotificationDTO notification = new NotificationDTO();
-        notification.setCreated(Instant.now());
-        notification.setState(NotificationState.NEW);
-        notification.setType(NotificationType.APPOINTMENT);
-        notification.setEntityId(appointment.getId());
 
-        switch (appointment.getState()){
-            case ACCEPTED:
-                notification.setRecipientId(appointment.getPetitioner().getId());
-                notification.setTitle("Your appointment request has been accepted!");
-                notification.setBody("Yay! the owner accepted your appointment request. See you there!");
-                break;
-            case DECLINED:
-                notification.setRecipientId(appointment.getPetitioner().getId());
-                notification.setTitle("Sorry, the owner can't make it!");
-                notification.setBody("Unfortunately the owner declined your appointment request!");
-                break;
-            case PENDING:
-                Optional<RoomDTO> room = roomService.findOne(appointment.getRoom().getId());
-                if(room.isPresent()) {
-                    notification.setRecipientId(room.get().getOwnerId());
-                    notification.setTitle("New appointment request!");
-                    notification.setBody("You got a new appointment request for your room.");
-                }
-                break;
+        try {
+            NotificationDTO notification = new NotificationDTO();
+            notification.setCreated(Instant.now());
+            notification.setState(NotificationState.NEW);
+            notification.setType(NotificationType.APPOINTMENT);
+            notification.setEntityId(appointment.getId());
+
+            switch (appointment.getState()) {
+                case ACCEPTED:
+                    notification.setRecipientId(appointment.getPetitioner().getId());
+                    notification.setTitle("Your appointment request has been accepted!");
+                    notification.setBody("Yay! the owner accepted your appointment request. See you there!");
+                    break;
+                case DECLINED:
+                    notification.setRecipientId(appointment.getPetitioner().getId());
+                    notification.setTitle("Sorry, the owner can't make it!");
+                    notification.setBody("Unfortunately the owner declined your appointment request!");
+                    break;
+                case PENDING:
+                    Optional<RoomDTO> room = roomService.findOne(appointment.getRoom().getId());
+                    if (room.isPresent()) {
+                        notification.setRecipientId(room.get().getOwnerId());
+                        notification.setTitle("New appointment request!");
+                        notification.setBody("You got a new appointment request for your room.");
+                    }
+                    break;
+            }
+            notificationService.save(notification);
+        } catch (Exception e) {
+            log.error("Error building notification");
         }
-
-        notificationService.save(notification);
 
         return appointmentMapper.toDto(appointment);
     }
