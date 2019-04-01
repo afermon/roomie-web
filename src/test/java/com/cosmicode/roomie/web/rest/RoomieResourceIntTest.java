@@ -2,6 +2,7 @@ package com.cosmicode.roomie.web.rest;
 
 import com.cosmicode.roomie.RoomieApp;
 import com.cosmicode.roomie.domain.Roomie;
+import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.domain.enumeration.Gender;
 import com.cosmicode.roomie.repository.RoomieRepository;
 import com.cosmicode.roomie.repository.search.RoomieSearchRepository;
@@ -150,13 +151,16 @@ public class RoomieResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Roomie createEntity(EntityManager em) {
+        User user = new User();
+        user.setId(Long.valueOf(1));
         Roomie roomie = new Roomie()
             .birthDate(DEFAULT_BIRTH_DATE)
             .biography(DEFAULT_BIOGRAPHY)
             .picture(DEFAULT_PICTURE)
             .gender(DEFAULT_GENDER)
             .phone(DEFAULT_PHONE)
-            .mobileDeviceID(DEFAULT_MOBILE_DEVICE_ID);
+            .mobileDeviceID(DEFAULT_MOBILE_DEVICE_ID)
+            .user(user);
         return roomie;
     }
 
