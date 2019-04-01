@@ -1,12 +1,16 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Appointment;
+import com.cosmicode.roomie.domain.Roomie;
+import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.AppointmentRepository;
+import com.cosmicode.roomie.security.SecurityUtils;
 import com.cosmicode.roomie.service.dto.AppointmentDTO;
 import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.dto.RoomDTO;
+import com.cosmicode.roomie.service.dto.RoomieDTO;
 import com.cosmicode.roomie.service.mapper.AppointmentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +39,14 @@ public class AppointmentService {
 
     private final RoomService roomService;
 
-    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper, RoomService roomieService, NotificationService notificationService) {
+    private final RoomieService roomieService;
+
+    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper, RoomService roomService, NotificationService notificationService, RoomieService roomieService) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentMapper = appointmentMapper;
         this.notificationService = notificationService;
-        this.roomService = roomieService;
+        this.roomService = roomService;
+        this.roomieService = roomieService;
     }
 
     /**
@@ -50,7 +57,17 @@ public class AppointmentService {
      */
     public AppointmentDTO save(AppointmentDTO appointmentDTO) {
         log.debug("Request to save Appointment : {}", appointmentDTO);
+
+        try {
+            RoomieDTO roomieDTO = roomieService.findCurrentLoggedRoomie();
+            appointmentDTO.setPetitioner(roomieDTO);
+            appointmentDTO.setPetitionerId(roomieDTO.getId());
+        } catch (Exception e) {
+            log.error("Error getting current Roomie");
+        }
+
         Appointment appointment = appointmentMapper.toEntity(appointmentDTO);
+
         appointment = appointmentRepository.save(appointment);
 
         appointment = appointmentRepository.findById(appointment.getId()).get();
