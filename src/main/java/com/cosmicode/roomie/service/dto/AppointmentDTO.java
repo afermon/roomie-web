@@ -1,5 +1,6 @@
 package com.cosmicode.roomie.service.dto;
 
+import com.cosmicode.roomie.domain.Roomie;
 import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 
 import javax.validation.constraints.NotNull;
@@ -25,8 +26,9 @@ public class AppointmentDTO implements Serializable {
     @NotNull
     private AppointmentState state;
 
-
     private Long petitionerId;
+
+    private Roomie petitioner;
 
     private Long roomId;
 
@@ -76,6 +78,14 @@ public class AppointmentDTO implements Serializable {
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
+    }
+
+    public Roomie getPetitioner() {
+        return petitioner;
+    }
+
+    public void setPetitioner(Roomie petitioner) {
+        this.petitioner = petitioner;
     }
 
     @Override
