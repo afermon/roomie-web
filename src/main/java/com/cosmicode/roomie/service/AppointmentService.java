@@ -3,6 +3,7 @@ package com.cosmicode.roomie.service;
 import com.cosmicode.roomie.domain.Appointment;
 import com.cosmicode.roomie.domain.Roomie;
 import com.cosmicode.roomie.domain.User;
+import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.AppointmentRepository;
@@ -59,9 +60,11 @@ public class AppointmentService {
         log.debug("Request to save Appointment : {}", appointmentDTO);
 
         try {
-            RoomieDTO roomieDTO = roomieService.findCurrentLoggedRoomie();
-            appointmentDTO.setPetitioner(roomieDTO);
-            appointmentDTO.setPetitionerId(roomieDTO.getId());
+            if(appointmentDTO.getState().equals(AppointmentState.PENDING)) {
+                RoomieDTO roomieDTO = roomieService.findCurrentLoggedRoomie();
+                appointmentDTO.setPetitioner(roomieDTO);
+                appointmentDTO.setPetitionerId(roomieDTO.getId());
+            }
         } catch (Exception e) {
             log.error("Error getting current Roomie");
         }
