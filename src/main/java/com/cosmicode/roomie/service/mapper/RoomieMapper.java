@@ -12,7 +12,6 @@ import org.mapstruct.Mapping;
 public interface RoomieMapper extends EntityMapper<RoomieDTO, Roomie> {
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(target = "user")
     @Mapping(source = "state.id", target = "stateId")
     @Mapping(source = "address.id", target = "addressId")
     @Mapping(source = "configuration.id", target = "configurationId")

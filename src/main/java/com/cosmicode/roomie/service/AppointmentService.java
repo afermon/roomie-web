@@ -1,13 +1,10 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.Appointment;
-import com.cosmicode.roomie.domain.Roomie;
-import com.cosmicode.roomie.domain.User;
 import com.cosmicode.roomie.domain.enumeration.AppointmentState;
 import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.AppointmentRepository;
-import com.cosmicode.roomie.security.SecurityUtils;
 import com.cosmicode.roomie.service.dto.AppointmentDTO;
 import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.dto.RoomDTO;
@@ -104,7 +101,7 @@ public class AppointmentService {
             }
             notificationService.save(notification);
         } catch (Exception e) {
-            log.error("Error building notification");
+            log.error("Error building notification {}", e.getMessage());
         }
 
         return appointmentMapper.toDto(appointment);
