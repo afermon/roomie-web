@@ -16,10 +16,13 @@
             "detail": {
                 "title": "Notification"
             },
+            "created": "Created",
             "title": "Title",
             "body": "Body",
             "type": "Type",
-            "entityId": "Entity Id"
+            "state": "State",
+            "entityId": "Entity Id",
+            "recipient": "Recipient"
         }
     }
 }

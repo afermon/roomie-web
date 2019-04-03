@@ -1,7 +1,9 @@
 package com.cosmicode.roomie.domain;
 
 
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -27,6 +30,9 @@ public class Notification implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "created")
+    private Instant created;
+
     @NotNull
     @Size(min = 4, max = 50)
     @Column(name = "title", length = 50, nullable = false)
@@ -43,8 +49,16 @@ public class Notification implements Serializable {
     private NotificationType type;
 
     @NotNull
-    @Column(name = "entity_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false)
+    private NotificationState state;
+
+    @Column(name = "entity_id")
     private Long entityId;
+
+    @ManyToOne
+    @JsonIgnoreProperties("notifications")
+    private Roomie recipient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -53,6 +67,19 @@ public class Notification implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public Notification created(Instant created) {
+        this.created = created;
+        return this;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
     }
 
     public String getTitle() {
@@ -94,6 +121,19 @@ public class Notification implements Serializable {
         this.type = type;
     }
 
+    public NotificationState getState() {
+        return state;
+    }
+
+    public Notification state(NotificationState state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(NotificationState state) {
+        this.state = state;
+    }
+
     public Long getEntityId() {
         return entityId;
     }
@@ -105,6 +145,19 @@ public class Notification implements Serializable {
 
     public void setEntityId(Long entityId) {
         this.entityId = entityId;
+    }
+
+    public Roomie getRecipient() {
+        return recipient;
+    }
+
+    public Notification recipient(Roomie roomie) {
+        this.recipient = roomie;
+        return this;
+    }
+
+    public void setRecipient(Roomie roomie) {
+        this.recipient = roomie;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -132,9 +185,11 @@ public class Notification implements Serializable {
     public String toString() {
         return "Notification{" +
             "id=" + getId() +
+            ", created='" + getCreated() + "'" +
             ", title='" + getTitle() + "'" +
             ", body='" + getBody() + "'" +
             ", type='" + getType() + "'" +
+            ", state='" + getState() + "'" +
             ", entityId=" + getEntityId() +
             "}";
     }

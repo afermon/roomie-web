@@ -1,7 +1,7 @@
 package com.cosmicode.roomie.service;
-import com.cosmicode.roomie.config.Constants;
 
 import com.cosmicode.roomie.RoomieApp;
+import com.cosmicode.roomie.config.Constants;
 import com.cosmicode.roomie.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;

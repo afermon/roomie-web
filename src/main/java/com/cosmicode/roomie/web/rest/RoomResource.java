@@ -1,6 +1,5 @@
 package com.cosmicode.roomie.web.rest;
 
-import com.cosmicode.roomie.domain.enumeration.CurrencyType;
 import com.cosmicode.roomie.service.RoomService;
 import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.dto.SearchFilterDTO;
@@ -157,5 +156,11 @@ public class RoomResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(searchFilterDTO.toString(), page, "/api/_search/rooms/advanced");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/owned-rooms/{id}")
+    public List<RoomDTO> getRoomsByOwner(@PathVariable Long id){
+        return roomService.findAllByOwner(id);
+    }
+
 
 }

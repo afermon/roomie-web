@@ -69,6 +69,7 @@ public class CacheConfiguration {
             cm.createCache(com.cosmicode.roomie.domain.Company.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Notification.class.getName(), jcacheConfiguration);
             cm.createCache(com.cosmicode.roomie.domain.Room.class.getName() + ".expenses", jcacheConfiguration);
+            cm.createCache(com.cosmicode.roomie.domain.Roomie.class.getName() + ".notifications", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

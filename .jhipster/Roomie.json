@@ -104,6 +104,12 @@
         },
         {
             "relationshipType": "one-to-many",
+            "otherEntityName": "notification",
+            "otherEntityRelationshipName": "recipient",
+            "relationshipName": "notification"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipName": "roomEvent",
             "otherEntityName": "roomEvent",
             "otherEntityRelationshipName": "organizer"
