@@ -12,7 +12,6 @@ import org.mapstruct.Mapping;
 public interface AppointmentMapper extends EntityMapper<AppointmentDTO, Appointment> {
 
     @Mapping(source = "petitioner.id", target = "petitionerId")
-    @Mapping(source = "petitioner.id", target = "petitioner")
     @Mapping(target = "room")
     @Mapping(source = "room.id", target = "roomId")
     AppointmentDTO toDto(Appointment appointment);
