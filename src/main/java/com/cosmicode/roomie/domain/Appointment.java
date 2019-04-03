@@ -44,7 +44,6 @@ public class Appointment implements Serializable {
     private AppointmentState state;
 
     @ManyToOne
-    @JsonIgnoreProperties("appointments")
     private Roomie petitioner;
 
     @ManyToOne

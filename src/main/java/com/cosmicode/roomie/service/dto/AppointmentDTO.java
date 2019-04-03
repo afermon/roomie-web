@@ -25,10 +25,13 @@ public class AppointmentDTO implements Serializable {
     @NotNull
     private AppointmentState state;
 
-
     private Long petitionerId;
 
+    private RoomieDTO petitioner;
+
     private Long roomId;
+
+    private RoomDTO room;
 
     public Long getId() {
         return id;
@@ -76,6 +79,22 @@ public class AppointmentDTO implements Serializable {
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
+    }
+
+    public RoomDTO getRoom() {
+        return room;
+    }
+
+    public void setRoom(RoomDTO room) {
+        this.room = room;
+    }
+
+    public RoomieDTO getPetitioner() {
+        return petitioner;
+    }
+
+    public void setPetitioner(RoomieDTO petitioner) {
+        this.petitioner = petitioner;
     }
 
     @Override
