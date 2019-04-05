@@ -82,4 +82,16 @@ public class RoomEventService {
         roomEventRepository.deleteById(id);
     }
 
+    /**
+     * Get all the roomEvents for room.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<RoomEventDTO> findAllByRoom(Long id, Pageable pageable) {
+        log.debug("Request to get all RoomEvents for room");
+        return roomEventRepository.findAllByRoom(pageable, id)
+            .map(roomEventMapper::toDto);
+    }
 }
