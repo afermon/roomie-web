@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.stream.DoubleStream;
+import java.time.Instant;
+import java.util.List;
 
 
 /**
@@ -21,4 +22,6 @@ public interface RoomEventRepository extends JpaRepository<RoomEvent, Long> {
     @Query(value = "select distinct roomevent from RoomEvent roomevent left join fetch roomevent.organizer where roomevent.room.id =:id",
         countQuery = "select count(distinct roomevent) from RoomEvent roomevent where roomevent.room.id =:id")
     Page<RoomEvent> findAllByRoom(Pageable pageable, @Param("id") Long id);
+
+    List<RoomEvent> findByStartTimeBetween(Instant startTime, Instant endTime);
 }
