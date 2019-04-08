@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -137,13 +138,17 @@ public class RoomEventService {
     }
 
     private void sendNotificationRoomies(RoomEvent roomEvent, Boolean isNew) {
-        RoomDTO room = roomService.findOne(roomEvent.getRoom().getId()).get();
-        if(room.getOwnerId() != roomEvent.getOrganizer().getId())
-            sendNotification(roomEvent, room.getOwnerId(), isNew);
+        try {
+            RoomDTO room = roomService.findOne(roomEvent.getRoom().getId()).get();
+            if (room.getOwnerId() != roomEvent.getOrganizer().getId())
+                sendNotification(roomEvent, room.getOwnerId(), isNew);
 
-        for( RoomieDTO roomie : room.getRoomies())
-            if(roomie.getId() != roomEvent.getOrganizer().getId())
-                sendNotification(roomEvent, roomie.getId(), isNew);
+            for (RoomieDTO roomie : room.getRoomies())
+                if (roomie.getId() != roomEvent.getOrganizer().getId())
+                    sendNotification(roomEvent, roomie.getId(), isNew);
+        } catch (NullPointerException e){
+            log.error("Error sending notification: {}", e.getMessage());
+        }
     }
 
     private void sendNotification(RoomEvent event, Long recipientId, boolean isNew){
