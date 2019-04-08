@@ -1,16 +1,25 @@
 package com.cosmicode.roomie.service;
 
 import com.cosmicode.roomie.domain.RoomEvent;
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
+import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.RoomEventRepository;
+import com.cosmicode.roomie.service.dto.NotificationDTO;
+import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.dto.RoomEventDTO;
+import com.cosmicode.roomie.service.dto.RoomieDTO;
 import com.cosmicode.roomie.service.mapper.RoomEventMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,9 +35,15 @@ public class RoomEventService {
 
     private final RoomEventMapper roomEventMapper;
 
-    public RoomEventService(RoomEventRepository roomEventRepository, RoomEventMapper roomEventMapper) {
+    private final RoomService roomService;
+
+    private final NotificationService notificationService;
+
+    public RoomEventService(RoomEventRepository roomEventRepository, RoomEventMapper roomEventMapper, NotificationService notificationService, RoomService roomService) {
         this.roomEventRepository = roomEventRepository;
         this.roomEventMapper = roomEventMapper;
+        this.roomService = roomService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -40,7 +55,14 @@ public class RoomEventService {
     public RoomEventDTO save(RoomEventDTO roomEventDTO) {
         log.debug("Request to save RoomEvent : {}", roomEventDTO);
         RoomEvent roomEvent = roomEventMapper.toEntity(roomEventDTO);
+
+        Boolean sendNotification = roomEvent.getId() == null;
+
         roomEvent = roomEventRepository.save(roomEvent);
+
+        if(sendNotification)
+            sendNotificationRoomies(roomEvent, true);
+
         RoomEventDTO result = roomEventMapper.toDto(roomEvent);
         return result;
     }
@@ -93,5 +115,52 @@ public class RoomEventService {
         log.debug("Request to get all RoomEvents for room");
         return roomEventRepository.findAllByRoom(pageable, id)
             .map(roomEventMapper::toDto);
+    }
+
+    /**
+     * Task that sends events notifications every 30 minutes.
+     * Scheduled task.
+     */
+    @Scheduled(cron = "0 */30 * * * *")
+    public void scheduledRoomEventsNotification(){
+        log.info("Room Events notification execution: {}", Instant.now().toString());
+
+        Instant startTime = Instant.now().plus(Duration.ofMinutes(59));
+        Instant endTime = Instant.now().plus(Duration.ofMinutes(91));
+
+        List<RoomEvent> roomEvents = roomEventRepository.findByStartTimeBetween(startTime, endTime);
+
+        log.info("{} events found between {}, {}", roomEvents.size(), startTime.toString(), endTime.toString());
+
+        for(RoomEvent roomEvent : roomEvents)
+            sendNotificationRoomies(roomEvent, false);
+    }
+
+    private void sendNotificationRoomies(RoomEvent roomEvent, Boolean isNew) {
+        RoomDTO room = roomService.findOne(roomEvent.getRoom().getId()).get();
+        if(room.getOwnerId() != roomEvent.getOrganizer().getId())
+            sendNotification(roomEvent, room.getOwnerId(), isNew);
+
+        for( RoomieDTO roomie : room.getRoomies())
+            if(roomie.getId() != roomEvent.getOrganizer().getId())
+                sendNotification(roomEvent, roomie.getId(), isNew);
+    }
+
+    private void sendNotification(RoomEvent event, Long recipientId, boolean isNew){
+        NotificationDTO notification = new NotificationDTO();
+        notification.setCreated(Instant.now());
+        notification.setState(NotificationState.NEW);
+        notification.setType(NotificationType.EVENT);
+        notification.setEntityId(event.getId());
+        notification.setRecipientId(recipientId);
+
+        if(isNew)
+            notification.setTitle("A new event has been created in your room!");
+        else
+            notification.setTitle("An event is about to start in your room!");
+
+        notification.setBody(String.format("{}, {} UTC", event.getTitle(), event.getStartTime().toString()));
+
+        notificationService.save(notification);
     }
 }
