@@ -1,7 +1,11 @@
 package com.cosmicode.roomie.service;
 
+import com.cosmicode.roomie.domain.RoomEvent;
 import com.cosmicode.roomie.domain.RoomExpense;
+import com.cosmicode.roomie.domain.enumeration.NotificationState;
+import com.cosmicode.roomie.domain.enumeration.NotificationType;
 import com.cosmicode.roomie.repository.RoomExpenseRepository;
+import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.dto.RoomExpenseDTO;
 import com.cosmicode.roomie.service.mapper.RoomExpenseMapper;
 import org.slf4j.Logger;
@@ -11,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -26,10 +31,12 @@ public class RoomExpenseService {
 
     private final RoomExpenseMapper roomExpenseMapper;
 
+    private final NotificationService notificationService;
 
-    public RoomExpenseService(RoomExpenseRepository roomExpenseRepository, RoomExpenseMapper roomExpenseMapper) {
+    public RoomExpenseService(RoomExpenseRepository roomExpenseRepository, RoomExpenseMapper roomExpenseMapper, NotificationService notificationService) {
         this.roomExpenseRepository = roomExpenseRepository;
         this.roomExpenseMapper = roomExpenseMapper;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -81,6 +88,25 @@ public class RoomExpenseService {
     public void delete(Long id) {
         log.debug("Request to delete RoomExpense : {}", id);
         roomExpenseRepository.deleteById(id);
+    }
+
+
+    private void sendNotification(RoomEvent event, Long recipientId, boolean isNew){
+        NotificationDTO notification = new NotificationDTO();
+        notification.setCreated(Instant.now());
+        notification.setState(NotificationState.NEW);
+        notification.setType(NotificationType.EXPENSE);
+        notification.setEntityId(event.getId());
+        notification.setRecipientId(recipientId);
+
+        if(isNew)
+            notification.setTitle("A new event has been created in your room!");
+        else
+            notification.setTitle("An event is about to start in your room!");
+
+        notification.setBody(String.format("%s, %s UTC", event.getTitle(), event.getStartTime().toString()));
+
+        notificationService.save(notification);
     }
 
 }

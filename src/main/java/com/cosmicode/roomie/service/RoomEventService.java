@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -57,7 +56,7 @@ public class RoomEventService {
         log.debug("Request to save RoomEvent : {}", roomEventDTO);
         RoomEvent roomEvent = roomEventMapper.toEntity(roomEventDTO);
 
-        Boolean sendNotification = roomEvent.getId() == null;
+        boolean sendNotification = roomEvent.getId() == null;
 
         roomEvent = roomEventRepository.save(roomEvent);
 
