@@ -140,11 +140,14 @@ public class RoomEventService {
     private void sendNotificationRoomies(RoomEvent roomEvent, Boolean isNew) {
         try {
             RoomDTO room = roomService.findOne(roomEvent.getRoom().getId()).get();
-            if (room.getOwnerId() != roomEvent.getOrganizer().getId())
+
+            //Notify room owner
+            if (!isNew || !room.getOwnerId().equals(roomEvent.getOrganizer().getId()))
                 sendNotification(roomEvent, room.getOwnerId(), isNew);
 
+            //Notify roomies
             for (RoomieDTO roomie : room.getRoomies())
-                if (roomie.getId() != roomEvent.getOrganizer().getId())
+                if (!isNew || !roomie.getId().equals(roomEvent.getOrganizer().getId()))
                     sendNotification(roomEvent, roomie.getId(), isNew);
         } catch (NullPointerException e){
             log.error("Error sending notification: {}", e.getMessage());
