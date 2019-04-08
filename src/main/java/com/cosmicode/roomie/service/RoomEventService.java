@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -57,7 +56,7 @@ public class RoomEventService {
         log.debug("Request to save RoomEvent : {}", roomEventDTO);
         RoomEvent roomEvent = roomEventMapper.toEntity(roomEventDTO);
 
-        Boolean sendNotification = roomEvent.getId() == null;
+        boolean sendNotification = roomEvent.getId() == null;
 
         roomEvent = roomEventRepository.save(roomEvent);
 
@@ -122,7 +121,7 @@ public class RoomEventService {
      * Task that sends events notifications every 30 minutes.
      * Scheduled task.
      */
-    @Scheduled(cron = "0 */30 * * * *")
+    @Scheduled(cron = "0 0/30 * * * *")
     public void scheduledRoomEventsNotification(){
         log.info("Room Events notification execution: {}", Instant.now().toString());
 
@@ -167,7 +166,7 @@ public class RoomEventService {
         else
             notification.setTitle("An event is about to start in your room!");
 
-        notification.setBody(String.format("{}, {} UTC", event.getTitle(), event.getStartTime().toString()));
+        notification.setBody(String.format("%s, %s UTC", event.getTitle(), event.getStartTime().toString()));
 
         notificationService.save(notification);
     }
