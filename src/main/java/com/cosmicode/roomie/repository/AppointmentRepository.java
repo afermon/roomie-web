@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.util.List;
+
 /**
  * Spring Data  repository for the Appointment entity.
  */
@@ -17,4 +20,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query(value = "select distinct appointment from Appointment appointment where appointment.petitioner.user.login = ?#{principal.username} or appointment.room.owner.user.login = ?#{principal.username}")
     Page<Appointment> findAllRoomie(Pageable pageable);
 
+    List<Appointment> findByDateTimeBetween(Instant startTime, Instant endTime);
 }

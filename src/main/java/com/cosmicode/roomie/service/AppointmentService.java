@@ -14,10 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -57,7 +60,7 @@ public class AppointmentService {
         log.debug("Request to save Appointment : {}", appointmentDTO);
 
         try {
-            if(appointmentDTO.getState().equals(AppointmentState.PENDING)) {
+            if (appointmentDTO.getState().equals(AppointmentState.PENDING)) {
                 RoomieDTO roomieDTO = roomieService.findCurrentLoggedRoomie();
                 appointmentDTO.setPetitioner(roomieDTO);
                 appointmentDTO.setPetitionerId(roomieDTO.getId());
@@ -155,5 +158,52 @@ public class AppointmentService {
         log.debug("Request to get all Appointments for roomie");
         return appointmentRepository.findAllRoomie(pageable)
             .map(appointmentMapper::toDto);
+    }
+
+
+    /**
+     * Task that sends appointments notifications every 30 minutes.
+     * Scheduled task.
+     */
+    @Scheduled(cron = "0 */30 * * * *")
+    public void scheduledRoomEventsNotification() {
+        log.info("Appointments notification execution: {}", Instant.now().toString());
+
+        Instant startTime = Instant.now().plus(Duration.ofMinutes(59));
+        Instant endTime = Instant.now().plus(Duration.ofMinutes(91));
+
+        List<Appointment> appointments = appointmentRepository.findByDateTimeBetween(startTime, endTime);
+
+        log.info("{} appointments found between {}, {}", appointments.size(), startTime.toString(), endTime.toString());
+
+        for (Appointment appointment : appointments)
+            sendNotificationRoomies(appointment);
+    }
+
+    private void sendNotificationRoomies(Appointment appointment) {
+        try {
+            RoomDTO room = roomService.findOne(appointment.getRoom().getId()).get();
+
+            //Notify room owner
+            sendNotification(appointment, room.getOwnerId());
+
+            //Notify petitioner
+            sendNotification(appointment, appointment.getPetitioner().getId());
+
+        } catch (NullPointerException e) {
+            log.error("Error sending notification: {}", e.getMessage());
+        }
+    }
+
+    private void sendNotification(Appointment appointment, Long recipientId) {
+        NotificationDTO notification = new NotificationDTO();
+        notification.setCreated(Instant.now());
+        notification.setState(NotificationState.NEW);
+        notification.setType(NotificationType.APPOINTMENT);
+        notification.setEntityId(appointment.getId());
+        notification.setRecipientId(recipientId);
+        notification.setTitle("Be there on time!");
+        notification.setBody(String.format("You have a room appointment at %s UTC", appointment.getDateTime().toString()));
+        notificationService.save(notification);
     }
 }

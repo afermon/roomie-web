@@ -167,7 +167,7 @@ public class RoomEventService {
         else
             notification.setTitle("An event is about to start in your room!");
 
-        notification.setBody(String.format("{}, {} UTC", event.getTitle(), event.getStartTime().toString()));
+        notification.setBody(String.format("%s, %s UTC", event.getTitle(), event.getStartTime().toString()));
 
         notificationService.save(notification);
     }
