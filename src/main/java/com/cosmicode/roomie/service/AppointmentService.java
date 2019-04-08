@@ -165,8 +165,8 @@ public class AppointmentService {
      * Task that sends appointments notifications every 30 minutes.
      * Scheduled task.
      */
-    @Scheduled(cron = "0 */30 * * * *")
-    public void scheduledRoomEventsNotification() {
+    @Scheduled(cron = "0 0/30 * * * *")
+    public void scheduledRoomAppointmentsNotification() {
         log.info("Appointments notification execution: {}", Instant.now().toString());
 
         Instant startTime = Instant.now().plus(Duration.ofMinutes(59));

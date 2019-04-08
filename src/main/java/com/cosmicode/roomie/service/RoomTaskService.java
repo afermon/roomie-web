@@ -3,6 +3,7 @@ package com.cosmicode.roomie.service;
 import com.cosmicode.roomie.domain.RoomTask;
 import com.cosmicode.roomie.domain.enumeration.NotificationState;
 import com.cosmicode.roomie.domain.enumeration.NotificationType;
+import com.cosmicode.roomie.domain.enumeration.RoomTaskState;
 import com.cosmicode.roomie.repository.RoomTaskRepository;
 import com.cosmicode.roomie.service.dto.NotificationDTO;
 import com.cosmicode.roomie.service.dto.RoomDTO;
@@ -115,8 +116,8 @@ public class RoomTaskService {
      * Task that sends task notifications every 30 minutes.
      * Scheduled task.
      */
-    @Scheduled(cron = "0 */30 * * * *")
-    public void scheduledRoomEventsNotification(){
+    @Scheduled(cron = "0 0/30 * * * *")
+    public void scheduledRoomTasksNotification(){
         log.info("Room Tasks notification execution: {}", Instant.now().toString());
 
         Instant startTime = Instant.now().plus(Duration.ofMinutes(59));
@@ -132,6 +133,9 @@ public class RoomTaskService {
 
     private void sendNotificationRoomies(RoomTask roomTask, Boolean isNew) {
         try {
+            if(roomTask.getState().equals(RoomTaskState.COMPLETED))
+                return;
+
             RoomDTO room = roomService.findOne(roomTask.getRoom().getId()).get();
 
             //Notify room owner
@@ -140,6 +144,7 @@ public class RoomTaskService {
             //Notify roomies
             for (RoomieDTO roomie : room.getRoomies())
                     sendNotification(roomTask, roomie.getId(), isNew);
+
         } catch (NullPointerException e){
             log.error("Error sending notification: {}", e.getMessage());
         }

@@ -121,7 +121,7 @@ public class RoomEventService {
      * Task that sends events notifications every 30 minutes.
      * Scheduled task.
      */
-    @Scheduled(cron = "0 */30 * * * *")
+    @Scheduled(cron = "0 0/30 * * * *")
     public void scheduledRoomEventsNotification(){
         log.info("Room Events notification execution: {}", Instant.now().toString());
 
