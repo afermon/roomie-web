@@ -85,6 +85,11 @@ public class RoomExpenseService {
             .map(roomExpenseMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public List<RoomExpenseDTO> findAllByRoom (Long id) {
+        log.debug("Request to get all RoomExpenses");
+        return roomExpenseMapper.toDto(roomExpenseRepository.findAllByRoomId(id));
+    }
 
     /**
      * Get one roomExpense by id.

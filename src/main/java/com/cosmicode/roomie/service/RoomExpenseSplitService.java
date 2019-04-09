@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -81,5 +82,10 @@ public class RoomExpenseSplitService {
     public void delete(Long id) {
         log.debug("Request to delete RoomExpenseSplit : {}", id);
         roomExpenseSplitRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RoomExpenseSplitDTO> findAllByExpense (Long id) {
+        return roomExpenseSplitMapper.toDto(roomExpenseSplitRepository.findAllByExpenseId(id));
     }
 }

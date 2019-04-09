@@ -17,4 +17,6 @@ import java.util.List;
 public interface RoomExpenseRepository extends JpaRepository<RoomExpense, Long> {
 
     List<RoomExpense> findByStartDateBeforeAndFinishDateAfter(LocalDate startDate, LocalDate endDate);
+
+    List<RoomExpense> findAllByRoomId(Long id);
 }

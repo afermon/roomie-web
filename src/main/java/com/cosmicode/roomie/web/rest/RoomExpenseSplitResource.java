@@ -128,4 +128,10 @@ public class RoomExpenseSplitResource {
             .body(results);
     }
 
+    @GetMapping("/split-expenses/{id}")
+    public List<RoomExpenseSplitDTO> getAllExpensesSplits(@PathVariable Long id) {
+        log.debug("REST request to get a page of RoomExpenses");
+        return roomExpenseSplitService.findAllByExpense(id);
+    }
+
 }
