@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +116,16 @@ public class RoomExpenseSplitResource {
         log.debug("REST request to delete RoomExpenseSplit : {}", id);
         roomExpenseSplitService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PostMapping("/room-expense-splits-list")
+    public ResponseEntity<List<RoomExpenseSplitDTO>> createSplitsList(@Valid @RequestBody List<RoomExpenseSplitDTO> listRoomExpenseSplitDTO) throws URISyntaxException{
+        List<RoomExpenseSplitDTO> results = new ArrayList<>();
+        for (RoomExpenseSplitDTO split : listRoomExpenseSplitDTO) {
+            results.add(roomExpenseSplitService.save(split));
+        }
+        return ResponseEntity.created(new URI("/api/room-expense-splits-list/"))
+            .body(results);
     }
 
 }
