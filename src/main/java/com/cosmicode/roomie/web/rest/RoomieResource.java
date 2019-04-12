@@ -184,7 +184,7 @@ public class RoomieResource {
     }
 
     @GetMapping("/roomie-email/{email}")
-    public RoomieDTO getRoomieByEmail(@PathVariable String email){
+    public RoomieCompleteDTO getRoomieByEmail(@PathVariable String email){
         return roomieService.findByEmail(email);
     }
 }

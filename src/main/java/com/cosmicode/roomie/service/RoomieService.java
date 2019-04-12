@@ -3,6 +3,7 @@ package com.cosmicode.roomie.service;
 import com.cosmicode.roomie.domain.Roomie;
 import com.cosmicode.roomie.repository.RoomieRepository;
 import com.cosmicode.roomie.repository.search.RoomieSearchRepository;
+import com.cosmicode.roomie.service.dto.RoomieCompleteDTO;
 import com.cosmicode.roomie.service.dto.RoomieDTO;
 import com.cosmicode.roomie.service.mapper.RoomieMapper;
 import org.slf4j.Logger;
@@ -118,7 +119,12 @@ public class RoomieService {
         return  roomieMapper.toDto(roomieRepository.findCurrentlyLoggedRoomie());
     }
 
-    public RoomieDTO findByEmail(String email){
-        return roomieMapper.toDto(roomieRepository.findByEmail(email));
+    public RoomieCompleteDTO findByEmail(String email){
+        RoomieCompleteDTO roomie = new RoomieCompleteDTO();
+        Roomie r = roomieRepository.findByEmail(email);
+        roomie.setId(r.getId());
+        roomie.setPicture(r.getPicture());
+        roomie.setUser(r.getUser());
+        return roomie;
     }
 }
