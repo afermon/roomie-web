@@ -30,4 +30,7 @@ public interface RoomieRepository extends JpaRepository<Roomie, Long> {
 
     @Query("select roomie from Roomie roomie where roomie.user.login = ?#{principal.username}")
     Roomie findCurrentlyLoggedRoomie();
+
+    @Query("select roomie from Roomie roomie where roomie.user.email = :email")
+    Roomie findByEmail(@Param("email") String email);
 }
