@@ -117,4 +117,8 @@ public class RoomieService {
         log.debug("Request to get currently logged Roomie");
         return  roomieMapper.toDto(roomieRepository.findCurrentlyLoggedRoomie());
     }
+
+    public RoomieDTO findByEmail(String email){
+        return roomieMapper.toDto(roomieRepository.findByEmail(email));
+    }
 }
