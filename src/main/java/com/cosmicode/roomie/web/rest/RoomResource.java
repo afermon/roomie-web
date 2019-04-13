@@ -6,6 +6,9 @@ import com.cosmicode.roomie.service.dto.SearchFilterDTO;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
+import com.stripe.Stripe;
+import com.stripe.exception.*;
+import com.stripe.model.Charge;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -162,5 +167,23 @@ public class RoomResource {
         return roomService.findAllByOwner(id);
     }
 
+    @PostMapping("/pay-room/{token}")
+    public RoomDTO payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException{
+        Stripe.apiKey = "pk_test_tvOqreoDBMCR33zFGuIpqwHM00njthUCtW";
+        Map<String, Object> params = new HashMap<>();
+        params.put("amount", 1.99);
+        params.put("currency", "usd");
+        params.put("description", "Premium room");
+        params.put("source", token);
+        try {
+            Charge charge = Charge.create(params);
+            log.debug("Success");
+        }catch (StripeException e){
+            log.error(e.toString());
+
+        }
+
+        return null;
+    }
 
 }
