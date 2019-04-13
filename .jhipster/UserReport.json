@@ -27,20 +27,18 @@
     ],
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "roomie",
+            "relationshipType": "many-to-one",
             "otherEntityName": "roomie",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "userReport"
+            "otherEntityRelationshipName": "userReport",
+            "relationshipName": "roomie",
+            "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "room",
+            "relationshipType": "many-to-one",
             "otherEntityName": "room",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "userReport"
+            "otherEntityRelationshipName": "userReport",
+            "relationshipName": "room",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20190228025457",

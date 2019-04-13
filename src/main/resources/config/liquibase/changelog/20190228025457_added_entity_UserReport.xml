@@ -33,11 +33,15 @@
             <column name="jhi_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="roomie_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_user_report_roomie_id" />
-            </column>            <column name="room_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_user_report_room_id" />
+                <constraints nullable="true" />
             </column>
+
+            <column name="room_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
