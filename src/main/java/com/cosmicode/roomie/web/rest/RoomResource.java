@@ -1,5 +1,7 @@
 package com.cosmicode.roomie.web.rest;
 
+import com.cosmicode.roomie.domain.enumeration.RoomState;
+import com.cosmicode.roomie.domain.enumeration.RoomType;
 import com.cosmicode.roomie.service.RoomService;
 import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.dto.SearchFilterDTO;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +180,16 @@ public class RoomResource {
         params.put("description", "Premium room");
         params.put("source", token);
         try {
+            
+            roomDTO.setState(RoomState.PREMIUM);
+            roomDTO.setCreated(Instant.now());
+            roomDTO.setPublished(Instant.now());
+            roomDTO.setRooms(roomDTO.getRoomies().size());
+            roomDTO.setRoomType(RoomType.ROOM);
+            roomDTO.setLookingForRoomie(false);
+            roomDTO.setAvailableFrom(LocalDate.now());
+            roomDTO.setIsPremium(true);
+
             Charge charge = Charge.create(params);
             RoomDTO result = roomService.save(roomDTO);
             return ResponseEntity.created(new URI("/pay-room/{token}/" + result.getId()))
