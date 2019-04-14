@@ -168,7 +168,7 @@ public class RoomResource {
     }
 
     @PostMapping("/pay-room/{token}")
-    public RoomDTO payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException{
+    public ResponseEntity<RoomDTO> payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException, URISyntaxException{
         Stripe.apiKey = "pk_test_tvOqreoDBMCR33zFGuIpqwHM00njthUCtW";
         Map<String, Object> params = new HashMap<>();
         params.put("amount", 1.99);
@@ -177,13 +177,16 @@ public class RoomResource {
         params.put("source", token);
         try {
             Charge charge = Charge.create(params);
-            log.debug("Success");
+            RoomDTO result = roomService.save(roomDTO);
+            return ResponseEntity.created(new URI("/pay-room/{token}/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
         }catch (StripeException e){
-            log.error(e.toString());
-
+            return ResponseEntity.badRequest()
+                .header(e.toString())
+                .body(null);
         }
 
-        return null;
     }
 
 }
