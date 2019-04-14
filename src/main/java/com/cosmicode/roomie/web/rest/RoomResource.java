@@ -173,14 +173,14 @@ public class RoomResource {
 
     @PostMapping("/pay-room/{token}")
     public ResponseEntity<RoomDTO> payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException, URISyntaxException{
-        Stripe.apiKey = "pk_test_tvOqreoDBMCR33zFGuIpqwHM00njthUCtW";
+        Stripe.apiKey = "sk_test_di3IZONuZKxgET8t5zDGe7S300bsc2XkuG";
         Map<String, Object> params = new HashMap<>();
         params.put("amount", 1.99);
         params.put("currency", "usd");
         params.put("description", "Premium room");
         params.put("source", token);
         try {
-            
+
             roomDTO.setState(RoomState.PREMIUM);
             roomDTO.setCreated(Instant.now());
             roomDTO.setPublished(Instant.now());
