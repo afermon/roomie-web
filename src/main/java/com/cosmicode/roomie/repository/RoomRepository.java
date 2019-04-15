@@ -28,6 +28,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("select room from Room room left join fetch room.roomies left join fetch room.features where room.id =:id")
     Optional<Room> findOneWithEagerRelationships(@Param("id") Long id);
 
-    List<Room> findRoomsByOwnerId(@Param("id") Long id);
+    List<Room> findRoomsByOwnerIdAndIsPremiumIsFalse(@Param("id") Long id);
+
+    List<Room> findRoomsByOwnerIdAndIsPremiumIsTrue(@Param("id") Long id);
+
 
 }
