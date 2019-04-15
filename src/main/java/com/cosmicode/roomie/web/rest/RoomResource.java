@@ -171,6 +171,11 @@ public class RoomResource {
         return roomService.findAllByOwner(id);
     }
 
+    @GetMapping("/owned-premium-rooms/{id}")
+    public List<RoomDTO> getPremiumRoomsByOwner(@PathVariable Long id){
+        return roomService.findAllPremiumByOwner(id);
+    }
+
     @PostMapping("/pay-room/{token}")
     public ResponseEntity<RoomDTO> payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException, URISyntaxException{
         Stripe.apiKey = "sk_test_di3IZONuZKxgET8t5zDGe7S300bsc2XkuG";
