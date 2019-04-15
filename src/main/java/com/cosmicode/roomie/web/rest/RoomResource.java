@@ -192,7 +192,7 @@ public class RoomResource {
 
             Charge charge = Charge.create(params);
             RoomDTO result = roomService.save(roomDTO);
-            return ResponseEntity.created(new URI("/pay-room/{token}/" + result.getId()))
+            return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                 .body(result);
         }catch (StripeException e){
