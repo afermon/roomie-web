@@ -134,4 +134,13 @@ public class RoomExpenseSplitResource {
         return roomExpenseSplitService.findAllByExpense(id);
     }
 
+    @DeleteMapping("/delete-split-lists")
+    public ResponseEntity<Void> deleteListsOfSplits(@Valid @RequestBody List<RoomExpenseSplitDTO> splits){
+        for (RoomExpenseSplitDTO split : splits) {
+            roomExpenseSplitService.delete(split.getId());
+        }
+
+        return ResponseEntity.ok().body(null);
+    }
+
 }
