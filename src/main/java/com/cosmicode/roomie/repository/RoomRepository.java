@@ -30,7 +30,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findRoomsByOwnerIdAndIsPremiumIsFalse(@Param("id") Long id);
 
-    List<Room> findRoomsByOwnerIdAndIsPremiumIsTrue(@Param("id") Long id);
+    @Query("select room from Room room inner join room.roomies roomies where roomies.id = :id and room.state = com.cosmicode.roomie.domain.enumeration.RoomState.PREMIUM")
+    List<Room> findPremiumRooms(@Param("id") Long id);
 
 
 }
