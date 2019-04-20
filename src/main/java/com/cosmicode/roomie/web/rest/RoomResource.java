@@ -208,7 +208,7 @@ public class RoomResource {
 
     }
 
-    @PostMapping("/reindex")
+    @PostMapping("/reindex/{id}")
     public ResponseEntity<Void> reindex(@PathVariable Long id){
         roomService.reindex(id);
         return ResponseEntity.ok()
