@@ -1,11 +1,16 @@
 package com.cosmicode.roomie.web.rest;
 
+import com.cosmicode.roomie.domain.enumeration.RoomState;
+import com.cosmicode.roomie.domain.enumeration.RoomType;
 import com.cosmicode.roomie.service.RoomService;
 import com.cosmicode.roomie.service.dto.RoomDTO;
 import com.cosmicode.roomie.service.dto.SearchFilterDTO;
 import com.cosmicode.roomie.web.rest.errors.BadRequestAlertException;
 import com.cosmicode.roomie.web.rest.util.HeaderUtil;
 import com.cosmicode.roomie.web.rest.util.PaginationUtil;
+import com.stripe.Stripe;
+import com.stripe.exception.*;
+import com.stripe.model.Charge;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +24,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -162,5 +171,48 @@ public class RoomResource {
         return roomService.findAllByOwner(id);
     }
 
+    @GetMapping("/owned-premium-rooms/{id}")
+    public List<RoomDTO> getPremiumRoomsByOwner(@PathVariable Long id){
+        return roomService.findAllPremiumByOwner(id);
+    }
+
+    @PostMapping("/pay-room/{token}")
+    public ResponseEntity<RoomDTO> payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException, URISyntaxException{
+        Stripe.apiKey = "sk_test_di3IZONuZKxgET8t5zDGe7S300bsc2XkuG";
+        Map<String, Object> params = new HashMap<>();
+        params.put("amount", 199);
+        params.put("currency", "usd");
+        params.put("description", "Premium room");
+        params.put("source", token);
+        try {
+
+            roomDTO.setState(RoomState.PREMIUM);
+            roomDTO.setCreated(Instant.now());
+            roomDTO.setPublished(Instant.now());
+            roomDTO.setRooms(roomDTO.getRoomies().size());
+            roomDTO.setRoomType(RoomType.ROOM);
+            roomDTO.setLookingForRoomie(false);
+            roomDTO.setAvailableFrom(LocalDate.now());
+            roomDTO.setIsPremium(true);
+
+            Charge charge = Charge.create(params);
+            RoomDTO result = roomService.save(roomDTO);
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        }catch (StripeException e){
+            return ResponseEntity.badRequest()
+                .header(e.toString())
+                .body(null);
+        }
+
+    }
+
+    @PostMapping("/reindex/{id}")
+    public ResponseEntity<Void> reindex(@PathVariable Long id){
+        roomService.reindex(id);
+        return ResponseEntity.ok()
+            .body(null);
+    }
 
 }

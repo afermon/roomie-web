@@ -5,7 +5,6 @@ import { RoomieSharedModule } from 'app/shared';
 
 import {
     PasswordStrengthBarComponent,
-    RegisterComponent,
     ActivateComponent,
     PasswordComponent,
     PasswordResetInitComponent,
@@ -18,7 +17,6 @@ import {
     imports: [RoomieSharedModule, RouterModule.forChild(accountState)],
     declarations: [
         ActivateComponent,
-        RegisterComponent,
         PasswordComponent,
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,

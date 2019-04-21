@@ -2,6 +2,7 @@ package com.cosmicode.roomie.domain;
 
 
 import com.cosmicode.roomie.domain.enumeration.ReportType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -23,7 +24,7 @@ import java.util.Objects;
 public class UserReport implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,12 +42,12 @@ public class UserReport implements Serializable {
     @Column(name = "jhi_type")
     private ReportType type;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JsonIgnoreProperties("userReports")
     private Roomie roomie;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JsonIgnoreProperties("userReports")
     private Room room;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

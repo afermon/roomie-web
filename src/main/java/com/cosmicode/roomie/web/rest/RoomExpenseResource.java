@@ -91,6 +91,12 @@ public class RoomExpenseResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/expenses-room/{id}")
+    public List<RoomExpenseDTO> getAllRoomExpenses(@PathVariable Long id) {
+        log.debug("REST request to get a page of RoomExpenses");
+        return roomExpenseService.findAllByRoom(id);
+    }
+
     /**
      * GET  /room-expenses/:id : get the "id" roomExpense.
      *

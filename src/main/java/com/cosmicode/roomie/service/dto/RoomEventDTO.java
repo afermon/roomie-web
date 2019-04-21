@@ -34,6 +34,8 @@ public class RoomEventDTO implements Serializable {
 
     private Long organizerId;
 
+    private RoomieDTO organizer;
+
     public Long getId() {
         return id;
     }
@@ -96,6 +98,14 @@ public class RoomEventDTO implements Serializable {
 
     public void setOrganizerId(Long roomieId) {
         this.organizerId = roomieId;
+    }
+
+    public RoomieDTO getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(RoomieDTO organizer) {
+        this.organizer = organizer;
     }
 
     @Override

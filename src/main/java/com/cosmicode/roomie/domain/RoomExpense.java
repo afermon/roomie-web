@@ -26,7 +26,7 @@ import java.util.Set;
 public class RoomExpense implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,7 +63,7 @@ public class RoomExpense implements Serializable {
     @Column(name = "finish_date")
     private LocalDate finishDate;
 
-    @OneToMany(mappedBy = "expense")
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.REMOVE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<RoomExpenseSplit> splits = new HashSet<>();
     @ManyToOne
