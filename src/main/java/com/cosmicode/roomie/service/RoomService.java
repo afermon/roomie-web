@@ -94,7 +94,11 @@ public class RoomService {
     }
 
     public List<RoomDTO> findAllByOwner(Long id){
-        return roomMapper.toDto(roomRepository.findRoomsByOwnerId(id));
+        return roomMapper.toDto(roomRepository.findRoomsByOwnerIdAndIsPremiumIsFalse(id));
+    }
+
+    public List<RoomDTO> findAllPremiumByOwner(Long id){
+        return roomMapper.toDto(roomRepository.findPremiumRooms(id));
     }
 
 

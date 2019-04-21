@@ -54,7 +54,6 @@ public class RoomEvent implements Serializable {
     private Room room;
 
     @ManyToOne
-    @JsonIgnoreProperties("roomEvents")
     private Roomie organizer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

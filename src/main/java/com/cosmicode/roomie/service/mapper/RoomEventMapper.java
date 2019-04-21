@@ -13,6 +13,7 @@ public interface RoomEventMapper extends EntityMapper<RoomEventDTO, RoomEvent> {
 
     @Mapping(source = "room.id", target = "roomId")
     @Mapping(source = "organizer.id", target = "organizerId")
+    @Mapping(target = "organizer")
     RoomEventDTO toDto(RoomEvent roomEvent);
 
     @Mapping(source = "roomId", target = "room")

@@ -182,4 +182,9 @@ public class RoomieResource {
         log.debug("REST request to get currently logged roomie");
         return roomieService.findCurrentLoggedRoomie();
     }
+
+    @GetMapping("/roomie-email/{email}")
+    public RoomieCompleteDTO getRoomieByEmail(@PathVariable String email){
+        return roomieService.findByEmail(email);
+    }
 }

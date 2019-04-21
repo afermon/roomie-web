@@ -117,4 +117,18 @@ public class RoomEventResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    /**
+     * GET  /room-events : get all the roomEvents.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of roomEvents in body
+     */
+    @GetMapping("/room-events/room/{id}")
+    public ResponseEntity<List<RoomEventDTO>> getAllRoomEvents(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get a page of RoomEvents");
+        Page<RoomEventDTO> page = roomEventService.findAllByRoom(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/room-events/room");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
 }
