@@ -222,11 +222,11 @@ relationship OneToMany {
     Roomie to RoomEvent{organizer}
 }
 
-relationship OneToOne {
+relationship ManyToOne {
     UserReport{roomie} to Roomie
 }
 
-relationship OneToOne {
+relationship ManyToOne {
     UserReport{room} to Room
 }
 
