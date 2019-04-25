@@ -117,4 +117,9 @@ public class CompanyResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    @GetMapping("/price")
+    public Double getPrice(){
+        CompanyDTO companyDTO = companyService.findOne(1L).get();
+        return companyDTO.getPremiumCost();
+    }
 }
