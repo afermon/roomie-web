@@ -20,6 +20,7 @@ import { RoomieEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         RoomieAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         RoomieEntityModule,
-        RoomieAppRoutingModule
+        RoomieAppRoutingModule,
+        NgxCurrencyModule
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
     providers: [

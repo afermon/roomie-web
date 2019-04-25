@@ -31,11 +31,11 @@
                         [(ngModel)]="roomie.biography" minlength="4" maxlength="750"/>
                     <div [hidden]="!(editForm.controls.biography?.dirty && editForm.controls.biography?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.biography?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 4 }">
+                        [hidden]="!editForm.controls.biography?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 4 }">
                         This field is required to be at least 4 characters.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.biography?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 750 }">
+                        [hidden]="!editForm.controls.biography?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 750 }">
                         This field cannot be longer than 750 characters.
                         </small>
                     </div>
@@ -71,15 +71,15 @@
                         [(ngModel)]="roomie.phone" minlength="4" maxlength="25" pattern="^(1[ \-\+]{0,3}|\+1[ -\+]{0,3}|\+1|\+)?((\(\+?1-[2-9][0-9]{1,2}\))|(\(\+?[2-8][0-9][0-9]\))|(\(\+?[1-9][0-9]\))|(\(\+?[17]\))|(\([2-9][2-9]\))|([ \-\.]{0,3}[0-9]{2,4}))?([ \-\.][0-9])?([ \-\.]{0,3}[0-9]{2,4}){2,3}$"/>
                     <div [hidden]="!(editForm.controls.phone?.dirty && editForm.controls.phone?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.phone?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 4 }">
+                        [hidden]="!editForm.controls.phone?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 4 }">
                         This field is required to be at least 4 characters.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.phone?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 25 }">
+                        [hidden]="!editForm.controls.phone?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 25 }">
                         This field cannot be longer than 25 characters.
                         </small>
                         <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.phone?.errors?.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Phone' }">
+                            [hidden]="!editForm.controls.phone?.errors?.pattern" jhiTranslate="entity.validation.pattern" translateValues="{ pattern: 'Phone' }">
                             This field should follow pattern for "Phone".
                         </small>
                     </div>
@@ -94,11 +94,11 @@
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 0 }">
+                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 0 }">
                         This field is required to be at least 0 characters.
                         </small>
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 200 }">
+                        [hidden]="!editForm.controls.mobileDeviceID?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 200 }">
                         This field cannot be longer than 200 characters.
                         </small>
                     </div>
