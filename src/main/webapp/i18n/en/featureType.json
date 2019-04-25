@@ -2,9 +2,9 @@
     "roomieApp": {
         "FeatureType": {
             "null": "",
-            "AMENITIES": "AMENITIES",
-            "RESTRICTIONS": "RESTRICTIONS",
-            "LIFESTYLE": "LIFESTYLE"
+            "AMENITIES": "Amenity",
+            "RESTRICTIONS": "Restriction",
+            "LIFESTYLE": "Lifestyle"
         }
     }
 }
