@@ -49,7 +49,7 @@
                 <td>{{room.apoinmentsNotes}}</td>
                 <td>
                     <div *ngIf="room.ownerId">
-                        <a [routerLink]="['../roomie', room.ownerId , 'view' ]" >{{owners[i].login}}</a>
+                        <a [routerLink]="['../roomie', room.ownerId , 'view' ]" >{{owners[i].email}}</a>
                     </div>
                 </td>
                 <td class="text-right">
