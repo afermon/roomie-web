@@ -1,12 +1,6 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="roomieApp.userReport.home.title">User Reports</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-report" [routerLink]="['/user-report/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span class="hidden-sm-down"  jhiTranslate="roomieApp.userReport.home.createLabel">
-            Create new User Report
-            </span>
-        </button>
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
@@ -14,52 +8,26 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="date"><span jhiTranslate="roomieApp.userReport.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="description"><span jhiTranslate="roomieApp.userReport.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="type"><span jhiTranslate="roomieApp.userReport.type">Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="roomieApp.userReport.description">Description</span></th>
             <th jhiSortBy="roomieId"><span jhiTranslate="roomieApp.userReport.roomie">Roomie</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="roomId"><span jhiTranslate="roomieApp.userReport.room">Room</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let userReport of userReports ;trackBy: trackId">
-                <td><a [routerLink]="['/user-report', userReport.id, 'view' ]">{{userReport.id}}</a></td>
                 <td>{{userReport.date | date:'mediumDate'}}</td>
                 <td>{{userReport.description}}</td>
-                <td jhiTranslate="{{'roomieApp.ReportType.' + userReport.type}}">{{userReport.type}}</td>
                 <td>
                     <div *ngIf="userReport.roomieId">
-                        <a [routerLink]="['../roomie', userReport.roomieId , 'view' ]" >{{userReport.roomieId}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="userReport.roomId">
-                        <a [routerLink]="['../room', userReport.roomId , 'view' ]" >{{userReport.roomId}}</a>
+                        <button class="btn btn-primary btn-sm" [routerLink]="['../roomie']" >View Roomie</button>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/user-report', userReport.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/user-report', userReport.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', 'user-report', { outlets: { popup: userReport.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            <span class="d-none d-md-inline">Mark as resolved</span>
                         </button>
                     </div>
                 </td>

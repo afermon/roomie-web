@@ -6,10 +6,12 @@ import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IRoomie } from 'app/shared/model/roomie.model';
-import { AccountService } from 'app/core';
+import { AccountService, IUser, UserService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { RoomieService } from './roomie.service';
+import { RoomieStateService } from 'app/entities/roomie-state';
+import { IRoomieState, RoomieState } from 'app/shared/model/roomie-state.model';
 
 @Component({
     selector: 'jhi-roomie',
@@ -30,6 +32,8 @@ export class RoomieComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    states: IRoomieState[];
+    users: IUser[];
 
     constructor(
         protected roomieService: RoomieService,
@@ -38,7 +42,9 @@ export class RoomieComponent implements OnInit, OnDestroy {
         protected accountService: AccountService,
         protected activatedRoute: ActivatedRoute,
         protected router: Router,
-        protected eventManager: JhiEventManager
+        protected eventManager: JhiEventManager,
+        protected roomieStateService: RoomieStateService,
+        protected userService: UserService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -46,6 +52,8 @@ export class RoomieComponent implements OnInit, OnDestroy {
             this.previousPage = data.pagingParams.page;
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
+            this.states = [];
+            this.users = [];
         });
         this.currentSearch =
             this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
@@ -161,6 +169,14 @@ export class RoomieComponent implements OnInit, OnDestroy {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.roomies = data;
+        for (const r of this.roomies) {
+            this.roomieStateService.find(r.stateId).subscribe((res: HttpResponse<IRoomieState>) => {
+                this.states.push(res.body);
+            });
+            this.userService.findId(r.userId).subscribe((res: HttpResponse<IUser>) => {
+                this.users.push(res.body);
+            });
+        }
     }
 
     protected onError(errorMessage: string) {

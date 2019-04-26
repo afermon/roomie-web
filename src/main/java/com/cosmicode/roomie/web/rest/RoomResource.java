@@ -43,9 +43,11 @@ public class RoomResource {
     private static final String ENTITY_NAME = "room";
 
     private final RoomService roomService;
+    private final CompanyResource companyResource;
 
-    public RoomResource(RoomService roomService) {
+    public RoomResource(RoomService roomService, CompanyResource companyResource) {
         this.roomService = roomService;
+        this.companyResource = companyResource;
     }
 
     /**
@@ -91,7 +93,7 @@ public class RoomResource {
     /**
      * GET  /rooms : get all the rooms.
      *
-     * @param pageable the pagination information
+     * @param pageable  the pagination information
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of rooms in body
      */
@@ -138,7 +140,7 @@ public class RoomResource {
      * SEARCH  /_search/rooms?query=:query : search for the room corresponding
      * to the query.
      *
-     * @param query the query of the room search
+     * @param query    the query of the room search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -155,7 +157,7 @@ public class RoomResource {
      * to the query.
      *
      * @param searchFilterDTO the query of the room search
-     * @param pageable the pagination information
+     * @param pageable        the pagination information
      * @return the result of the search
      */
     @PostMapping("/_search/rooms/advanced")
@@ -167,49 +169,49 @@ public class RoomResource {
     }
 
     @GetMapping("/owned-rooms/{id}")
-    public List<RoomDTO> getRoomsByOwner(@PathVariable Long id){
+    public List<RoomDTO> getRoomsByOwner(@PathVariable Long id) {
         return roomService.findAllByOwner(id);
     }
 
     @GetMapping("/owned-premium-rooms/{id}")
-    public List<RoomDTO> getPremiumRoomsByOwner(@PathVariable Long id){
+    public List<RoomDTO> getPremiumRoomsByOwner(@PathVariable Long id) {
         return roomService.findAllPremiumByOwner(id);
     }
 
     @PostMapping("/pay-room/{token}")
-    public ResponseEntity<RoomDTO> payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException, URISyntaxException{
+    public ResponseEntity<RoomDTO> payPremium(@RequestBody RoomDTO roomDTO, @PathVariable String token) throws StripeException, URISyntaxException {
         Stripe.apiKey = "sk_test_di3IZONuZKxgET8t5zDGe7S300bsc2XkuG";
+        Double amount = companyResource.getPrice();
+        amount = amount *100;
         Map<String, Object> params = new HashMap<>();
-        params.put("amount", 199);
+        params.put("amount", amount.intValue());
         params.put("currency", "usd");
-        params.put("description", "Premium room");
+        params.put("description", roomDTO.getTitle() + " premium payment");
         params.put("source", token);
+
+        roomDTO.setState(RoomState.PREMIUM);
+        roomDTO.setCreated(Instant.now());
+        roomDTO.setPublished(Instant.now());
+        roomDTO.setRooms(roomDTO.getRoomies().size());
+        roomDTO.setRoomType(RoomType.ROOM);
+        roomDTO.setLookingForRoomie(false);
+        roomDTO.setAvailableFrom(LocalDate.now());
+        roomDTO.setIsPremium(true);
         try {
-
-            roomDTO.setState(RoomState.PREMIUM);
-            roomDTO.setCreated(Instant.now());
-            roomDTO.setPublished(Instant.now());
-            roomDTO.setRooms(roomDTO.getRoomies().size());
-            roomDTO.setRoomType(RoomType.ROOM);
-            roomDTO.setLookingForRoomie(false);
-            roomDTO.setAvailableFrom(LocalDate.now());
-            roomDTO.setIsPremium(true);
-
             Charge charge = Charge.create(params);
-            RoomDTO result = roomService.save(roomDTO);
-            return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-                .body(result);
-        }catch (StripeException e){
+        } catch (StripeException e) {
             return ResponseEntity.badRequest()
                 .header(e.toString())
                 .body(null);
         }
-
+        RoomDTO result = roomService.save(roomDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     @PostMapping("/reindex/{id}")
-    public ResponseEntity<Void> reindex(@PathVariable Long id){
+    public ResponseEntity<Void> reindex(@PathVariable Long id) {
         roomService.reindex(id);
         return ResponseEntity.ok()
             .body(null);

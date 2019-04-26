@@ -6,7 +6,7 @@ import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IRoom } from 'app/shared/model/room.model';
-import { AccountService } from 'app/core';
+import { AccountService, IUser, UserService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { RoomService } from './room.service';
@@ -30,6 +30,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    owners: IUser[];
 
     constructor(
         protected roomService: RoomService,
@@ -38,8 +39,10 @@ export class RoomComponent implements OnInit, OnDestroy {
         protected accountService: AccountService,
         protected activatedRoute: ActivatedRoute,
         protected router: Router,
-        protected eventManager: JhiEventManager
+        protected eventManager: JhiEventManager,
+        protected userService: UserService
     ) {
+        this.owners = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
             this.page = data.pagingParams.page;
@@ -161,6 +164,11 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.rooms = data;
+        for (const r of this.rooms) {
+            this.userService.findId(r.ownerId).subscribe((res: HttpResponse<IUser>) => {
+                this.owners.push(res.body);
+            });
+        }
     }
 
     protected onError(errorMessage: string) {
