@@ -125,6 +125,11 @@ public class RoomieService {
         roomie.setId(r.getId());
         roomie.setPicture(r.getPicture());
         roomie.setUser(r.getUser());
+        roomie.setBirthDate(r.getBirthDate());
+        roomie.setBiography(r.getBiography());
+        roomie.setGender(r.getGender());
+        roomie.setPhone(r.getPhone());
+        roomie.setMobileDeviceID(r.getMobileDeviceID());
         return roomie;
     }
 }
