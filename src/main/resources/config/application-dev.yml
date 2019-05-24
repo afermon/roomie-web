@@ -138,5 +138,5 @@ jhipster:
 
 application:
     average-exchange-rate-crc-to-usd: 600
-    firebase-cloud-messaging-key: AIzaSyBwVp_8c-3w754DqMPE-DaSfLltRbSE8B8
+    firebase-cloud-messaging-key: ${FIREBASE_KEY}
     firebase-cloud-messaging-url: https://fcm.googleapis.com/fcm/send
