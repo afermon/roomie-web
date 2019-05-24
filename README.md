@@ -8,6 +8,13 @@ Check out the Android APP that consumes this API at: [afermon/roomie-app](https:
 
 This application was generated using JHipster 5.8.2
 
+### Developed by:
+
+* Alex Fernández Montoya
+* Derek Jiménez Quesada
+* Cherng Lii Zhang Chen
+* Heyner Soza Montano
+
 ![Roomie](https://github.com/afermon/roomie-web/raw/master/landing.png)
 
 ## Development
