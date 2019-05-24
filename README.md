@@ -6,7 +6,9 @@ This is the backend service for Roomie, android aplication for serching roomies 
 
 Check out the Android APP that consumes this API at: [afermon/roomie-app](https://github.com/afermon/roomie-app)
 
-This application was generated using JHipster 5.8.2
+This application was generated using JHipster 5.8.2.
+
+Note: the access keys listed here for cloud services, if any, are no longer valid!
 
 ### Developed by:
 
