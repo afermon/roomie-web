@@ -1,6 +1,14 @@
-# roomie
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/afermon/roomie-web/blob/master/LICENSE)
 
-This application was generated using JHipster 5.8.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.8.2](https://www.jhipster.tech/documentation-archive/v5.8.2).
+# Roomie - Your perfect roommate is a few clicks away!
+
+This is the backend service for Roomie, android aplication for serching roomies for you appartment. This application was developed as a School Project and there are still may functionalities that need improvements.
+
+Check out the Android APP that consumes this API at: [afermon/roomie-app](https://github.com/afermon/roomie-app)
+
+This application was generated using JHipster 5.8.2
+
+![Roomie](https://github.com/afermon/roomie-web/raw/master/landing.png)
 
 ## Development
 
